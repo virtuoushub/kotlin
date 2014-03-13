@@ -28,8 +28,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
 import org.jetbrains.jet.lang.psi.JetClass;
 import org.jetbrains.jet.lang.psi.JetDeclaration;
+import org.jetbrains.jet.lang.psi.JetElement;
 import org.jetbrains.jet.lang.psi.JetNamedDeclaration;
+import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.plugin.JetDescriptorIconProvider;
+import org.jetbrains.jet.plugin.project.AnalyzerFacadeWithCache;
 import org.jetbrains.jet.renderer.DescriptorRenderer;
 
 import javax.swing.*;
@@ -38,14 +41,11 @@ public class DescriptorClassMember extends MemberChooserObjectBase implements Cl
 
     public static final String NO_PARENT_FOR = "No parent for ";
     @NotNull
-    private final DeclarationDescriptor myDescriptor;
-    @NotNull
     private final PsiElement myPsiElement;
 
     public DescriptorClassMember(@NotNull PsiElement element, @NotNull DeclarationDescriptor descriptor) {
         super(DescriptorRenderer.STARTS_FROM_NAME.render(descriptor), getIcon(element, descriptor));
         myPsiElement = element;
-        myDescriptor = descriptor;
     }
 
     private static Icon getIcon(PsiElement element, DeclarationDescriptor declarationDescriptor) {
@@ -67,23 +67,24 @@ public class DescriptorClassMember extends MemberChooserObjectBase implements Cl
 
     @Override
     public MemberChooserObject getParentNodeDelegate() {
-        DeclarationDescriptor parent = myDescriptor.getContainingDeclaration();
-        PsiElement declaration;
         if (myPsiElement instanceof JetDeclaration) {
-            // kotlin
-            declaration = PsiTreeUtil.getStubOrPsiParentOfType(myPsiElement, JetNamedDeclaration.class);
+            JetNamedDeclaration element = PsiTreeUtil.getStubOrPsiParentOfType(myPsiElement, JetNamedDeclaration.class);
+            if (element != null) {
+                BindingContext context = AnalyzerFacadeWithCache.getContextForElement(element);
+                DeclarationDescriptor descriptor = context.get(BindingContext.DECLARATION_TO_DESCRIPTOR, element);
+                if (descriptor != null) {
+                    return new DescriptorClassMember(element, descriptor);
+                }
+            }
         }
-        else {
-            // java or bytecode
-            declaration = ((PsiMember) myPsiElement).getContainingClass();
-        }
-        assert parent != null : NO_PARENT_FOR + myDescriptor;
-        assert declaration != null : NO_PARENT_FOR + myPsiElement;
-        return new DescriptorClassMember(declaration, parent);
+
+        return null;
     }
 
+    @NotNull
     public DeclarationDescriptor getDescriptor() {
-        return myDescriptor;
+        BindingContext context = AnalyzerFacadeWithCache.getContextForElement((JetElement) myPsiElement);
+        return context.get(BindingContext.DECLARATION_TO_DESCRIPTOR, myPsiElement);
     }
 
     @Override
@@ -93,14 +94,14 @@ public class DescriptorClassMember extends MemberChooserObjectBase implements Cl
 
         DescriptorClassMember that = (DescriptorClassMember) o;
 
-        if (!myDescriptor.equals(that.myDescriptor)) return false;
+        if (!myPsiElement.equals(that.myPsiElement)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return myDescriptor.hashCode();
+        return myPsiElement.hashCode();
     }
 
     @Override
