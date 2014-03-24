@@ -17,3 +17,21 @@ fun assertNotEquals<T>(illegal: T, actual: T, message: String? = null) {
 }
 
 fun assertTrue(actual: Boolean, message: String? = null) = assertEquals(true, actual, message)
+
+fun assertArrayEquals<T>(expected: Array<T>, actual: Array<T>) {
+    val expectedSize = expected.size
+    val actualSize = actual.size
+
+    if (expectedSize != actualSize) {
+        throw Exception("expected size -- $expectedSize, actual size -- $actualSize")
+    }
+
+    for (i in 0..expectedSize) {
+        val expectedIth = expected[i]
+        val actualIth = actual[i]
+
+        if (expected[i] != actual[i]) {
+            throw Exception("expected[$i] -- $expectedIth, actual[$i] -- $actualIth")
+        }
+    }
+}
