@@ -80,6 +80,7 @@
         <include name="js/js.translator/src"/>
         <include name="js/js.frontend/src"/>
         <include name="js/js.inliner/src"/>
+        <include name="js/js.rhino-parser/src"/>
     </dirset>
 
     <property name="idea.out" value="${basedir}/out/production"/>
@@ -103,6 +104,7 @@
         <include name="js.translator/**"/>
         <include name="js.frontend/**"/>
         <include name="js.inliner/**"/>
+        <include name="js.rhino-parser/**"/>
     </patternset>
 
     <path id="compilerSources.path">
@@ -168,6 +170,7 @@
             <fileset dir="js/js.translator/src"/>
             <fileset dir="js/js.frontend/src"/>
             <fileset dir="js/js.inliner/src"/>
+            <fileset dir="js/js.rhino-parser/src"/>
             <zipfileset file="${kotlin-home}/build.txt" prefix="META-INF"/>
 
             <manifest>
