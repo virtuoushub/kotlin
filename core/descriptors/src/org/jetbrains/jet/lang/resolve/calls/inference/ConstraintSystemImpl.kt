@@ -313,7 +313,7 @@ public class ConstraintSystemImpl : ConstraintSystem {
             boundKind: TypeBounds.BoundKind,
             constraintPosition: ConstraintPosition
     ) {
-        val typeBounds = getTypeBounds(parameterType).sure("constraint should be generated only for type variables")
+        val typeBounds = getTypeBounds(parameterType)
 
         if (!parameterType.isNullable() || !constrainingType.isNullable()) {
             typeBounds.addBound(boundKind, constrainingType, constraintPosition)
@@ -344,10 +344,9 @@ public class ConstraintSystemImpl : ConstraintSystem {
                         addSubtypeConstraint(bound.constrainingType, declaredUpperBound, position)
                     }
                 }
-                val declarationDescriptor = declaredUpperBound.getConstructor().getDeclarationDescriptor()
-                if (declarationDescriptor is TypeParameterDescriptor && typeParameterBounds.containsKey(declarationDescriptor)) {
-                    val typeBoundsForUpperBound = typeParameterBounds.get(declarationDescriptor)
-                    for (bound in typeBoundsForUpperBound!!.bounds) {
+                if (isMyTypeVariable(declaredUpperBound)) {
+                    val typeBoundsForUpperBound = getTypeBounds(declaredUpperBound)
+                    for (bound in typeBoundsForUpperBound.bounds) {
                         if (bound.kind == UPPER_BOUND || bound.kind == EXACT_BOUND) {
                             val position = getCompoundConstraintPosition(
                                     TYPE_BOUND_POSITION.position(typeParameterDescriptor.getIndex()), bound.position)
@@ -361,22 +360,25 @@ public class ConstraintSystemImpl : ConstraintSystem {
 
     override fun getTypeVariables() = typeParameterBounds.keySet()
 
-    override fun getTypeBounds(typeVariable: TypeParameterDescriptor): TypeBounds {
-        return typeParameterBounds.get(typeVariable).sure(
-                "TypeParameterDescriptor is not a type variable for constraint system: $typeVariable")
-    }
-
-    private fun getTypeBounds(jetType: JetType): TypeBoundsImpl? {
-        val parameterDescriptor = jetType.getConstructor().getDeclarationDescriptor()
-        if (parameterDescriptor is TypeParameterDescriptor) {
-            return typeParameterBounds.get(parameterDescriptor)
+    override fun getTypeBounds(typeVariable: TypeParameterDescriptor): TypeBoundsImpl {
+        if (!isMyTypeVariable(typeVariable)) {
+            throw IllegalArgumentException("TypeParameterDescriptor is not a type variable for constraint system: $typeVariable")
         }
-        return null
+        return typeParameterBounds[typeVariable]!!
     }
 
-    private fun isMyTypeVariable(jetType: JetType): Boolean {
-        val descriptor = jetType.getConstructor().getDeclarationDescriptor()
-        return descriptor is TypeParameterDescriptor && typeParameterBounds.get(descriptor) != null
+    private fun getTypeBounds(parameterType: JetType): TypeBoundsImpl {
+        assert (isMyTypeVariable(parameterType)) { "Type is not a type variable for constraint system: $parameterType" }
+        return getTypeBounds(getMyTypeVariable(parameterType)!!)
+    }
+
+    private fun isMyTypeVariable(typeVariable: TypeParameterDescriptor) = typeParameterBounds.contains(typeVariable)
+
+    private fun isMyTypeVariable(jetType: JetType): Boolean = getMyTypeVariable(jetType) != null
+
+    private fun getMyTypeVariable(jetType: JetType): TypeParameterDescriptor? {
+        val typeParameterDescriptor = jetType.getConstructor().getDeclarationDescriptor() as? TypeParameterDescriptor
+        return if (typeParameterDescriptor != null && isMyTypeVariable(typeParameterDescriptor)) typeParameterDescriptor else null
     }
 
     override fun getResultingSubstitutor() = replaceUninferredBySpecialErrorType()
