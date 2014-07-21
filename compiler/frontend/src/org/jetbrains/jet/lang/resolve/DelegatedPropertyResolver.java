@@ -24,6 +24,7 @@ import org.jetbrains.jet.lang.diagnostics.rendering.Renderers;
 import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.calls.CallResolver;
 import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintPosition;
+import org.jetbrains.jet.lang.resolve.calls.smartcasts.DataFlowInfo;
 import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintSystem;
 import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintSystemCompleter;
 import org.jetbrains.jet.lang.resolve.calls.model.ResolvedCall;
@@ -49,6 +50,7 @@ import static org.jetbrains.jet.lang.diagnostics.Errors.*;
 import static org.jetbrains.jet.lang.psi.PsiPackage.JetPsiFactory;
 import static org.jetbrains.jet.lang.resolve.BindingContext.*;
 import static org.jetbrains.jet.lang.resolve.calls.callUtil.CallUtilPackage.getCalleeExpressionIfAny;
+import static org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPositionKind.FROM_COMPLETER;
 import static org.jetbrains.jet.lang.types.TypeUtils.NO_EXPECTED_TYPE;
 import static org.jetbrains.jet.lang.types.TypeUtils.noExpectedType;
 import static org.jetbrains.jet.lang.types.expressions.ExpressionTypingUtils.createFakeExpressionOfType;
@@ -321,7 +323,7 @@ public class DelegatedPropertyResolver {
                     FunctionDescriptor descriptor = getMethodResults.getResultingDescriptor();
                     JetType returnTypeOfGetMethod = descriptor.getReturnType();
                     if (returnTypeOfGetMethod != null) {
-                        constraintSystem.addSupertypeConstraint(expectedType, returnTypeOfGetMethod, ConstraintPosition.FROM_COMPLETER);
+                        constraintSystem.addSupertypeConstraint(expectedType, returnTypeOfGetMethod, FROM_COMPLETER.position());
                     }
                     addConstraintForThisValue(constraintSystem, descriptor);
                 }
@@ -344,7 +346,7 @@ public class DelegatedPropertyResolver {
 
                         if (!noExpectedType(expectedType)) {
                             constraintSystem.addSubtypeConstraint(
-                                    expectedType, valueParameterForThis.getType(), ConstraintPosition.FROM_COMPLETER);
+                                    expectedType, valueParameterForThis.getType(), FROM_COMPLETER.position());
                         }
                         addConstraintForThisValue(constraintSystem, descriptor);
                     }
@@ -369,7 +371,7 @@ public class DelegatedPropertyResolver {
                 if (valueParameters.isEmpty()) return;
                 ValueParameterDescriptor valueParameterForThis = valueParameters.get(0);
 
-                constraintSystem.addSubtypeConstraint(typeOfThis, valueParameterForThis.getType(), ConstraintPosition.FROM_COMPLETER);
+                constraintSystem.addSubtypeConstraint(typeOfThis, valueParameterForThis.getType(), FROM_COMPLETER.position());
             }
         };
     }

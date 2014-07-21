@@ -30,6 +30,7 @@ import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns;
 import java.util.Collections;
 import java.util.List;
 
+import static org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPositionKind.EXPECTED_TYPE_POSITION;
 import static org.jetbrains.jet.lang.types.TypeUtils.DONT_CARE;
 
 public class CallResolverUtil {
@@ -95,7 +96,7 @@ public class CallResolverUtil {
         if (hasReturnTypeDependentOnUninferredParams(candidateDescriptor, constraintSystem)) return false;
 
         // Expected type mismatch was reported before as 'TYPE_INFERENCE_EXPECTED_TYPE_MISMATCH'
-        if (constraintSystem.getStatus().hasOnlyErrorsFromPosition(ConstraintPosition.EXPECTED_TYPE_POSITION)) return false;
+        if (constraintSystem.getStatus().hasOnlyErrorsFromPosition(EXPECTED_TYPE_POSITION.position())) return false;
         return true;
     }
 
