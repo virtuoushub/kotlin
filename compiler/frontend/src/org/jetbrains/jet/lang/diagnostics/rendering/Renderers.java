@@ -34,10 +34,7 @@ import org.jetbrains.jet.lang.resolve.calls.inference.*;
 import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPosition;
 import org.jetbrains.jet.lang.resolve.calls.model.ResolvedCall;
 import org.jetbrains.jet.lang.resolve.name.Name;
-import org.jetbrains.jet.lang.types.JetType;
-import org.jetbrains.jet.lang.types.TypeSubstitutor;
-import org.jetbrains.jet.lang.types.TypeUtils;
-import org.jetbrains.jet.lang.types.Variance;
+import org.jetbrains.jet.lang.types.*;
 import org.jetbrains.jet.lang.types.checker.JetTypeChecker;
 import org.jetbrains.jet.renderer.DescriptorRenderer;
 import org.jetbrains.jet.renderer.Renderer;
@@ -426,6 +423,7 @@ public class Renderers {
             if (typeBounds.isEmpty()) {
                 return typeVariableName.asString();
             }
+            //todo render captured bounds
             return typeVariableName + " " + StringUtil.join(typeBounds.getBounds(), renderBound, ", ");
         }
     };

@@ -19,9 +19,12 @@ package org.jetbrains.jet.lang.types;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor;
+import org.jetbrains.jet.lang.resolve.calls.inference.CapturedTypeConstructor;
 import org.jetbrains.jet.lang.resolve.scopes.SubstitutingScope;
 import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns;
 import org.jetbrains.jet.lang.types.typeUtil.TypeUtilPackage;
+import org.jetbrains.jet.lang.types.typesApproximation.ApproximationBounds;
+import org.jetbrains.jet.lang.types.typesApproximation.TypesApproximationPackage;
 
 import java.util.*;
 
@@ -60,18 +63,22 @@ public class TypeSubstitutor {
         }
     }
 
+    @NotNull
     public static TypeSubstitutor create(@NotNull TypeSubstitution substitution) {
         return new TypeSubstitutor(substitution);
     }
 
+    @NotNull
     public static TypeSubstitutor create(@NotNull TypeSubstitution... substitutions) {
         return create(new CompositeTypeSubstitution(substitutions));
     }
 
+    @NotNull
     public static TypeSubstitutor create(@NotNull Map<TypeConstructor, TypeProjection> substitutionContext) {
         return create(new MapToTypeSubstitutionAdapter(substitutionContext));
     }
 
+    @NotNull
     public static TypeSubstitutor create(@NotNull JetType context) {
         return create(buildSubstitutionContext(context.getConstructor().getParameters(), context.getArguments()));
     }
@@ -135,6 +142,22 @@ public class TypeSubstitutor {
 
     @Nullable
     public TypeProjection substitute(@NotNull TypeProjection typeProjection) {
+        TypeProjection result = substituteWithoutApproximation(typeProjection);
+        if (result == null) return null;
+
+        if (typeProjection.getProjectionKind() == Variance.IN_VARIANCE) {
+            //return typeProjection;
+            return TypesApproximationPackage.substituteCapturedTypes(result);
+        }
+        ApproximationBounds<JetType> approximation = TypesApproximationPackage.approximateIfNecessary(result.getType());
+        //if (typeProjection.getProjectionKind() == Variance.IN_VARIANCE) {
+        //    return new TypeProjectionImpl(result.getProjectionKind(), approximation.getLower());
+        //}
+        return new TypeProjectionImpl(result.getProjectionKind(), approximation.getUpper());
+    }
+
+    @Nullable
+    public TypeProjection substituteWithoutApproximation(@NotNull TypeProjection typeProjection) {
         if (isEmpty()) {
             return typeProjection;
         }
@@ -174,6 +197,10 @@ public class TypeSubstitutor {
         TypeProjection replacement = substitution.get(type.getConstructor());
 
         if (replacement != null) {
+            //todo!!!
+            if (type.getConstructor() instanceof CapturedTypeConstructor) {
+                return replacement;
+            }
             // It must be a type parameter: only they can be directly substituted for
             TypeParameterDescriptor typeParameter = (TypeParameterDescriptor) type.getConstructor().getDeclarationDescriptor();
 
@@ -265,10 +292,11 @@ public class TypeSubstitutor {
         return substitutedArguments;
     }
 
-    private static Variance combine(Variance typeParameterVariance, Variance projectionKind) {
+    public static Variance combine(Variance typeParameterVariance, Variance projectionKind) {
         if (typeParameterVariance == Variance.INVARIANT) return projectionKind;
         if (projectionKind == Variance.INVARIANT) return typeParameterVariance;
         if (typeParameterVariance == projectionKind) return projectionKind;
+        //todo ask why?
         return Variance.IN_VARIANCE;
     }
 

@@ -106,6 +106,9 @@ public class TypeCheckingProcedure {
             TypeProjection typeProjection1 = type1Arguments.get(i);
             TypeParameterDescriptor typeParameter2 = constructor2.getParameters().get(i);
             TypeProjection typeProjection2 = type2Arguments.get(i);
+            if (capture(typeProjection1, typeProjection2, typeParameter1)) {
+                continue;
+            }
             if (getEffectiveProjectionKind(typeParameter1, typeProjection1) != getEffectiveProjectionKind(typeParameter2, typeProjection2)) {
                 return false;
             }
@@ -230,11 +233,31 @@ public class TypeCheckingProcedure {
                     && subArgument.getProjectionKind() == INVARIANT && superArgument.getProjectionKind() == INVARIANT) {
                 if (!constraints.assertEqualTypes(subArgument.getType(), superArgument.getType(), this)) return false;
             }
-            else {
+            else if (!capture(subArgument, superArgument, parameter)) {
                 if (!constraints.assertSubtype(subOut, superOut, this)) return false;
                 if (!constraints.assertSubtype(superIn, subIn, this)) return false;
             }
         }
         return true;
+    }
+
+    private boolean capture(
+            @NotNull TypeProjection firstProjection,
+            @NotNull TypeProjection secondProjection,
+            @NotNull TypeParameterDescriptor parameter
+    ) {
+        //todo comment; is the following right? why both >: and <:?
+        // Array<T> <: Array<out Int>; Array<T> >: Array<out Int> => T is a type that extends Int: 'Captured(out Int)'
+        // Array<T> <: Array<in Int>; Array<T> >: Array<in Int> => T is a type which Int extends: 'Captured(in Int)'
+
+        if (parameter.getVariance() != INVARIANT) return false;
+
+        if (firstProjection.getProjectionKind() == INVARIANT && secondProjection.getProjectionKind() != INVARIANT) {
+            return constraints.capture(firstProjection.getType(), secondProjection);
+        }
+        if (firstProjection.getProjectionKind() != INVARIANT && secondProjection.getProjectionKind() == INVARIANT) {
+            return constraints.capture(secondProjection.getType(), firstProjection);
+        }
+        return false;
     }
 }

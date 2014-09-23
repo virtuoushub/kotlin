@@ -43,6 +43,8 @@ public trait ConstraintPosition {
     val kind: ConstraintPositionKind
 
     fun isStrong(): Boolean = kind != TYPE_BOUND_POSITION
+
+    fun fromExpression(): Boolean = kind in setOf(VALUE_PARAMETER_POSITION, RECEIVER_POSITION)
 }
 
 private open data class ConstraintPositionImpl(override val kind: ConstraintPositionKind) : ConstraintPosition {

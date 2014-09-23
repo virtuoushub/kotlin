@@ -155,7 +155,8 @@ public class TypeBoundsImpl(
 
     private fun tryPossibleAnswer(possibleAnswer: JetType?): Boolean {
         if (possibleAnswer == null) return false
-        if (!possibleAnswer.getConstructor().isDenotable()) return false
+        //todo
+        if (!possibleAnswer.getConstructor().isDenotable() && possibleAnswer.getConstructor() !is CapturedTypeConstructor) return false
 
         for (bound in bounds) {
             when (bound.kind) {
@@ -163,11 +164,11 @@ public class TypeBoundsImpl(
                     return false
                 }
 
-                TypeBounds.BoundKind.UPPER_BOUND -> if (!JetTypeChecker.DEFAULT.isSubtypeOf(possibleAnswer, bound.constrainingType)) {
+                UPPER_BOUND -> if (!JetTypeChecker.DEFAULT.isSubtypeOf(possibleAnswer, bound.constrainingType)) {
                     return false
                 }
 
-                TypeBounds.BoundKind.EXACT_BOUND -> if (!JetTypeChecker.DEFAULT.equalTypes(bound.constrainingType, possibleAnswer)) {
+                EXACT_BOUND -> if (!JetTypeChecker.DEFAULT.equalTypes(bound.constrainingType, possibleAnswer)) {
                     return false
                 }
             }

@@ -157,7 +157,9 @@ public class ResolvedCallImpl<D extends CallableDescriptor> implements MutableRe
     @Override
     public void setResultingSubstitutor(@NotNull TypeSubstitutor substitutor) {
         resultingDescriptor = (D) candidateDescriptor.substitute(substitutor);
-        assert resultingDescriptor != null : candidateDescriptor;
+        //todo
+        if (resultingDescriptor == null) return;
+        //assert resultingDescriptor != null : candidateDescriptor;
 
         for (TypeParameterDescriptor typeParameter : candidateDescriptor.getTypeParameters()) {
             TypeProjection typeArgumentProjection = substitutor.getSubstitution().get(typeParameter.getTypeConstructor());

@@ -29,6 +29,7 @@ import org.jetbrains.jet.lang.resolve.constants.IntegerValueTypeConstructor
 import org.jetbrains.jet.lang.types.JetTypeImpl
 import org.jetbrains.jet.lang.descriptors.annotations.Annotations
 
+//todo rename
 public class MyDeclarations(
         context: BindingContext,
         private val project: Project,

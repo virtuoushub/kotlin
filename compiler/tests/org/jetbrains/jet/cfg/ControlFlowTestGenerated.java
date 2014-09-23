@@ -36,7 +36,7 @@ public class ControlFlowTestGenerated extends AbstractControlFlowTest {
     public void testAllFilesPresentInCfg() throws Exception {
         JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/cfg"), Pattern.compile("^(.+)\\.kt$"), true);
     }
-
+    
     @TestMetadata("compiler/testData/cfg/arrays")
     @TestDataPath("$PROJECT_ROOT")
     @RunWith(JUnit3RunnerWithInners.class)
