@@ -43,12 +43,6 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class AbstractQuickFixTest extends KotlinLightQuickFixTestCase {
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        ((StartupManagerImpl) StartupManager.getInstance(getProject())).runPostStartupActivities();
-    }
-
     protected void doTest(@NotNull String beforeFileName) throws Exception {
         boolean isWithRuntime = beforeFileName.endsWith("Runtime.kt");
 
