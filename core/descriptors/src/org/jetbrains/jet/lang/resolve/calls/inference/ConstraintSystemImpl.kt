@@ -53,13 +53,14 @@ public class ConstraintSystemImpl : ConstraintSystem {
     private val typeParameterBounds = LinkedHashMap<TypeParameterDescriptor, TypeBoundsImpl>()
     private val errorConstraintPositions = HashSet<ConstraintPosition>()
     private var hasErrorInConstrainingTypes: Boolean = false
+    private var cannotCaptureTypesError: Boolean = false
 
     private val constraintSystemStatus = object : ConstraintSystemStatus {
         // for debug ConstraintsUtil.getDebugMessageForStatus might be used
 
         override fun isSuccessful() = !hasContradiction() && !hasUnknownParameters()
 
-        override fun hasContradiction() = hasTypeConstructorMismatch() || hasConflictingConstraints()
+        override fun hasContradiction() = hasTypeConstructorMismatch() || hasConflictingConstraints() || hasCannotCaptureTypesError()
 
         override fun hasViolatedUpperBound(): Boolean {
             if (isSuccessful()) return false
@@ -101,6 +102,8 @@ public class ConstraintSystemImpl : ConstraintSystem {
         }
 
         override fun hasErrorInConstrainingTypes() = hasErrorInConstrainingTypes
+
+        override fun hasCannotCaptureTypesError() = cannotCaptureTypesError
     }
 
     private fun getParameterToInferredValueMap(typeParameterBounds: Map<TypeParameterDescriptor, TypeBoundsImpl>, getDefaultTypeProjection: Function1<TypeParameterDescriptor, TypeProjection>): Map<TypeParameterDescriptor, TypeProjection> {
@@ -207,7 +210,10 @@ public class ConstraintSystemImpl : ConstraintSystem {
 
     private fun addConstraint(constraintKind: ConstraintKind, subType: JetType?, superType: JetType?, constraintPosition: ConstraintPosition) {
         val typeCheckingProcedure = TypeCheckingProcedure(object : TypingConstraints {
+            private var isTopLevel = true
+
             override fun assertEqualTypes(a: JetType, b: JetType, typeCheckingProcedure: TypeCheckingProcedure): Boolean {
+                isTopLevel = false
                 doAddConstraint(EQUAL, a, b, constraintPosition, typeCheckingProcedure)
                 return true
 
@@ -218,12 +224,16 @@ public class ConstraintSystemImpl : ConstraintSystem {
             }
 
             override fun assertSubtype(subtype: JetType, supertype: JetType, typeCheckingProcedure: TypeCheckingProcedure): Boolean {
+                isTopLevel = false
                 doAddConstraint(SUB_TYPE, subtype, supertype, constraintPosition, typeCheckingProcedure)
                 return true
             }
 
             override fun capture(typeVariable: JetType, typeProjection: TypeProjection): Boolean {
                 if (isMyTypeVariable(typeVariable) && constraintPosition.fromExpression()) {
+                    if (!isTopLevel) {
+                        cannotCaptureTypesError = true
+                    }
                     generateTypeParameterCaptureConstraint(typeVariable, typeProjection, constraintPosition)
                     return true
                 }
