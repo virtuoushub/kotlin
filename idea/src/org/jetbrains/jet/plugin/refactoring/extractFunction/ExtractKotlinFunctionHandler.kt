@@ -35,7 +35,7 @@ import org.jetbrains.jet.plugin.refactoring.getAllExtractionContainers
 import com.intellij.openapi.application.ApplicationManager
 import org.jetbrains.jet.lang.psi.psiUtil.getOutermostParentContainedIn
 import org.jetbrains.jet.plugin.refactoring.checkConflictsInteractively
-import org.jetbrains.jet.plugin.refactoring.executeWriteCommand
+import org.jetbrains.jet.plugin.util.application.executeWriteCommand
 import org.jetbrains.jet.lang.psi.JetBlockExpression
 import org.jetbrains.jet.lang.psi.JetClassBody
 import kotlin.test.fail

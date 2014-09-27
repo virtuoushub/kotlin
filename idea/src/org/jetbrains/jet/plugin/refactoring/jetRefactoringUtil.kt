@@ -72,6 +72,7 @@ import org.jetbrains.jet.lang.resolve.BindingContext
 import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 import org.jetbrains.jet.lang.psi.psiUtil.isAncestor
 import org.jetbrains.jet.plugin.caches.resolve.getLazyResolveSession
+import org.jetbrains.jet.plugin.util.application.runWriteAction
 
 /**
  * Replace [[JetSimpleNameExpression]] (and its enclosing qualifier) with qualified element given by FqName
@@ -182,24 +183,6 @@ public fun Project.checkConflictsInteractively(conflicts: MultiMap<PsiElement, S
     }
 
     onAccept()
-}
-
-public fun runReadAction<T: Any>(action: () -> T?): T? {
-    return ApplicationManager.getApplication()?.runReadAction<T>(action)
-}
-
-public fun runWriteAction<T: Any>(action: () -> T?): T? {
-    return ApplicationManager.getApplication()?.runWriteAction<T>(action)
-}
-
-public fun Project.executeWriteCommand(name: String, command: () -> Unit) {
-    CommandProcessor.getInstance().executeCommand(this, { runWriteAction(command) }, name, null)
-}
-
-public fun <T: Any> Project.executeWriteCommand(name: String, command: () -> T): T {
-    var result: T? = null
-    CommandProcessor.getInstance().executeCommand(this, { result = runWriteAction(command) }, name, null)
-    return result!!
 }
 
 public fun <T : PsiElement> getPsiElementPopup(

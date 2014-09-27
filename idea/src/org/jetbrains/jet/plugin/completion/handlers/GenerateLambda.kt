@@ -41,7 +41,7 @@ import org.jetbrains.jet.lang.psi.JetExpression
 import org.jetbrains.jet.plugin.completion.ExpectedInfos
 import org.jetbrains.jet.lang.psi.JetFile
 import org.jetbrains.jet.plugin.caches.resolve.getLazyResolveSession
-import org.jetbrains.jet.plugin.refactoring.runWriteAction
+import org.jetbrains.jet.plugin.util.application.runWriteAction
 
 fun insertLambdaTemplate(context: InsertionContext, placeholderRange: TextRange, lambdaType: JetType) {
     val explicitParameterTypes = needExplicitParameterTypes(context, placeholderRange, lambdaType)
