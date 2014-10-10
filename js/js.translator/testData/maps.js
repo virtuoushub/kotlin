@@ -20,6 +20,268 @@
     /**
      * @class
      * @constructor
+     * @param {(function(Key): string)=} hashingFunction
+     * @param {(function(Key, Key): boolean)=} equalityFunction
+     * @template Key, Value
+     */
+    function HashSet(hashingFunction, equalityFunction) {
+        var hashTable = new Kotlin.HashTable(hashingFunction, equalityFunction);
+
+        this.addAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.addAll_4fm7v2$;
+        this.removeAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.removeAll_4fm7v2$;
+        this.retainAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.retainAll_4fm7v2$;
+        this.containsAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.containsAll_4fm7v2$;
+
+        this.add_za3rmp$ = function (o) {
+            return !hashTable.put_wn2jw4$(o, true);
+        };
+
+        this.toArray = function () {
+            return hashTable._keys();
+        };
+
+        /** @suppress {checkTypes} */
+        this.iterator = function () {
+            return new SetIterator(this);
+        };
+
+        this.remove_za3rmp$ = function (o) {
+            return hashTable.remove_za3rmp$(o) != null;
+        };
+
+        this.contains_za3rmp$ = function (o) {
+            return hashTable.containsKey_za3rmp$(o);
+        };
+
+        this.clear = function () {
+            hashTable.clear();
+        };
+
+        this.size = function () {
+            return hashTable.size();
+        };
+
+        this.isEmpty = function () {
+            return hashTable.isEmpty();
+        };
+
+        this.clone = function () {
+            var h = new HashSet(hashingFunction, equalityFunction);
+            h.addAll_4fm7v2$(hashTable.keys());
+            return h;
+        };
+
+        this.equals_za3rmp$ = function (o) {
+            if (o === null || o === undefined) return false;
+            if (this.size() === o.size()) {
+                var iter1 = this.iterator();
+                var iter2 = o.iterator();
+                while (true) {
+                    var hn1 = iter1.hasNext();
+                    var hn2 = iter2.hasNext();
+                    if (hn1 != hn2) return false;
+                    if (!hn2) {
+                        return true;
+                    }
+                    else {
+                        var o1 = iter1.next();
+                        var o2 = iter2.next();
+                        if (!Kotlin.equals(o1, o2)) return false;
+                    }
+                }
+            }
+            return false;
+        };
+
+        this.toString = function () {
+            var builder = "[";
+            var iter = this.iterator();
+            var first = true;
+            while (iter.hasNext()) {
+                if (first) {
+                    first = false;
+                }
+                else {
+                    builder += ", ";
+                }
+                builder += iter.next();
+            }
+            builder += "]";
+            return builder;
+        };
+
+        this.intersection = function (hashSet) {
+            var intersection = new HashSet(hashingFunction, equalityFunction);
+            var values = hashSet.values(), i = values.length, val;
+            while (i--) {
+                val = values[i];
+                if (hashTable.containsKey_za3rmp$(val)) {
+                    intersection.add_za3rmp$(val);
+                }
+            }
+            return intersection;
+        };
+
+        this.union = function (hashSet) {
+            var union = this.clone();
+            var values = hashSet.values(), i = values.length, val;
+            while (i--) {
+                val = values[i];
+                if (!hashTable.containsKey_za3rmp$(val)) {
+                    union.add_za3rmp$(val);
+                }
+            }
+            return union;
+        };
+
+        this.isSubsetOf = function (hashSet) {
+            var values = hashTable.keys(), i = values.length;
+            while (i--) {
+                if (!hashSet.contains_za3rmp$(values[i])) {
+                    return false;
+                }
+            }
+            return true;
+        };
+    }
+
+    /**
+    * @interface
+    */
+    Kotlin.Set = Kotlin.createTraitNow(Kotlin.Collection);
+    Kotlin.MutableSet = Kotlin.createTraitNow([Kotlin.MutableCollection, Kotlin.Set]);
+
+    Kotlin.HashSet = Kotlin.createClassNow([Kotlin.MutableSet, Kotlin.AbstractCollection],
+        function () {
+            HashSet.call(this);
+        }
+    );
+    Kotlin.ComplexHashSet = Kotlin.HashSet;
+
+    /**
+     * @class
+     * @constructor
+     * @param {Kotlin.Set} set
+     */
+    var SetIterator = Kotlin.createClassNow(Kotlin.Iterator,
+        function (set) {
+            this.set = set;
+            this.keys = set.toArray();
+            this.index = 0;
+        },
+        /** @lends SetIterator.prototype */
+        {
+            next: function () {
+                return this.keys[this.index++];
+            },
+            hasNext: function () {
+                return this.index < this.keys.length;
+            },
+            remove: function () {
+                this.set.remove_za3rmp$(this.keys[this.index - 1]);
+            }
+    });
+
+    /**
+     * @class
+     * @constructor
+     * @extends {Kotlin.Collection.<T>}
+     * @template T
+     */
+    Kotlin.AbstractPrimitiveHashSet = Kotlin.createClassNow(Kotlin.HashSet,
+        /** @constructs */
+        function () {
+            this.$size = 0;
+            this.map = {};
+        },
+        /** @lends {Kotlin.AbstractPrimitiveHashSet.prototype} */
+        {
+            size: function () {
+                return this.$size;
+            },
+            contains_za3rmp$: function (key) {
+                return this.map[key] === true;
+            },
+            iterator: function () {
+                return new SetIterator(this);
+            },
+            add_za3rmp$: function (element) {
+                var prevElement = this.map[element];
+                this.map[element] = true;
+                if (prevElement === true) {
+                    return false;
+                }
+                else {
+                    this.$size++;
+                    return true;
+                }
+            },
+            remove_za3rmp$: function (element) {
+                if (this.map[element] === true) {
+                    delete this.map[element];
+                    this.$size--;
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            },
+            clear: function () {
+                this.$size = 0;
+                this.map = {};
+            },
+            convertKeyToKeyType: function (key) {
+                throw new Error("Kotlin.AbstractPrimitiveHashSet.convertKeyToKeyType is abstract");
+            },
+            toArray: function () {
+                var result = Object.keys(this.map);
+                for(var i=0; i<result.length; i++) {
+                    result[i] = this.convertKeyToKeyType(result[i]);
+                }
+                return result;
+            }
+    });
+
+    Kotlin.DefaultPrimitiveHashSet = Kotlin.createClassNow(Kotlin.AbstractPrimitiveHashSet,
+        /** @constructs */
+        function () {
+            this.$size = 0;
+            this.map = {};
+        },
+        {
+        /** @lends {Kotlin.DefaultPrimitiveHashSet.prototype} */
+            toArray: function () {
+                return Object.keys(this.map);
+            }
+    });
+
+    Kotlin.PrimitiveNumberHashSet = Kotlin.createClassNow([Kotlin.AbstractPrimitiveHashSet],
+        /** @constructs */
+        function () {
+            Kotlin.AbstractPrimitiveHashSet.call(this);
+        },
+        /** @lends {Kotlin.PrimitiveNumberHashSet.prototype} */
+        {
+            convertKeyToKeyType: function (key) {
+                return +key;
+            }
+    });
+
+    Kotlin.PrimitiveBooleanHashSet = Kotlin.createClassNow(Kotlin.AbstractPrimitiveHashSet,
+        /** @constructs */
+        function () {
+            Kotlin.AbstractPrimitiveHashSet.call(this);
+        },
+        /** @lends {Kotlin.PrimitiveBooleanHashSet.prototype} */
+        {
+            convertKeyToKeyType: function (key) {
+                return key == "true";
+            }
+    });
+
+    /**
+     * @class
+     * @constructor
      * @param {K} key
      * @param {V} value
      * @template K, V
@@ -418,8 +680,9 @@
      * @template Key, Value
      */
     Kotlin.Map = Kotlin.createClassNow();
+    Kotlin.MutableMap = Kotlin.createClassNow(Kotlin.Map);
 
-    Kotlin.HashMap = Kotlin.createClassNow(Kotlin.Map,
+    Kotlin.HashMap = Kotlin.createClassNow(Kotlin.MutableMap,
         function () {
             Kotlin.HashTable.call(this);
         }
@@ -481,7 +744,7 @@
      * @constructor
      * @template Key, Value
      */
-    Kotlin.AbstractPrimitiveHashMap = Kotlin.createClassNow(Kotlin.Map,
+    Kotlin.AbstractPrimitiveHashMap = Kotlin.createClassNow(Kotlin.HashMap,
         function () {
             this.$size = 0;
             this.map = Object.create(null);
@@ -647,12 +910,12 @@
         };
     }
 
-    LinkedHashMap.prototype = Object.create(Kotlin.ComplexHashMap);
+    LinkedHashMap.prototype = Object.create(Kotlin.ComplexHashMap.prototype);
 
     Kotlin.LinkedHashMap = LinkedHashMap;
 
 
-    Kotlin.LinkedHashSet = Kotlin.createClassNow(Kotlin.AbstractCollection,
+    Kotlin.LinkedHashSet = Kotlin.createClassNow(Kotlin.HashSet,
         /** @constructs */
         function () {
             this.map = new Kotlin.LinkedHashMap();
@@ -681,268 +944,5 @@
                 return this.map.orderedKeys.slice();
             }
     });
-
 }());
 
-/**
- * @interface
- */
-Kotlin.Set = Kotlin.createClassNow(Kotlin.Collection);
-
-/**
- * @class
- * @constructor
- * @param {Kotlin.Set} set
- */
-var SetIterator = Kotlin.createClassNow(Kotlin.Iterator,
-    function (set) {
-        this.set = set;
-        this.keys = set.toArray();
-        this.index = 0;
-    },
-    /** @lends SetIterator.prototype */
-    {
-        next: function () {
-            return this.keys[this.index++];
-        },
-        hasNext: function () {
-            return this.index < this.keys.length;
-        },
-        remove: function () {
-            this.set.remove_za3rmp$(this.keys[this.index - 1]);
-        }
-});
-
-/**
- * @class
- * @constructor
- * @extends {Kotlin.Collection.<T>}
- * @template T
- */
-Kotlin.AbstractPrimitiveHashSet = Kotlin.createClassNow(Kotlin.AbstractCollection,
-    /** @constructs */
-    function () {
-        this.$size = 0;
-        this.map = {};
-    },
-    /** @lends {Kotlin.AbstractPrimitiveHashSet.prototype} */
-    {
-        size: function () {
-            return this.$size;
-        },
-        contains_za3rmp$: function (key) {
-            return this.map[key] === true;
-        },
-        iterator: function () {
-            return new SetIterator(this);
-        },
-        add_za3rmp$: function (element) {
-            var prevElement = this.map[element];
-            this.map[element] = true;
-            if (prevElement === true) {
-                return false;
-            }
-            else {
-                this.$size++;
-                return true;
-            }
-        },
-        remove_za3rmp$: function (element) {
-            if (this.map[element] === true) {
-                delete this.map[element];
-                this.$size--;
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
-        clear: function () {
-            this.$size = 0;
-            this.map = {};
-        },
-        convertKeyToKeyType: function (key) {
-            throw new Error("Kotlin.AbstractPrimitiveHashSet.convertKeyToKeyType is abstract");
-        },
-        toArray: function () {
-            var result = Object.keys(this.map);
-            for(var i=0; i<result.length; i++) {
-                result[i] = this.convertKeyToKeyType(result[i]);
-            }
-            return result;
-        }
-});
-
-Kotlin.DefaultPrimitiveHashSet = Kotlin.createClassNow(Kotlin.AbstractPrimitiveHashSet,
-    /** @constructs */
-    function () {
-        Kotlin.AbstractPrimitiveHashSet.call(this);
-    },
-    {
-    /** @lends {Kotlin.DefaultPrimitiveHashSet.prototype} */
-        toArray: function () {
-            return Object.keys(this.map);
-        }
-});
-
-Kotlin.PrimitiveNumberHashSet = Kotlin.createClassNow(Kotlin.AbstractPrimitiveHashSet,
-    /** @constructs */
-    function () {
-        Kotlin.AbstractPrimitiveHashSet.call(this);
-    },
-    /** @lends {Kotlin.PrimitiveNumberHashSet.prototype} */
-    {
-        convertKeyToKeyType: function (key) {
-            return +key;
-        }
-});
-
-Kotlin.PrimitiveBooleanHashSet = Kotlin.createClassNow(Kotlin.AbstractPrimitiveHashSet,
-    /** @constructs */
-    function () {
-        Kotlin.AbstractPrimitiveHashSet.call(this);
-    },
-    /** @lends {Kotlin.PrimitiveBooleanHashSet.prototype} */
-    {
-        convertKeyToKeyType: function (key) {
-            return key == "true";
-        }
-});
-
-(function () {
-    /**
-     * @class
-     * @constructor
-     * @param {(function(Key): string)=} hashingFunction
-     * @param {(function(Key, Key): boolean)=} equalityFunction
-     * @template Key, Value
-     */
-    function HashSet(hashingFunction, equalityFunction) {
-        var hashTable = new Kotlin.HashTable(hashingFunction, equalityFunction);
-
-        this.addAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.addAll_4fm7v2$;
-        this.removeAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.removeAll_4fm7v2$;
-        this.retainAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.retainAll_4fm7v2$;
-        this.containsAll_4fm7v2$ = Kotlin.AbstractCollection.prototype.containsAll_4fm7v2$;
-
-        this.add_za3rmp$ = function (o) {
-            return !hashTable.put_wn2jw4$(o, true);
-        };
-
-        this.toArray = function () {
-            return hashTable._keys();
-        };
-
-        /** @suppress {checkTypes} */
-        this.iterator = function () {
-            return new SetIterator(this);
-        };
-
-        this.remove_za3rmp$ = function (o) {
-            return hashTable.remove_za3rmp$(o) != null;
-        };
-
-        this.contains_za3rmp$ = function (o) {
-            return hashTable.containsKey_za3rmp$(o);
-        };
-
-        this.clear = function () {
-            hashTable.clear();
-        };
-
-        this.size = function () {
-            return hashTable.size();
-        };
-
-        this.isEmpty = function () {
-            return hashTable.isEmpty();
-        };
-
-        this.clone = function () {
-            var h = new HashSet(hashingFunction, equalityFunction);
-            h.addAll_4fm7v2$(hashTable.keys());
-            return h;
-        };
-
-        this.equals_za3rmp$ = function (o) {
-            if (o === null || o === undefined) return false;
-            if (this.size() === o.size()) {
-                var iter1 = this.iterator();
-                var iter2 = o.iterator();
-                while (true) {
-                    var hn1 = iter1.hasNext();
-                    var hn2 = iter2.hasNext();
-                    if (hn1 != hn2) return false;
-                    if (!hn2) {
-                        return true;
-                    }
-                    else {
-                        var o1 = iter1.next();
-                        var o2 = iter2.next();
-                        if (!Kotlin.equals(o1, o2)) return false;
-                    }
-                }
-            }
-            return false;
-        };
-
-        this.toString = function () {
-            var builder = "[";
-            var iter = this.iterator();
-            var first = true;
-            while (iter.hasNext()) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    builder += ", ";
-                }
-                builder += iter.next();
-            }
-            builder += "]";
-            return builder;
-        };
-
-        this.intersection = function (hashSet) {
-            var intersection = new HashSet(hashingFunction, equalityFunction);
-            var values = hashSet.values(), i = values.length, val;
-            while (i--) {
-                val = values[i];
-                if (hashTable.containsKey_za3rmp$(val)) {
-                    intersection.add_za3rmp$(val);
-                }
-            }
-            return intersection;
-        };
-
-        this.union = function (hashSet) {
-            var union = this.clone();
-            var values = hashSet.values(), i = values.length, val;
-            while (i--) {
-                val = values[i];
-                if (!hashTable.containsKey_za3rmp$(val)) {
-                    union.add_za3rmp$(val);
-                }
-            }
-            return union;
-        };
-
-        this.isSubsetOf = function (hashSet) {
-            var values = hashTable.keys(), i = values.length;
-            while (i--) {
-                if (!hashSet.contains_za3rmp$(values[i])) {
-                    return false;
-                }
-            }
-            return true;
-        };
-    }
-
-    Kotlin.HashSet = Kotlin.createClassNow(Kotlin.Set,
-        function () {
-            HashSet.call(this);
-        }
-    );
-
-    Kotlin.ComplexHashSet = Kotlin.HashSet;
-}());

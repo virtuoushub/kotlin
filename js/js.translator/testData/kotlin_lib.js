@@ -233,6 +233,10 @@
         hasNext: throwAbstractFunctionInvocationError("Iterator#hasNext")
     });
 
+    Kotlin.MutableIterator = Kotlin.createClassNow(Kotlin.Iterator, null, {
+        remove: throwAbstractFunctionInvocationError("MutableIterator#remove")
+    });
+
     /**
      * @class
      * @implements {Kotlin.Iterator.<T>}
@@ -241,7 +245,7 @@
      * @param {Array.<T>} array
      * @template T
      */
-    var ArrayIterator = Kotlin.createClassNow(Kotlin.Iterator,
+    var ArrayIterator = Kotlin.createClassNow(Kotlin.MutableIterator,
         /** @constructs */
         function (array) {
             this.array = array;
@@ -282,11 +286,21 @@
             }
     });
 
+    Kotlin.ListIterator = ListIterator;
+    Kotlin.MutableListIterator = Kotlin.createClassNow([Kotlin.MutableIterator, Kotlin.ListIterator]);
+
     /**
      * @interface
      * @template T
      */
-    Kotlin.Collection = Kotlin.createClassNow();
+
+    Kotlin.Iterable = Kotlin.createTraitNow();
+    Kotlin.MutableIterable = Kotlin.createTraitNow(Kotlin.Iterable);
+    Kotlin.Collection = Kotlin.createClassNow(Kotlin.Iterable);
+    Kotlin.MutableCollection = Kotlin.createClassNow([Kotlin.MutableIterable, Kotlin.Collection]);
+
+    Kotlin.List = Kotlin.createTraitNow(Kotlin.Collection);
+    Kotlin.MutableList = Kotlin.createTraitNow([Kotlin.MutableCollection, Kotlin.List]);
 
     Kotlin.Enum = Kotlin.createClassNow(null,
         function () {
@@ -311,7 +325,7 @@
         }
     );
 
-    Kotlin.AbstractCollection = Kotlin.createClassNow(Kotlin.Collection, null, {
+    Kotlin.AbstractCollection = Kotlin.createClassNow(Kotlin.MutableCollection, null, {
         addAll_4fm7v2$: function (collection) {
             var modified = false;
             var it = collection.iterator();
@@ -397,7 +411,8 @@
      * @interface // actually it's abstract class
      * @template T
      */
-    Kotlin.AbstractList = Kotlin.createClassNow(Kotlin.AbstractCollection, null, {
+    Kotlin.AbstractList = Kotlin.createClassNow([Kotlin.MutableList, Kotlin.AbstractCollection], null,
+    {
         iterator: function () {
             return new ListIterator(this);
         },

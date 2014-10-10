@@ -94,6 +94,10 @@ public final class StandardClasses {
 
     private static void declareKotlinStandardClasses(@NotNull StandardClasses standardClasses) {
         standardClasses.declare().forFQ("kotlin.Iterator").kotlinClass("Iterator").methods("next").properties("hasNext");
+        standardClasses.declare().forFQ("kotlin.MutableIterator").kotlinClass("MutableIterator");
+
+        standardClasses.declare().forFQ("kotlin.ListIterator").kotlinClass("ListIterator");
+        standardClasses.declare().forFQ("kotlin.MutableListIterator").kotlinClass("MutableListIterator");
 
         standardClasses.declare().forFQ("kotlin.IntRange").kotlinClass("NumberRange")
                 .methods("iterator", "contains").properties("start", "end", "increment");
@@ -116,6 +120,21 @@ public final class StandardClasses {
         standardClasses.declare().forFQ("kotlin.Enum").kotlinClass("Enum");
 
         standardClasses.declare().forFQ("kotlin.Comparable").kotlinClass("Comparable");
+
+        standardClasses.declare().forFQ("kotlin.Iterable").kotlinClass("Iterable");
+        standardClasses.declare().forFQ("kotlin.MutableIterable").kotlinClass("MutableIterable");
+
+        standardClasses.declare().forFQ("kotlin.Collection").kotlinClass("Collection");
+        standardClasses.declare().forFQ("kotlin.MutableCollection").kotlinClass("MutableCollection");
+
+        standardClasses.declare().forFQ("kotlin.List").kotlinClass("List");
+        standardClasses.declare().forFQ("kotlin.MutableList").kotlinClass("MutableList");
+
+        standardClasses.declare().forFQ("kotlin.Set").kotlinClass("Set");
+        standardClasses.declare().forFQ("kotlin.MutableSet").kotlinClass("MutableSet");
+
+        standardClasses.declare().forFQ("kotlin.Map").kotlinClass("Map");
+        standardClasses.declare().forFQ("kotlin.MutableMap").kotlinClass("MutableMap");
     }
 
 
