@@ -22,3 +22,5 @@ library
 public fun safeParseInt(s : String) : Int? = noImpl
 library
 public fun safeParseDouble(s : String) : Double? = noImpl
+
+native public fun jsCode<T>(code: String): T = noImpl
