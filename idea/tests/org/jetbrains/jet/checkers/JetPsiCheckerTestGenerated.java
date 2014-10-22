@@ -267,6 +267,12 @@ public class JetPsiCheckerTestGenerated extends AbstractJetPsiCheckerTest {
             doTest(fileName);
         }
 
+        @TestMetadata("RecursiveResolve.kt")
+        public void testRecursiveResolve() throws Exception {
+            String fileName = JetTestUtils.navigationMetadata("idea/testData/checker/RecursiveResolve.kt");
+            doTest(fileName);
+        }
+
         @TestMetadata("RecursiveTypeInference.kt")
         public void testRecursiveTypeInference() throws Exception {
             String fileName = JetTestUtils.navigationMetadata("idea/testData/checker/RecursiveTypeInference.kt");
