@@ -50,8 +50,7 @@ class JpsJsModuleUtils {
         for (JpsLibrary library : libraries) {
             for (JpsLibraryRoot root : library.getRoots(JpsOrderRootType.COMPILED)) {
                 String path = JpsPathUtil.urlToPath(root.getUrl());
-                // TODO: Do we need to add to dependency all libraries?
-                if (LibraryUtils.isJsRuntimeLibrary(new File(path))) {
+                if (LibraryUtils.isKotlinJavascriptLibrary(new File(path))) {
                     result.add(path);
                 }
             }
