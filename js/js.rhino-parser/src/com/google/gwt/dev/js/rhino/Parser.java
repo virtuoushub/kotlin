@@ -47,8 +47,8 @@ import java.io.IOException;
  * 
  * @see TokenStream
  * 
- * @author Mike McCabe
- * @author Brendan Eich
+ * author Mike McCabe
+ * author Brendan Eich
  */
 
 public class Parser {

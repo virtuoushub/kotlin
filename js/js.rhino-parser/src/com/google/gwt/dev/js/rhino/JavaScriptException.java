@@ -42,7 +42,7 @@ package com.google.gwt.dev.js.rhino;
 /**
  * Java reflection of JavaScript exceptions.  (Possibly wrapping a Java exception.)
  *
- * @author Mike McCabe
+ * author Mike McCabe
  */
 public class JavaScriptException extends Exception {
 

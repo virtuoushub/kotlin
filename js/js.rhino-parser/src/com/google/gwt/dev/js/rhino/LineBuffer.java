@@ -50,7 +50,7 @@ import java.io.IOException;
  *
  * Credits to Kipp Hickman and John Bandhauer.
  *
- * @author Mike McCabe
+ * author Mike McCabe
  */
 final class LineBuffer {
     /*

@@ -78,8 +78,8 @@ import java.util.ResourceBundle;
  * Context.
  *
  * @see Scriptable
- * @author Norris Boyd
- * @author Brendan Eich
+ * author Norris Boyd
+ * author Brendan Eich
  */
 
 public class Context {

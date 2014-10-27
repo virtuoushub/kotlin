@@ -41,8 +41,8 @@ package com.google.gwt.dev.js.rhino;
 /**
  * This class implements the root of the intermediate representation.
  *
- * @author Norris Boyd
- * @author Mike McCabe
+ * author Norris Boyd
+ * author Mike McCabe
  */
 
 public class Node implements Cloneable {
