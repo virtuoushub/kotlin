@@ -17,23 +17,44 @@
 package org.jetbrains.jet.lang.resolve.java.sam;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
+import org.jetbrains.jet.lang.descriptors.FunctionDescriptor;
+import org.jetbrains.jet.lang.descriptors.SimpleFunctionDescriptor;
+import org.jetbrains.jet.lang.descriptors.impl.FunctionDescriptorImpl;
 import org.jetbrains.jet.lang.resolve.java.descriptor.JavaMethodDescriptor;
 import org.jetbrains.jet.lang.resolve.java.descriptor.SamAdapterDescriptor;
 
 /* package */ class SamAdapterFunctionDescriptor extends JavaMethodDescriptor implements SamAdapterDescriptor<JavaMethodDescriptor> {
     private final JavaMethodDescriptor declaration;
 
-    public SamAdapterFunctionDescriptor(@NotNull JavaMethodDescriptor declaration) {
-        super(declaration.getContainingDeclaration(), null, declaration.getAnnotations(),
-              declaration.getName(), Kind.SYNTHESIZED, declaration.getSource());
+    private SamAdapterFunctionDescriptor(
+            @NotNull DeclarationDescriptor owner,
+            @NotNull JavaMethodDescriptor declaration,
+            @Nullable SimpleFunctionDescriptor original,
+            @NotNull Kind kind
+    ) {
+        super(owner, original, declaration.getAnnotations(), declaration.getName(), kind, declaration.getSource());
         this.declaration = declaration;
         setHasStableParameterNames(declaration.hasStableParameterNames());
         setHasSynthesizedParameterNames(declaration.hasSynthesizedParameterNames());
+    }
+
+    public SamAdapterFunctionDescriptor(@NotNull JavaMethodDescriptor declaration) {
+        this(declaration.getContainingDeclaration(), declaration, null, Kind.SYNTHESIZED);
     }
 
     @NotNull
     @Override
     public JavaMethodDescriptor getOriginForSam() {
         return declaration;
+    }
+
+    @NotNull
+    @Override
+    protected FunctionDescriptorImpl createSubstitutedCopy(
+            @NotNull DeclarationDescriptor newOwner, @Nullable FunctionDescriptor original, @NotNull Kind kind
+    ) {
+        return new SamAdapterFunctionDescriptor(newOwner, declaration, (SimpleFunctionDescriptor) original, kind);
     }
 }
