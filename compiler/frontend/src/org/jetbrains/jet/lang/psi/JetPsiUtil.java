@@ -768,8 +768,8 @@ public class JetPsiUtil {
     }
 
     @NotNull
-    public static String getElementTextWithContext(@NotNull JetElement element) {
-        if (element instanceof JetFile) {
+    public static String getElementTextWithContext(@NotNull PsiElement element) {
+        if (element instanceof PsiFile) {
             return element.getContainingFile().getText();
         }
 
