@@ -69,6 +69,8 @@ fun TypeProjection.toEnhancedTypeProjection(typeParameter: TypeParameterDescript
         Variance.IN_VARIANCE -> EnhancedTypeProjection(typeParameter, getType(), nullableAny)
 
         Variance.OUT_VARIANCE -> EnhancedTypeProjection(typeParameter, nothing, getType())
+
+        else -> throw Exception()
     }
 }
 

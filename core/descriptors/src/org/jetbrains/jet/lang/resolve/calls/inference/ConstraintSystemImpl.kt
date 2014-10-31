@@ -42,6 +42,10 @@ import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.Constra
 import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPositionKind.*
 import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.CompoundConstraintPosition
 import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.getCompoundConstraintPosition
+import org.jetbrains.jet.lang.types.CustomTypeVariable
+import org.jetbrains.jet.lang.types.getCustomTypeVariable
+import org.jetbrains.jet.lang.types.isFlexible
+import org.jetbrains.jet.lang.types.checker.JetTypeChecker
 
 public class ConstraintSystemImpl : ConstraintSystem {
 
@@ -302,7 +306,7 @@ public class ConstraintSystemImpl : ConstraintSystem {
         fun simplifyConstraint(subType: JetType, superType: JetType) {
             // can be equal for the recursive invocations:
             // fun <T> foo(i: Int) : T { ... return foo(i); } => T <: T
-            if (subType == superType) return
+            if (JetTypeChecker.DEFAULT.equalTypes(subType, superType)) return
 
             assert(!isMyTypeVariable(subType) || !isMyTypeVariable(superType)) {
                 "The constraint shouldn't contain different type variables on both sides: " + subType + " <: " + superType
@@ -338,6 +342,22 @@ public class ConstraintSystemImpl : ConstraintSystem {
             boundKind: TypeBounds.BoundKind,
             constraintPosition: ConstraintPosition
     ) {
+        // Here we are handling the case when T! gets a bound Foo (or Foo?)
+        // In this case, type parameter T is supposed to get the bound Foo!
+        // Example:
+        // val c: Collection<Foo> = Collections.singleton(null : Foo?)
+        // Constraints for T are:
+        //   Foo? <: T!
+        //   Foo >: T!
+        // both Foo and Foo? transform to Foo! here
+        if (parameterType.isFlexible()) {
+            val typeVariable = parameterType.getCustomTypeVariable()
+            if (typeVariable != null) {
+                generateTypeParameterConstraint(parameterType, typeVariable.substitutionResult(constrainingType), boundKind, constraintPosition)
+                return
+            }
+        }
+
         val typeBounds = getTypeBounds(parameterType)
 
         if (!parameterType.isNullable() || !constrainingType.isNullable()) {
