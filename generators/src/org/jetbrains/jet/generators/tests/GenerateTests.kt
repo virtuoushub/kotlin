@@ -130,6 +130,7 @@ import org.jetbrains.jet.j2k.test.AbstractJavaToKotlinConverterMultiFileTest
 import org.jetbrains.jet.j2k.test.AbstractJavaToKotlinConverterForWebDemoTest
 import org.jetbrains.jet.plugin.decompiler.textBuilder.AbstractDecompiledTextTest
 import org.jetbrains.jet.completion.AbstractMultiFileSmartCompletionTest
+import org.jetbrains.jet.plugin.decompiler.stubBuilder.AbstractClsStubBuilderTest
 
 fun main(args: Array<String>) {
     System.setProperty("java.awt.headless", "true")
@@ -582,6 +583,10 @@ fun main(args: Array<String>) {
 
         testClass(javaClass<AbstractDecompiledTextTest>()) {
             model("decompiler/decompiledText", pattern = """^([^\.]+)$""")
+        }
+
+        testClass(javaClass<AbstractClsStubBuilderTest>()) {
+            model("decompiler/stubBuilder", extension = null, recursive = false)
         }
 
         testClass(javaClass<AbstractOptimizeImportsTest>()) {

@@ -1,0 +1,7 @@
+PsiJetFileStubImpl[package=test]
+  PACKAGE_DIRECTIVE:
+    REFERENCE_EXPRESSION:[referencedName=test]
+  CLASS:[fqName=test.ClassWithNoMembers, isEnumEntry=false, isLocal=false, isTopLevel=true, isTrait=false, name=ClassWithNoMembers, superNames=[]]
+    MODIFIER_LIST:[internal final]
+    VALUE_PARAMETER_LIST:
+    CLASS_BODY:
