@@ -21,6 +21,7 @@ import com.google.dart.compiler.backend.js.ast.metadata.MetadataPackage;
 import com.google.dart.compiler.common.SourceInfoImpl;
 import com.google.gwt.dev.js.JsParser;
 import com.google.gwt.dev.js.JsParserException;
+import com.google.gwt.dev.js.rhino.ParserConfig;
 import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.psi.JetCallExpression;
 import org.jetbrains.jet.lang.psi.JetExpression;
@@ -173,7 +174,7 @@ public final class CallExpressionTranslator extends AbstractCallExpressionTransl
             SourceInfoImpl info = new SourceInfoImpl(null, 0, 0, 0, 0);
             JsScope scope = context().scope();
             StringReader reader = new StringReader(jsCode);
-            statements.addAll(JsParser.parse(info, scope, reader, /* insideFunction= */ true));
+            statements.addAll(JsParser.parse(info, scope, reader, getParserConfig()));
         } catch (JsParserException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -181,5 +182,17 @@ public final class CallExpressionTranslator extends AbstractCallExpressionTransl
         }
 
         return statements;
+    }
+
+    private ParserConfig getParserConfig() {
+        /**
+         * Always true, since any kotlin call
+         * is translated to javascript call inside
+         * some function (no top level calls)
+         */
+        boolean isInsideFunction = true;
+        boolean isLiteral = matchesPattern(expression, context(), JSLITERAL_PATTERN);
+
+        return new ParserConfig(isInsideFunction, isLiteral);
     }
 }

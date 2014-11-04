@@ -18,6 +18,7 @@ package com.google.gwt.dev.js;
 import com.google.dart.compiler.backend.js.ast.*;
 import com.google.dart.compiler.backend.js.ast.JsLiteral.JsBooleanLiteral;
 import com.google.dart.compiler.common.SourceInfo;
+import com.google.gwt.dev.js.rhino.ParserConfig;
 import com.google.gwt.dev.js.rhino.*;
 
 import java.io.IOException;
@@ -35,9 +36,11 @@ public class JsParser {
 
     public static List<JsStatement> parse(
             SourceInfo rootSourceInfo,
-            JsScope scope, Reader r, boolean insideFunction
+            JsScope scope,
+            Reader r,
+            ParserConfig parserConfig
     ) throws IOException, JsParserException {
-        return new JsParser(scope.getProgram()).parseImpl(rootSourceInfo, scope, r, insideFunction);
+        return new JsParser(scope.getProgram()).parseImpl(rootSourceInfo, scope, r, parserConfig);
     }
 
     private final Stack<JsScope> scopeStack = new Stack<JsScope>();
@@ -53,7 +56,7 @@ public class JsParser {
 
     List<JsStatement> parseImpl(
             final SourceInfo rootSourceInfo, JsScope scope,
-            Reader r, boolean insideFunction
+            Reader r, ParserConfig parserConfig
     ) throws JsParserException, IOException {
 
         // Create a custom error handler so that we can throw our own exceptions.
@@ -83,7 +86,7 @@ public class JsParser {
             // Parse using the Rhino parser.
             //
             TokenStream ts = new TokenStream(r, SOURCE_NAME_STUB, rootSourceInfo.getLine());
-            Parser parser = new Parser(new IRFactory(ts), insideFunction);
+            Parser parser = new Parser(new IRFactory(ts), parserConfig);
             Node topNode = (Node) parser.parse(ts);
 
             // Map the Rhino AST to ours.

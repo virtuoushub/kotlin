@@ -52,9 +52,9 @@ import java.io.IOException;
  */
 
 public class Parser {
-  public Parser(IRFactory nf, boolean insideFunction) {
+  public Parser(IRFactory nf, ParserConfig parserConfig) {
       this.nf = nf;
-      this.insideFunction = insideFunction;
+      this.parserConfig = parserConfig;
   }
 
   private void mustMatchToken(TokenStream ts, int toMatch, String messageId)
@@ -729,7 +729,7 @@ public class Parser {
         sourceAdd((char) ts.RETURN);
 
         // bail if we're not in a (toplevel) function
-        if ((!insideFunction) && ((ts.flags & ts.TSF_FUNCTION) == 0)) {
+        if ((!parserConfig.isInsideFunction()) && ((ts.flags & ts.TSF_FUNCTION) == 0)) {
             reportError(ts, "msg.bad.return");
         }
 
@@ -1509,6 +1509,7 @@ public class Parser {
     return new String(sourceBuffer, offset, sourceTop - offset);
   }
 
+  private final ParserConfig parserConfig;
   private int lastExprEndLine; // Hack to handle function expr termination.
   private IRFactory nf;
   private ErrorReporter er;
@@ -1517,5 +1518,4 @@ public class Parser {
   private char[] sourceBuffer = new char[128];
   private int sourceTop;
   private int functionNumber;
-  private final boolean insideFunction;
 }
