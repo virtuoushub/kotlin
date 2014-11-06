@@ -751,83 +751,73 @@ public inline fun <R, C : MutableCollection<in R>> String.mapTo(destination: C, 
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun <T> Array<out T>.withIndices(): List<Pair<Int, T>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, T>>(), { index++ to it })
+public fun <T> Array<out T>.withIndices(): Stream<IndexedValue<T>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun BooleanArray.withIndices(): List<Pair<Int, Boolean>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Boolean>>(), { index++ to it })
+public fun BooleanArray.withIndices(): Stream<IndexedValue<Boolean>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun ByteArray.withIndices(): List<Pair<Int, Byte>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Byte>>(), { index++ to it })
+public fun ByteArray.withIndices(): Stream<IndexedValue<Byte>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun CharArray.withIndices(): List<Pair<Int, Char>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Char>>(), { index++ to it })
+public fun CharArray.withIndices(): Stream<IndexedValue<Char>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun DoubleArray.withIndices(): List<Pair<Int, Double>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Double>>(), { index++ to it })
+public fun DoubleArray.withIndices(): Stream<IndexedValue<Double>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun FloatArray.withIndices(): List<Pair<Int, Float>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Float>>(), { index++ to it })
+public fun FloatArray.withIndices(): Stream<IndexedValue<Float>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun IntArray.withIndices(): List<Pair<Int, Int>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Int>>(), { index++ to it })
+public fun IntArray.withIndices(): Stream<IndexedValue<Int>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun LongArray.withIndices(): List<Pair<Int, Long>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Long>>(), { index++ to it })
+public fun LongArray.withIndices(): Stream<IndexedValue<Long>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun ShortArray.withIndices(): List<Pair<Int, Short>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Short>>(), { index++ to it })
+public fun ShortArray.withIndices(): Stream<IndexedValue<Short>> {
+    return IndexedStream { iterator() }
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun <T> Iterable<T>.withIndices(): List<Pair<Int, T>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, T>>(), { index++ to it })
+public fun <T> Iterable<T>.withIndices(): Stream<IndexedValue<T>> {
+    return IndexedStream { iterator() }
 }
 
 /**
@@ -839,10 +829,9 @@ public fun <T> Stream<T>.withIndices(): Stream<Pair<Int, T>> {
 }
 
 /**
- * Returns a list containing pairs of each element of the original collection and their index
+ * Returns a stream of [IndexedValue] for each element of the original collection
  */
-public fun String.withIndices(): List<Pair<Int, Char>> {
-    var index = 0
-    return mapTo(ArrayList<Pair<Int, Char>>(), { index++ to it })
+public fun String.withIndices(): Stream<IndexedValue<Char>> {
+    return IndexedStream { iterator() }
 }
 
