@@ -5,13 +5,13 @@ native trait HasName {
 }
 
 fun box(): String {
-    assertEquals(10, jsCode<Int>("10"), "Int")
-    assertEquals(10.5, jsCode<Float>("10.5"), "Float")
-    assertEquals("10", jsCode<String>("'10'"), "String")
-    assertEquals(true, jsCode<Boolean>("true"), "True")
-    assertEquals(false, jsCode<Boolean>("false"), "False")
+    assertEquals(10, jsExpression("10"), "Int")
+    assertEquals(10.5, jsExpression("10.5"), "Float")
+    assertEquals("10", jsExpression("'10'"), "String")
+    assertEquals(true, jsExpression("true"), "True")
+    assertEquals(false, jsExpression("false"), "False")
 
-    val obj: HasName = jsCode("{name: 'OBJ'}")
+    val obj: HasName = jsExpression("{name: 'OBJ'}")
     assertEquals("OBJ", obj.name, "Object")
 
     assertArrayEquals(array(1, 2, 3), jsCode<Array<Int>>("[1, 2, 3]"))

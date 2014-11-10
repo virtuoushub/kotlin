@@ -37,6 +37,8 @@
 
 package com.google.gwt.dev.js.rhino;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 /**
@@ -120,7 +122,16 @@ public class Parser {
         }
       } else {
         ts.ungetToken(tt);
-        nf.addChildToBack(tempBlock, statement(ts));
+
+        ParserFun<TokenStream, Object> parseFun;
+        if (parserConfig.isLiteral()) {
+          parseFun = parseExpression;
+        } else {
+          parseFun = parseStatement;
+        }
+
+        nf.addChildToBack(tempBlock, parseAndCatchJsException(parseFun, ts));
+
       }
     }
 
@@ -153,7 +164,7 @@ public class Parser {
           ts.getToken();
           nf.addChildToBack(pn, function(ts, false));
         } else {
-          nf.addChildToBack(pn, statement(ts));
+          nf.addChildToBack(pn, parseStatement.fun(ts));
         }
       }
     } catch (JavaScriptException e) {
@@ -292,7 +303,7 @@ public class Parser {
 
     int tt;
     while ((tt = ts.peekToken()) > ts.EOF && tt != ts.RC) {
-      nf.addChildToBack(pn, statement(ts));
+      nf.addChildToBack(pn, parseAndCatchJsException(parseStatement, ts));
     }
 
     return pn;
@@ -355,17 +366,19 @@ public class Parser {
     return label;
   }
 
-  private Object statement(TokenStream ts) throws IOException {
+  private Object parseAndCatchJsException(
+          @NotNull ParserFun<TokenStream, Object> parseFun,
+          TokenStream ts
+  ) throws IOException {
     try {
-      return statementHelper(ts);
+      return parseFun.fun(ts);
     } catch (JavaScriptException e) {
-      // skip to end of statement
       int lineno = ts.getLineno();
       int t;
       do {
         t = ts.getToken();
       } while (t != TokenStream.SEMI && t != TokenStream.EOL
-        && t != TokenStream.EOF && t != TokenStream.ERROR);
+               && t != TokenStream.EOF && t != TokenStream.ERROR);
       return nf.createExprStatement(nf.createName("error"), lineno);
     }
   }
@@ -398,14 +411,14 @@ public class Parser {
         Object cond = condition(ts);
         sourceAdd((char) ts.LC);
         sourceAdd((char) ts.EOL);
-        Object ifTrue = statement(ts);
+        Object ifTrue = parseStatement.fun(ts);
         Object ifFalse = null;
         if (ts.matchToken(ts.ELSE)) {
           sourceAdd((char) ts.RC);
           sourceAdd((char) ts.ELSE);
           sourceAdd((char) ts.LC);
           sourceAdd((char) ts.EOL);
-          ifFalse = statement(ts);
+          ifFalse = parseStatement.fun(ts);
         }
         sourceAdd((char) ts.RC);
         sourceAdd((char) ts.EOL);
@@ -459,7 +472,7 @@ public class Parser {
 
           while ((tt = ts.peekToken()) != ts.RC && tt != ts.CASE
             && tt != ts.DEFAULT && tt != ts.EOF) {
-            nf.addChildToBack(case_statements, statement(ts));
+            nf.addChildToBack(case_statements, parseStatement.fun(ts));
           }
           // assert cur_case
           nf.addChildToBack(cur_case, case_statements);
@@ -479,7 +492,7 @@ public class Parser {
         Object cond = condition(ts);
         sourceAdd((char) ts.LC);
         sourceAdd((char) ts.EOL);
-        Object body = statement(ts);
+        Object body = parseStatement.fun(ts);
         sourceAdd((char) ts.RC);
         sourceAdd((char) ts.EOL);
 
@@ -495,7 +508,7 @@ public class Parser {
 
         int lineno = ts.getLineno();
 
-        Object body = statement(ts);
+        Object body = parseStatement.fun(ts);
 
         sourceAdd((char) ts.RC);
         mustMatchToken(ts, ts.WHILE, "msg.no.while.do");
@@ -561,7 +574,7 @@ public class Parser {
         sourceAdd((char) ts.GWT);
         sourceAdd((char) ts.LC);
         sourceAdd((char) ts.EOL);
-        body = statement(ts);
+        body = parseStatement.fun(ts);
         sourceAdd((char) ts.RC);
         sourceAdd((char) ts.EOL);
 
@@ -585,7 +598,7 @@ public class Parser {
         sourceAdd((char) ts.TRY);
         sourceAdd((char) ts.LC);
         sourceAdd((char) ts.EOL);
-        tryblock = statement(ts);
+        tryblock = parseStatement.fun(ts);
         sourceAdd((char) ts.RC);
         sourceAdd((char) ts.EOL);
 
@@ -636,7 +649,7 @@ public class Parser {
 
           sourceAdd((char) ts.LC);
           sourceAdd((char) ts.EOL);
-          finallyblock = statement(ts);
+          finallyblock = parseStatement.fun(ts);
           sourceAdd((char) ts.RC);
           sourceAdd((char) ts.EOL);
         }
@@ -707,7 +720,7 @@ public class Parser {
         sourceAdd((char) ts.LC);
         sourceAdd((char) ts.EOL);
 
-        Object body = statement(ts);
+        Object body = parseStatement.fun(ts);
 
         sourceAdd((char) ts.RC);
         sourceAdd((char) ts.EOL);
@@ -795,7 +808,7 @@ public class Parser {
           // bruce: added to make it easier to bind labels to the
           // statements they modify
           //
-          nf.addChildToBack(pn, statement(ts));
+          nf.addChildToBack(pn, parseStatement.fun(ts));
 
           // depend on decompiling lookahead to guess that that
           // last name was a label.
@@ -1518,4 +1531,22 @@ public class Parser {
   private char[] sourceBuffer = new char[128];
   private int sourceTop;
   private int functionNumber;
+
+  private interface ParserFun<Param, Result> {
+    Result fun(Param param) throws IOException, JavaScriptException;
+  }
+
+  private final ParserFun<TokenStream, Object> parseStatement = new ParserFun<TokenStream, Object>() {
+    @Override
+    public Object fun(TokenStream stream) throws IOException, JavaScriptException {
+      return statementHelper(stream);
+    }
+  };
+
+  private final ParserFun<TokenStream, Object> parseExpression = new ParserFun<TokenStream, Object>() {
+    @Override
+    public Object fun(TokenStream stream) throws IOException, JavaScriptException {
+      return expr(stream, false);
+    }
+  };
 }

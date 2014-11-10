@@ -52,6 +52,9 @@ public final class CallExpressionTranslator extends AbstractCallExpressionTransl
     private final static DescriptorPredicate JSCODE_PATTERN = PatternBuilder.pattern("kotlin.js", "jsCode");
 
     @NotNull
+    private final static DescriptorPredicate JSEXPRESSION_PATTERN = PatternBuilder.pattern("kotlin.js", "jsExpression");
+
+    @NotNull
     public static JsNode translate(
             @NotNull JetCallExpression expression,
             @Nullable JsExpression receiver,
@@ -103,10 +106,22 @@ public final class CallExpressionTranslator extends AbstractCallExpressionTransl
             @NotNull JetCallExpression expression,
             @NotNull TranslationContext context
     ) {
-        FunctionDescriptor descriptor = getFunctionResolvedCallWithAssert(expression, context.bindingContext())
-                                            .getResultingDescriptor();
+        boolean matchesPattern = matchesPattern(expression, context, JSCODE_PATTERN)
+                                 || matchesPattern(expression, context, JSEXPRESSION_PATTERN);
 
-        return JSCODE_PATTERN.apply(descriptor) && expression.getValueArguments().size() == 1;
+        return matchesPattern && expression.getValueArguments().size() == 1;
+    }
+
+    private static boolean matchesPattern(
+            @NotNull JetCallExpression expression,
+            @NotNull TranslationContext context,
+            @NotNull DescriptorPredicate pattern
+    ) {
+        ResolvedCall<? extends FunctionDescriptor> resolvedCall =
+                getFunctionResolvedCallWithAssert(expression, context.bindingContext());
+        FunctionDescriptor descriptor = resolvedCall.getResultingDescriptor();
+
+        return pattern.apply(descriptor);
     }
 
     @NotNull
@@ -191,7 +206,7 @@ public final class CallExpressionTranslator extends AbstractCallExpressionTransl
          * some function (no top level calls)
          */
         boolean isInsideFunction = true;
-        boolean isLiteral = matchesPattern(expression, context(), JSLITERAL_PATTERN);
+        boolean isLiteral = matchesPattern(expression, context(), JSEXPRESSION_PATTERN);
 
         return new ParserConfig(isInsideFunction, isLiteral);
     }
