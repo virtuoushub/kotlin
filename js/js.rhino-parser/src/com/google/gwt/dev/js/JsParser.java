@@ -20,12 +20,16 @@ import com.google.dart.compiler.backend.js.ast.JsLiteral.JsBooleanLiteral;
 import com.google.dart.compiler.common.SourceInfo;
 import com.google.gwt.dev.js.rhino.ParserConfig;
 import com.google.gwt.dev.js.rhino.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+
+import static com.google.dart.compiler.util.AstUtil.toFunctionScope;
 
 /**
  * Parses JavaScript source.
@@ -380,8 +384,33 @@ public class JsParser {
         return block;
     }
 
-    private static JsBreak mapBreak(Node breakNode) {
-        return new JsBreak();
+    private JsBreak mapBreak(Node breakNode) {
+        return new JsBreak(getTargetLabel(breakNode));
+    }
+
+    private JsContinue mapContinue(Node contNode) {
+        return new JsContinue(getTargetLabel(contNode));
+    }
+
+    @Nullable
+    private JsNameRef getTargetLabel(@NotNull Node statementWithLabel) {
+        int type = statementWithLabel.getType();
+        if (type != TokenStream.BREAK && type != TokenStream.CONTINUE) {
+            String tokenTypeName = TokenStream.tokenToName(statementWithLabel.getType());
+            throw new AssertionError("Unexpected node type with label: " + tokenTypeName);
+        }
+
+        Node label = statementWithLabel.getFirstChild();
+        if (label == null) return null;
+
+        String identifier = label.getString();
+        assert identifier != null: "If label exists identifier should not be null";
+
+        JsFunctionScope scope = toFunctionScope(getScope());
+        JsName labelName = scope.findLabel(identifier);
+        assert labelName != null: "Unknown label name: " + identifier;
+
+        return labelName.makeRef();
     }
 
     private JsInvocation mapCall(Node callNode) throws JsParserException {
@@ -419,10 +448,6 @@ public class JsParser {
         toCond.setElseExpression(mapExpression(fromElse));
 
         return toCond;
-    }
-
-    private static JsContinue mapContinue(Node contNode) {
-        return new JsContinue();
     }
 
     private static JsStatement mapDebuggerStatement(Node node) {
@@ -727,7 +752,8 @@ public class JsParser {
 
     private JsLabel mapLabel(Node labelNode) throws JsParserException {
         String fromName = labelNode.getFirstChild().getString();
-        JsName toName = getScope().declareName(fromName);
+        JsFunctionScope scope = toFunctionScope(getScope());
+        JsName toName = scope.enterLabel(fromName);
         Node fromStmt = labelNode.getFirstChild().getNext();
         JsLabel toLabel = new JsLabel(toName);
         toLabel.setStatement(mapStatement(fromStmt));
