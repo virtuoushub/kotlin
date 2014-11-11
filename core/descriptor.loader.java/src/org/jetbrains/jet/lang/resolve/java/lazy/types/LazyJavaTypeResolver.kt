@@ -35,7 +35,6 @@ import org.jetbrains.jet.lang.resolve.java.PLATFORM_TYPES
 import org.jetbrains.jet.lang.resolve.java.lazy.types.JavaTypeFlexibility.*
 import org.jetbrains.jet.lang.descriptors.annotations.Annotations
 import org.jetbrains.jet.lang.resolve.java.JvmAnnotationNames
-import org.jetbrains.jet.lang.resolve.name.FqName
 import kotlin.platform.platformStatic
 
 class LazyJavaTypeResolver(
@@ -248,7 +247,7 @@ class LazyJavaTypeResolver(
             return (descriptor as ClassDescriptor).getMemberScope(getArguments())
         }
 
-        private val _nullable = c.storageManager.createLazyValue @nullable{
+        private val _nullable = c.storageManager.createLazyValue @nullable {
             (): Boolean ->
             when (attr.flexibility) {
                 FLEXIBLE_LOWER_BOUND -> return@nullable false
@@ -269,6 +268,7 @@ class LazyJavaTypeResolver(
                 else -> error("Unknown classifier: ${classifier()}")
             }
         }
+
         override fun isNullable(): Boolean = _nullable()
 
         override fun getAnnotations() = attr.annotations
