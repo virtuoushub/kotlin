@@ -4,7 +4,7 @@ fun main(args: Array<String>) {
     val d: Base<String> = Derived()
     //Breakpoint!
     d.foo("")
-    val a = 1
+    A().test()
 }
 
 open class Base<T> {
@@ -19,4 +19,16 @@ class Derived: Base<String>() {
     }
 }
 
-// STEP_INTO: 4
+class A {
+    fun test() {
+        lambda {
+            val a = 1
+        }
+    }
+
+    fun lambda(f: () -> Unit) {
+        f()
+    }
+}
+
+// STEP_INTO: 13
