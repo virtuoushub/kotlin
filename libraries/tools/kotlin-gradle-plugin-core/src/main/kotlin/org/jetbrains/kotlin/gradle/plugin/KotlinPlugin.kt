@@ -52,13 +52,15 @@ import groovy.lang.Closure
 val DEFAULT_ANNOTATIONS = "org.jebrains.kotlin.gradle.defaultAnnotations"
 
 
-abstract class KotlinSourceSetProcessor<T : AbstractCompile>(val project: ProjectInternal,
-                                                             val javaBasePlugin: JavaBasePlugin,
-                                                             val sourceSet: SourceSet,
-                                                             val pluginName: String,
-                                                             val compileTaskNameSuffix: String,
-                                                             val taskDescription: String,
-                                                             val compilerClass: Class<T>) {
+abstract class KotlinSourceSetProcessor<T : AbstractCompile>(
+        val project: ProjectInternal,
+        val javaBasePlugin: JavaBasePlugin,
+        val sourceSet: SourceSet,
+        val pluginName: String,
+        val compileTaskNameSuffix: String,
+        val taskDescription: String,
+        val compilerClass: Class<T>
+) {
     abstract protected fun doTargetSpecificProcessing()
     val logger = Logging.getLogger(this.javaClass)
 
@@ -123,13 +125,14 @@ class Kotlin2JvmSourceSetProcessor(
         project: ProjectInternal,
         javaBasePlugin: JavaBasePlugin,
         sourceSet: SourceSet,
-        val scriptHandler: ScriptHandler)
-: KotlinSourceSetProcessor<KotlinCompile>(
+        val scriptHandler: ScriptHandler
+) : KotlinSourceSetProcessor<KotlinCompile>(
         project, javaBasePlugin, sourceSet,
         pluginName = "kotlin",
         compileTaskNameSuffix = "kotlin",
         taskDescription = "Compiles the $sourceSet.kotlin.",
-        compilerClass = javaClass()) {
+        compilerClass = javaClass()
+) {
 
     override fun doTargetSpecificProcessing() {
         // store kotlin classes in separate directory. They will serve as class-path to java compiler
@@ -157,25 +160,24 @@ class Kotlin2JsSourceSetProcessor(
         pluginName = "kotlin2js",
         taskDescription = "Compiles the kotlin sources in $sourceSet to JavaScript.",
         compileTaskNameSuffix = "kotlin2Js",
-        compilerClass = javaClass<Kotlin2JsCompile>()) {
+        compilerClass = javaClass<Kotlin2JsCompile>()
+) {
+
     val copyKotlinJsTaskName = sourceSet.getTaskName("copy", "kotlinJs")
     val clean = project.getTasks().findByName("clean")
     val compileJava = project.getTasks().findByName(sourceSet.getCompileJavaTaskName()) as AbstractCompile?
 
     val defaultKotlinDestinationDir = File(project.getBuildDir(), "kotlin2js/${sourceSetName}")
     private fun kotlinTaskDestinationDir(): File? = kotlinTask.kotlinDestinationDir
-    private fun kotlinJsDestinationDir(): File? = if (kotlinTask.outputFile() == null) {
-        null
-    } else {
-        File(kotlinTask.outputFile()).directory
-    }
+    private fun kotlinJsDestinationDir(): File? = kotlinTask.outputFile()?.let { File(it).directory }
 
-    private fun copyKotlinJsTaskOutput(): String? = if (kotlinJsDestinationDir() == null) {
-        null
-    } else {
-        val copyTask = project.getTasks().getByName(copyKotlinJsTaskName) as Copy
-        "${copyTask.getDestinationDir()}/kotlin.js"
-    }
+    private fun copyKotlinJsTaskOutput(): String? =
+            if (kotlinJsDestinationDir() == null) {
+                null
+            } else {
+                val copyTask = project.getTasks().getByName(copyKotlinJsTaskName) as Copy
+                "${copyTask.getDestinationDir()}/kotlin.js"
+            }
 
     private fun kotlinSourcePathsForSourceMap() = sourceSet.getAllSource()
             .map { it.path }
@@ -307,13 +309,13 @@ abstract class AbstractKotlinPlugin [Inject] (val scriptHandler: ScriptHandler) 
 
 
 open class KotlinPlugin [Inject] (scriptHandler: ScriptHandler) : AbstractKotlinPlugin(scriptHandler) {
-    override fun buildSourceSetProcessor(project: ProjectInternal, javaBasePlugin: JavaBasePlugin, sourceSet: SourceSet): KotlinSourceSetProcessor<KotlinCompile> =
+    override fun buildSourceSetProcessor(project: ProjectInternal, javaBasePlugin: JavaBasePlugin, sourceSet: SourceSet) =
             Kotlin2JvmSourceSetProcessor(project, javaBasePlugin, sourceSet, scriptHandler)
 }
 
 
 open class Kotlin2JsPlugin [Inject] (scriptHandler: ScriptHandler) : AbstractKotlinPlugin(scriptHandler) {
-    override fun buildSourceSetProcessor(project: ProjectInternal, javaBasePlugin: JavaBasePlugin, sourceSet: SourceSet): KotlinSourceSetProcessor<Kotlin2JsCompile> =
+    override fun buildSourceSetProcessor(project: ProjectInternal, javaBasePlugin: JavaBasePlugin, sourceSet: SourceSet) =
             Kotlin2JsSourceSetProcessor(project, javaBasePlugin, sourceSet, scriptHandler)
 }
 
@@ -352,7 +354,7 @@ open class KotlinAndroidPlugin [Inject] (val scriptHandler: ScriptHandler) : Plu
 
         (ext as ExtensionAware).getExtensions().add("kotlinOptions", K2JVMCompilerArguments())
 
-        project.afterEvaluate({(project: Project?): Unit ->
+        project.afterEvaluate({ project ->
             if (project != null) {
                 val testVariants = ext.getTestVariants()!!
                 processVariants(testVariants, project, ext)
@@ -369,7 +371,7 @@ open class KotlinAndroidPlugin [Inject] (val scriptHandler: ScriptHandler) : Plu
 
         })
         val version = project.getProperties()["kotlin.gradle.plugin.version"] as String
-        project.getExtensions().add(DEFAULT_ANNOTATIONS, GradleUtils(scriptHandler!!).resolveDependencies("org.jetbrains.kotlin:kotlin-android-sdk-annotations:$version"));
+        project.getExtensions().add(DEFAULT_ANNOTATIONS, GradleUtils(scriptHandler).resolveDependencies("org.jetbrains.kotlin:kotlin-android-sdk-annotations:$version"));
     }
 
     private fun processVariants(variants: DefaultDomainObjectSet<out BaseVariant>, project: Project, androidExt: BaseExtension): Unit {
@@ -389,7 +391,7 @@ open class KotlinAndroidPlugin [Inject] (val scriptHandler: ScriptHandler) : Plu
                 val buildTypeSourceSetName = AndroidGradleWrapper.getVariantName(variant)
 
                 logger.debug("Variant build type is [$buildTypeSourceSetName]")
-                val buildTypeSourceSet: AndroidSourceSet? = sourceSets.findByName(buildTypeSourceSetName)
+                val buildTypeSourceSet = sourceSets.findByName(buildTypeSourceSetName)
 
                 val javaTask = variant.getJavaCompile()!!
                 val variantName = variant.getName()

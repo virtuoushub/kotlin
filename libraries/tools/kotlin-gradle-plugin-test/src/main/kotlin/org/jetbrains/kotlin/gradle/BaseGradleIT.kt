@@ -9,9 +9,9 @@ import org.junit.After
 import kotlin.test.assertTrue
 import kotlin.test.assertFalse
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.fail
 import org.gradle.api.logging.LogLevel
-import kotlin.test.assertFalse
 
 open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
 
@@ -42,7 +42,12 @@ open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
     }
 
     fun CompiledProject.assertSuccessful(): CompiledProject {
-        assertEquals(resultCode, 0, "Gradle build failed")
+        assertEquals(0, resultCode, "Gradle build failed")
+        return this
+    }
+
+    fun CompiledProject.assertFailed(): CompiledProject {
+        assertNotEquals(0, resultCode, "Expected that Gradle build failed")
         return this
     }
 
