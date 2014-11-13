@@ -146,7 +146,7 @@ public class ReferenceVariantsHelper(
         if (!kindFilter.excludes.contains(DescriptorKindExclude.Extensions)) {
             resolutionScope.getDescriptorsFiltered(kindFilter, nameFilter)
                     .stream()
-                    .filterIsInstance(javaClass<CallableDescriptor>())
+                    .filterIsInstance<CallableDescriptor>()
                     .filterTo(this) { it.isExtensionCallable(receiver, isInfixCall, context, dataFlowInfo) }
         }
     }

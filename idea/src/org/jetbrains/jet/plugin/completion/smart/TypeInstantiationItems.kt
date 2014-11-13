@@ -162,7 +162,7 @@ class TypeInstantiationItems(val resolutionFacade: ResolutionFacade, val binding
                 else -> return
             }
             val samConstructor = scope.getFunctions(`class`.getName())
-                                         .filterIsInstance(javaClass<SamConstructorDescriptor>())
+                                         .filterIsInstance<SamConstructorDescriptor>()
                                          .singleOrNull() ?: return
             val lookupElement = LookupElementFactory.DEFAULT.createLookupElement(samConstructor, resolutionFacade, bindingContext)
                     .assignSmartCompletionPriority(SmartCompletionItemPriority.INSTANTIATION)

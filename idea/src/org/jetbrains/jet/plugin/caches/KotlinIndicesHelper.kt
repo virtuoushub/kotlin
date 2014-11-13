@@ -97,7 +97,7 @@ public class KotlinIndicesHelper(
         val affectedPackages = JetTopLevelNonExtensionFunctionShortNameIndex.getInstance().get(name, project, scope)
                 .stream()
                 .map { it.getContainingFile() }
-                .filterIsInstance(javaClass<JetFile>())
+                .filterIsInstance<JetFile>()
                 .map { it.getPackageFqName() }
                 .toSet()
 
@@ -113,7 +113,7 @@ public class KotlinIndicesHelper(
         val affectedPackages = JetTopLevelNonExtensionPropertyShortNameIndex.getInstance().get(name, project, scope)
                 .stream()
                 .map { it.getContainingFile() }
-                .filterIsInstance(javaClass<JetFile>())
+                .filterIsInstance<JetFile>()
                 .map { it.getPackageFqName() }
                 .toSet()
 
@@ -208,7 +208,7 @@ public class KotlinIndicesHelper(
         else*/ run {
             val importDirective = JetPsiFactory(project).createImportDirective(fqnString)
             analyzeImportReference(importDirective, resolutionScope, BindingTraceContext(), module)
-                    .filterIsInstance(javaClass<CallableDescriptor>())
+                    .filterIsInstance<CallableDescriptor>()
                     .filter { it.getExtensionReceiverParameter() != null }
         }
 
@@ -241,7 +241,7 @@ public class KotlinIndicesHelper(
     private fun findTopLevelCallables(fqName: FqName, context: JetExpression, jetScope: JetScope): Collection<CallableDescriptor> {
         val importDirective = JetPsiFactory(context.getProject()).createImportDirective(ImportPath(fqName, false))
         val allDescriptors = analyzeImportReference(importDirective, jetScope, BindingTraceContext(), moduleDescriptor)
-        return allDescriptors.filterIsInstance(javaClass<CallableDescriptor>()).filter { it.getExtensionReceiverParameter() == null }
+        return allDescriptors.filterIsInstance<CallableDescriptor>().filter { it.getExtensionReceiverParameter() == null }
     }
 
     private fun analyzeImportReference(
