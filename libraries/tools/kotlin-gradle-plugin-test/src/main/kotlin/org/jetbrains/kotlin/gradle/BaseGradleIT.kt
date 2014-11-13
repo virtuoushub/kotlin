@@ -12,6 +12,8 @@ import kotlin.test.assertNotEquals
 import kotlin.test.fail
 import org.gradle.api.logging.LogLevel
 
+private val SYSTEM_LINE_SEPARATOR = System.getProperty("line.separator")
+
 open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
 
     private val resourcesRootFile = File(resourcesRoot)
@@ -99,7 +101,7 @@ open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
             listOf("/bin/bash", "./gradlew") + tailParameters
     }
 
-    private fun String.normalize() = this.replaceAll("\r\n", "\n").replaceAll("\n", System.getProperty("line.separator"))
+    private fun String.normalize() = this.replaceAll("\r\n", "\n").replaceAll("\n", SYSTEM_LINE_SEPARATOR)
 
     private fun isWindows(): Boolean {
         return System.getProperty("os.name")!!.contains("Windows")
