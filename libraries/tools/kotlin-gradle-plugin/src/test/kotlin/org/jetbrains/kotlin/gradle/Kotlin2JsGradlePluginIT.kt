@@ -12,14 +12,13 @@ class Kotlin2JsGradlePluginIT : BaseGradleIT() {
             assertSuccessful()
             assertReportExists()
 
-            assertContains(":libraryProject:jarSources\n",
-                    ":mainProject:copyKotlinSourcesForSourceMap\n", ":mainProject:rewritePathsInSourceMap\n",
+            assertContains(":libraryProject:jarSources\n", ":mainProject:rewritePathsInSourceMap\n",
                     ":mainProject:compileKotlin2Js\n", ":mainProject:copyKotlinJs\n",
                     ":libraryProject:compileKotlin2Js\n", ":libraryProject:copyKotlinJs\n")
 
             listOf("mainProject/web/js/app.js", "mainProject/web/js/lib/kotlin.js",
                     "libraryProject/build/kotlin2js/main/app.js", "libraryProject/build/kotlin2js/main/kotlin.js",
-                    "mainProject/web/js/app.js.map", "mainProject/web/js/example/main.kt"
+                    "mainProject/web/js/app.js.map"
             ).forEach { assertFileExists(it) }
 
             assertFileContains("libraryProject/build/kotlin2js/main/app.js", "Counter: Kotlin.createClass")
@@ -30,20 +29,19 @@ class Kotlin2JsGradlePluginIT : BaseGradleIT() {
             //      for the (original) discussion on this.
             assertFileContains("mainProject/web/js/app.js", "var counter = new Counter(counterText);")
 
+// TODO review
 //            assertFileContains("mainProject/web/js/app.js.map", "sources\":[\"example/main.kt\"]")
         }
 
         project.build("build") {
             assertSuccessful()
-            assertContains(":mainProject:compileKotlin2Js UP-TO-DATE", ":libraryProject:compileTestKotlin2Js UP-TO-DATE",
-                    ":mainProject:copyKotlinSourcesForSourceMap UP-TO-DATE")
+            assertContains(":mainProject:compileKotlin2Js UP-TO-DATE", ":libraryProject:compileTestKotlin2Js UP-TO-DATE")
         }
 
         project.build("clean") {
             assertSuccessful()
             assertReportExists()
-            assertContains(":mainProject:cleanCompileKotlin2Js\n", ":mainProject:cleanCopyKotlinJs\n",
-                    ":mainProject:cleanCopyKotlinSourcesForSourceMap\n")
+            assertContains(":mainProject:cleanCompileKotlin2Js\n", ":mainProject:cleanCopyKotlinJs\n")
             assertNoSuchFile("mainProject/web/js/app.js")
             assertNoSuchFile("mainProject/web/js/lib/kotlin.js")
 
@@ -52,14 +50,12 @@ class Kotlin2JsGradlePluginIT : BaseGradleIT() {
             assertFileExists("mainProject/web/js/lib")
 
             assertNoSuchFile("main/project/web/js/app.js.map")
-            assertNoSuchFile("main/project/web/js/example/main.kt")
         }
 
         project.build("clean") {
             assertSuccessful()
             assertReportExists()
-            assertContains(":mainProject:cleanCompileKotlin2Js UP-TO-DATE", ":mainProject:cleanCopyKotlinJs UP-TO-DATE",
-                    ":mainProject:cleanCopyKotlinSourcesForSourceMap UP-TO-DATE")
+            assertContains(":mainProject:cleanCompileKotlin2Js UP-TO-DATE", ":mainProject:cleanCopyKotlinJs UP-TO-DATE")
         }
     }
 

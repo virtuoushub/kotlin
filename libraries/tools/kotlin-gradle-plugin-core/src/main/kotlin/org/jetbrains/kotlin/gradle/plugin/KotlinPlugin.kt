@@ -197,7 +197,6 @@ class Kotlin2JsSourceSetProcessor(
         clean?.dependsOn("clean" + kotlinTaskName.capitalize())
 
         createCopyKotlinJsTask(jsLibraryJar)
-        createCopyKotlinSourcesForSourceMapTask()
         createRewritePathsInSourceMapTask()
         createCleanSourceMapTask()
     }
@@ -217,22 +216,6 @@ class Kotlin2JsSourceSetProcessor(
         cleanTask.delete(MethodClosure(this, "copyKotlinJsTaskOutput"))
         copyKotlinJsTask.onlyIf { copyKotlinJsTaskOutput() != null }
         clean?.dependsOn(cleanTaskName)
-    }
-
-    private fun createCopyKotlinSourcesForSourceMapTask() {
-        val copyTaskName = sourceSet.getTaskName("copy", "kotlinSourcesForSourceMap")
-        val copyTask = project.getTasks().create(copyTaskName, javaClass<Copy>())
-        copyTask.onlyIf { kotlinTask.kotlinOptions.sourceMap }
-        sourceSet.getAllSource()
-        copyTask.from(sourceRootDir)
-        copyTask.into(MethodClosure(kotlinTask, "sourceMapDestinationDir"))
-        copyTask.getOutputs().file(MethodClosure(this, "kotlinSourcePathsForSourceMap"))
-        compileJava?.dependsOn(copyTask)
-
-        val cleanTask = project.getTasks().create("clean" + copyTaskName.capitalize(), javaClass<Delete>())
-        cleanTask.onlyIf { kotlinTask.kotlinOptions.sourceMap }
-        cleanTask.delete(MethodClosure(this, "kotlinSourcePathsForSourceMap"))
-        clean?.dependsOn(cleanTask.getName())
     }
 
     private fun createRewritePathsInSourceMapTask() {
