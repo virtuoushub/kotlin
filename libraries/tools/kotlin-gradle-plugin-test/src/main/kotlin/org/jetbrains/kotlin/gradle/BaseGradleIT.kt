@@ -3,7 +3,6 @@ package org.jetbrains.kotlin.gradle
 import com.google.common.io.Files
 import java.io.File
 import java.io.InputStream
-import java.util.Scanner
 import org.junit.Before
 import org.junit.After
 import kotlin.test.assertTrue
@@ -53,14 +52,14 @@ open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
 
     fun CompiledProject.assertContains(vararg expected: String): CompiledProject {
         for (str in expected) {
-            assertTrue(output.contains(str), "Should contain '$str', actual output: $output")
+            assertTrue(output.contains(str.normalize()), "Should contain '$str', actual output: $output")
         }
         return this
     }
 
     fun CompiledProject.assertNotContains(vararg expected: String): CompiledProject {
         for (str in expected) {
-            assertFalse(output.contains(str), "Should not contain '$str', actual output: $output")
+            assertFalse(output.contains(str.normalize()), "Should not contain '$str', actual output: $output")
         }
         return this
     }
@@ -99,6 +98,8 @@ open class BaseGradleIT(resourcesRoot: String = "src/test/resources") {
          else
             listOf("/bin/bash", "./gradlew") + tailParameters
     }
+
+    private fun String.normalize() = this.replaceAll("\r\n", "\n").replaceAll("\n", System.getProperty("line.separator"))
 
     private fun isWindows(): Boolean {
         return System.getProperty("os.name")!!.contains("Windows")
