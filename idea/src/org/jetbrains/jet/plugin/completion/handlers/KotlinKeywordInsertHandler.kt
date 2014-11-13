@@ -19,10 +19,11 @@ package org.jetbrains.jet.plugin.completion.handlers
 import com.intellij.codeInsight.completion.InsertHandler
 import com.intellij.codeInsight.completion.InsertionContext
 import com.intellij.codeInsight.lookup.LookupElement
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiElement
 import org.jetbrains.jet.lang.psi.JetFunction
 import org.jetbrains.jet.lang.psi.JetPsiUtil
 import org.jetbrains.jet.lexer.JetTokens
+import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 
 public object KotlinKeywordInsertHandler : InsertHandler<LookupElement> {
     private val NO_SPACE_AFTER = setOf(JetTokens.THIS_KEYWORD.toString(),
@@ -46,7 +47,7 @@ public object KotlinKeywordInsertHandler : InsertHandler<LookupElement> {
         if (keyword == JetTokens.RETURN_KEYWORD.toString()) {
             val element = context.getFile().findElementAt(context.getStartOffset())
             if (element != null) {
-                val jetFunction = PsiTreeUtil.getParentOfType(element, javaClass<JetFunction>())
+                val jetFunction = element.getParentByType<JetFunction>()
                 if (jetFunction != null && (!jetFunction.hasDeclaredReturnType() || JetPsiUtil.isVoidType(jetFunction.getTypeReference()))) {
                     // No space for void function
                     return false

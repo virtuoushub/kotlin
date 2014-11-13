@@ -162,7 +162,7 @@ object KeywordCompletion {
             when {
                 nodeType != keywordTokenType -> false
 
-                elementAt.getParentByType(javaClass<PsiErrorElement>(), strict = false) != null -> false
+                elementAt.getParentByType<PsiErrorElement>(strict = false) != null -> false
 
                 elementAt.prevLeafSkipWhitespacesAndComments() is PsiErrorElement -> false
 

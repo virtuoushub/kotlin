@@ -131,8 +131,8 @@ public fun PsiElement.getAllExtractionContainers(strict: Boolean = true): List<J
 public fun PsiElement.getExtractionContainers(strict: Boolean = true, includeAll: Boolean = false): List<JetElement> {
     if (includeAll) return getAllExtractionContainers(strict)
 
-    val declaration = getParentByType(javaClass<JetDeclaration>(), strict)?.let { declaration ->
-        stream(declaration) { it.getParentByType(javaClass<JetDeclaration>(), true) }.firstOrNull { it !is JetFunctionLiteral }
+    val declaration = getParentByType<JetDeclaration>(strict)?.let { declaration ->
+        stream(declaration) { it.getParentByType<JetDeclaration>(strict = true) }.firstOrNull { it !is JetFunctionLiteral }
     } ?: return Collections.emptyList()
 
     val parent = declaration.getParent()?.let {
@@ -259,7 +259,7 @@ fun PsiElement.getLineCount(): Int {
 fun PsiElement.isMultiLine(): Boolean = getLineCount() > 1
 
 public fun JetElement.getContextForContainingDeclarationBody(): BindingContext? {
-    val enclosingDeclaration = getParentByType(javaClass<JetDeclaration>(), true)
+    val enclosingDeclaration = getParentByType<JetDeclaration>(strict = true)
     val bodyElement = when (enclosingDeclaration) {
         is JetDeclarationWithBody -> enclosingDeclaration.getBodyExpression()
         is JetWithExpressionInitializer -> enclosingDeclaration.getInitializer()
@@ -291,7 +291,7 @@ public fun chooseContainerElement<T>(
                         return (getParent() as JetProperty).renderName() + if (isGetter()) ".get" else ".set"
                     }
                     if (this is JetObjectDeclaration && this.isClassObject()) {
-                        return "Class object of ${getParentByType(javaClass<JetClassOrObject>(), true)?.renderName() ?: "<anonymous>"}"
+                        return "Class object of ${getParentByType<JetClassOrObject>(strict = true)?.renderName() ?: "<anonymous>"}"
                     }
                     return (this as? PsiNamedElement)?.getName() ?: "<anonymous>"
                 }

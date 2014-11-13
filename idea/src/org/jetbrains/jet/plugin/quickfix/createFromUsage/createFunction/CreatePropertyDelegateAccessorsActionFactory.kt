@@ -29,7 +29,7 @@ object CreatePropertyDelegateAccessorsActionFactory : JetSingleIntentionActionFa
 
         val builtIns = KotlinBuiltIns.getInstance()
 
-        val property = expression.getParentByType(javaClass<JetProperty>()) ?: return null
+        val property = expression.getParentByType<JetProperty>() ?: return null
         val propertyDescriptor = context[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
                                  ?: return null
 

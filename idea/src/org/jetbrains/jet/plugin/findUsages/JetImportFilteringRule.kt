@@ -28,7 +28,7 @@ import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 public class JetImportFilteringRule : ImportFilteringRule() {
     public override fun isVisible(usage: Usage): Boolean {
         if (usage is PsiElementUsage) {
-            return usage.getElement()?.getParentByType(javaClass<JetImportDirective>()) == null
+            return usage.getElement()?.getParentByType<JetImportDirective>() == null
         }
 
         return true

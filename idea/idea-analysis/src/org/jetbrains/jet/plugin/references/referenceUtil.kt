@@ -42,8 +42,8 @@ public val PsiReference.unwrappedTargets: Set<PsiElement>
         fun PsiElement.adjust(): PsiElement? {
             val target = unwrapped
             return when {
-                target is JetPropertyAccessor -> target.getParentByType(javaClass<JetProperty>())
-                target is JetObjectDeclaration && target.isClassObject() -> target.getParentByType(javaClass<JetClass>())
+                target is JetPropertyAccessor -> target.getParentByType<JetProperty>()
+                target is JetObjectDeclaration && target.isClassObject() -> target.getParentByType<JetClass>()
                 else -> target
             }
         }

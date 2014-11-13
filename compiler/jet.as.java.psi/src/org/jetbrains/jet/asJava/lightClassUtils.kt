@@ -64,7 +64,7 @@ public fun PsiElement.getRepresentativeLightMethod(): PsiMethod? =
         }
 
 public fun JetParameter.toPsiParameter(): PsiParameter? {
-    val paramList = getParentByType(javaClass<JetParameterList>())
+    val paramList = getParentByType<JetParameterList>()
     if (paramList == null) return null
 
     val paramIndex = paramList.getParameters().indexOf(this)
@@ -85,11 +85,11 @@ public fun JetParameter.toPsiParameter(): PsiParameter? {
 }
 
 public fun JetTypeParameter.toPsiTypeParameters(): List<PsiTypeParameter> {
-    val paramList = getParentByType(javaClass<JetTypeParameterList>())
+    val paramList = getParentByType<JetTypeParameterList>()
     if (paramList == null) return listOf()
 
     val paramIndex = paramList.getParameters().indexOf(this)
-    val jetDeclaration = paramList.getParentByType(javaClass<JetDeclaration>()) ?: return listOf()
+    val jetDeclaration = paramList.getParentByType<JetDeclaration>() ?: return listOf()
     val lightOwners = jetDeclaration.toLightElements()
 
     return lightOwners.map { lightOwner -> (lightOwner as PsiTypeParameterListOwner).getTypeParameters()[paramIndex] }
@@ -100,4 +100,4 @@ public val PsiElement.unwrapped: PsiElement?
     get() = if (this is KotlinLightElement<*, *>) origin else this
 
 public val PsiElement.namedUnwrappedElement: PsiNamedElement?
-    get() = unwrapped?.getParentByType(javaClass<PsiNamedElement>())
+    get() = unwrapped?.getParentByType<PsiNamedElement>()

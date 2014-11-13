@@ -24,6 +24,7 @@ import org.jetbrains.jet.lang.descriptors.ClassKind
 import org.jetbrains.jet.lang.psi.JetClass
 import org.jetbrains.jet.lang.psi.JetParameterList
 import org.jetbrains.jet.lang.psi.JetNamedDeclaration
+import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 
 /**
  * Special <code>Expression</code> for parameter names based on its type.
@@ -59,9 +60,8 @@ private class ParameterNameExpression(
             is JetClass -> declaration.getPrimaryConstructorParameterList()
             else -> throw AssertionError("Unexpected declaration: ${declaration.getText()}")
         }
-
         // add names based on selected type
-        val parameter = PsiTreeUtil.getParentOfType(elementAt, javaClass<JetParameter>())
+        val parameter = elementAt.getParentByType<JetParameter>()
         if (parameter != null) {
             val parameterTypeRef = parameter.getTypeReference()
             if (parameterTypeRef != null) {
@@ -138,7 +138,7 @@ private class TypeParameterListExpression(private val mandatoryTypeParameters: L
         val editor = context.getEditor()!!
         val file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument()) as JetFile
         val elementAt = file.findElementAt(offset)
-        val declaration = PsiTreeUtil.getParentOfType(elementAt, javaClass<JetNamedDeclaration>()) ?: return TextResult("")
+        val declaration = elementAt.getParentByType<JetNamedDeclaration>() ?: return TextResult("")
 
         val renderedTypeParameters = LinkedHashSet<RenderedTypeParameter>()
         renderedTypeParameters.addAll(mandatoryTypeParameters)

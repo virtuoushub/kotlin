@@ -84,7 +84,7 @@ data class ExtractionData(
     val project: Project = originalFile.getProject()
     val originalElements: List<PsiElement> = originalRange.elements
 
-    val insertBefore: Boolean = targetSibling.getParentByType(javaClass<JetDeclaration>(), true)?.let {
+    val insertBefore: Boolean = targetSibling.getParentByType<JetDeclaration>(strict = true)?.let {
         it is JetDeclarationWithBody || it is JetClassInitializer
     } ?: false
 

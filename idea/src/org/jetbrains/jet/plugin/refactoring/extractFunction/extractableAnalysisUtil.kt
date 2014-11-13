@@ -214,7 +214,7 @@ private fun ExtractionData.analyzeControlFlow(
             is ReturnValueInstruction -> {
                 val returnExpression = insn.returnExpressionIfAny
                 if (returnExpression == null) {
-                    val containingDeclaration = insn.returnedValue.element?.getParentByType(javaClass<JetDeclarationWithBody>())
+                    val containingDeclaration = insn.returnedValue.element?.getParentByType<JetDeclarationWithBody>()
                     if (containingDeclaration == pseudocode.getCorrespondingElement()) {
                         defaultExits.add(insn)
                     }
@@ -355,7 +355,7 @@ fun ExtractionData.createTemporaryDeclaration(functionText: String): JetNamedDec
     val tmpFile = originalFile.createTempCopy { text ->
         StringBuilder(text).insert(insertPosition, insertText).toString()
     }
-    return tmpFile.findElementAt(lookupPosition)?.getParentByType(javaClass<JetNamedDeclaration>())!!
+    return tmpFile.findElementAt(lookupPosition)?.getParentByType<JetNamedDeclaration>()!!
 }
 
 private fun ExtractionData.createTemporaryCodeBlock(): JetBlockExpression =
@@ -378,7 +378,7 @@ private fun JetType.collectReferencedTypes(processTypeArguments: Boolean): List<
 }
 
 fun JetTypeParameter.collectRelevantConstraints(): List<JetTypeConstraint> {
-    val typeConstraints = getParentByType(javaClass<JetTypeParameterListOwner>())?.getTypeConstraints()
+    val typeConstraints = getParentByType<JetTypeParameterListOwner>()?.getTypeConstraints()
     if (typeConstraints == null) return Collections.emptyList()
     return typeConstraints.filter { it.getSubjectTypeParameterName()?.getReference()?.resolve() == this}
 }
@@ -534,7 +534,7 @@ private fun ExtractionData.inferParametersInfo(
                     when(it.getKind()) {
                         ClassKind.OBJECT, ClassKind.ENUM_CLASS -> it as ClassDescriptor
                         ClassKind.CLASS_OBJECT, ClassKind.ENUM_ENTRY -> it.getContainingDeclaration() as? ClassDescriptor
-                        else -> if (ref.getParentByType(javaClass<JetTypeReference>()) != null) it as ClassDescriptor else null
+                        else -> if (ref.getParentByType<JetTypeReference>() != null) it as ClassDescriptor else null
                     }
 
                 is ConstructorDescriptor -> it.getContainingDeclaration()
@@ -598,7 +598,7 @@ private fun ExtractionData.inferParametersInfo(
     }
 
     val varNameValidator = JetNameValidatorImpl(
-            commonParent.getParentByType(javaClass<JetExpression>()),
+            commonParent.getParentByType<JetExpression>(),
             originalElements.first,
             JetNameValidatorImpl.Target.PROPERTIES
     )
@@ -635,7 +635,7 @@ private fun ExtractionData.checkDeclarationsMovingOutOfScope(
                     val target = expression.getReference()?.resolve()
                     if (target is JetNamedDeclaration
                         && target.isInsideOf(originalElements)
-                        && target.getParentByType(javaClass<JetDeclaration>(), true) == enclosingDeclaration) {
+                        && target.getParentByType<JetDeclaration>(strict = true) == enclosingDeclaration) {
                         declarationsOutOfScope.add(target)
                     }
                 }
@@ -681,7 +681,7 @@ fun ExtractionData.performAnalysis(): AnalysisResult {
 
     val pseudocodeDeclaration = PsiTreeUtil.getParentOfType(
             commonParent, javaClass<JetDeclarationWithBody>(), javaClass<JetClassOrObject>()
-    ) ?: commonParent.getParentByType(javaClass<JetProperty>())
+    ) ?: commonParent.getParentByType<JetProperty>()
     ?: return noContainerError
     val pseudocode = PseudocodeUtil.generatePseudocode(pseudocodeDeclaration, bindingContext)
     val localInstructions = getLocalInstructions(pseudocode)
@@ -720,7 +720,7 @@ fun ExtractionData.performAnalysis(): AnalysisResult {
         )
     }
 
-    val enclosingDeclaration = commonParent.getParentByType(javaClass<JetDeclaration>(), true)!!
+    val enclosingDeclaration = commonParent.getParentByType<JetDeclaration>(strict = true)!!
     checkDeclarationsMovingOutOfScope(enclosingDeclaration, controlFlow, bindingContext)?.let { messages.add(it) }
 
     val functionNameValidator =

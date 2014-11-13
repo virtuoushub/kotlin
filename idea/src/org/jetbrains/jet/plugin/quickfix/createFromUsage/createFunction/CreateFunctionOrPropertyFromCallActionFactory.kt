@@ -39,8 +39,7 @@ object CreateFunctionOrPropertyFromCallActionFactory : JetSingleIntentionActionF
                            }
 
                            Errors.NO_VALUE_FOR_PARAMETER,
-                           Errors.TOO_MANY_ARGUMENTS -> diagElement.getParentByType(javaClass<JetCallExpression>())
-
+                           Errors.TOO_MANY_ARGUMENTS -> diagElement.getParentByType<JetCallExpression>()
                            else -> throw AssertionError("Unexpected diagnostic: ${diagnostic.getFactory()}")
                        } as? JetExpression ?: return null
 

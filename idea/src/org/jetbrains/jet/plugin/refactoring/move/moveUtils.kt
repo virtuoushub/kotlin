@@ -158,7 +158,7 @@ fun createMoveUsageInfo(
 
     if (reference is JetReference
         && referencedElement.namedUnwrappedElement!!.isExtensionDeclaration()
-        && element.getParentByType(javaClass<JetImportDirective>()) == null) {
+        && element.getParentByType<JetImportDirective>() == null) {
         return MoveRenameUsageInfoForExtension(
                 element, reference, startOffset, endOffset, referencedElement, element.getContainingFile()!!, addImportToOriginalFile
         )

@@ -73,6 +73,10 @@ public fun PsiElement.getParentByType<T: PsiElement>(parentClass : Class<T>, str
     return PsiTreeUtil.getParentOfType(this, parentClass, strict)
 }
 
+inline public fun PsiElement.getParentByType<reified T: PsiElement>(strict : Boolean = true) : T? {
+    return PsiTreeUtil.getParentOfType(this, javaClass<T>(), strict)
+}
+
 public fun PsiElement?.isAncestor(element: PsiElement, strict: Boolean = false): Boolean {
     return PsiTreeUtil.isAncestor(this, element, strict)
 }
@@ -192,7 +196,7 @@ public fun JetDeclaration.isOverridable(): Boolean {
 public fun PsiElement.isExtensionDeclaration(): Boolean {
     val callable: JetCallableDeclaration? = when (this) {
         is JetNamedFunction, is JetProperty -> this as JetCallableDeclaration
-        is JetPropertyAccessor -> getParentByType(javaClass<JetProperty>())
+        is JetPropertyAccessor -> getParentByType<JetProperty>()
         else -> null
     }
 

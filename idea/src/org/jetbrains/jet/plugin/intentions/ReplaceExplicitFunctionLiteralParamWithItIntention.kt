@@ -30,11 +30,12 @@ import org.jetbrains.jet.lang.descriptors.impl.AnonymousFunctionDescriptor
 import org.jetbrains.jet.plugin.references.JetReference
 import org.jetbrains.jet.lang.descriptors.VariableDescriptor
 import org.jetbrains.jet.lang.resolve.DescriptorToSourceUtils
+import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 
 public class ReplaceExplicitFunctionLiteralParamWithItIntention() : PsiElementBaseIntentionAction() {
     override fun invoke(project: Project, editor: Editor, element: PsiElement) {
         val funcExpr = findFunctionLiteralToActOn(element)!!
-        val cursorWasOverParameterList = PsiTreeUtil.getParentOfType(element, javaClass<JetParameter>()) != null
+        val cursorWasOverParameterList = element.getParentByType<JetParameter>() != null
         ParamRenamingProcessor(editor, funcExpr, cursorWasOverParameterList).run()
     }
 
@@ -58,7 +59,7 @@ public class ReplaceExplicitFunctionLiteralParamWithItIntention() : PsiElementBa
     }
 
     private fun findFunctionLiteralToActOn(element: PsiElement): JetFunctionLiteral? {
-        if (PsiTreeUtil.getParentOfType(element, javaClass<JetFunctionLiteralExpression>()) == null) {
+        if (element.getParentByType<JetFunctionLiteralExpression>() == null) {
             return null
         }
 

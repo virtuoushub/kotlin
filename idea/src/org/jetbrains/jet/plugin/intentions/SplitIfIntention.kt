@@ -52,7 +52,7 @@ public class SplitIfIntention : JetSelfTargetingIntention<JetExpression>("split.
             else -> element as JetSimpleNameExpression
         }
 
-        val ifExpression = currentElement!!.getParentByType(javaClass<JetIfExpression>())
+        val ifExpression = currentElement!!.getParentByType<JetIfExpression>()
         val expression = currentElement.getParent() as JetBinaryExpression
         val rightExpression = getRight(expression, ifExpression!!.getCondition() as JetExpression)
         val leftExpression = expression.getLeft()

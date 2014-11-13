@@ -34,7 +34,7 @@ public fun JetReturnExpression.getTargetFunctionDescriptor(context: BindingConte
     val targetLabel = getTargetLabel()
     if (targetLabel != null) return context[LABEL_TARGET, targetLabel]?.let { context[FUNCTION, it] }
 
-    val declarationDescriptor = context[DECLARATION_TO_DESCRIPTOR, getParentByType(javaClass<JetDeclarationWithBody>())]
+    val declarationDescriptor = context[DECLARATION_TO_DESCRIPTOR, getParentByType<JetDeclarationWithBody>()]
     val containingFunctionDescriptor = DescriptorUtils.getParentOfType(declarationDescriptor, javaClass<FunctionDescriptor>(), false)
     if (containingFunctionDescriptor == null) return null
 

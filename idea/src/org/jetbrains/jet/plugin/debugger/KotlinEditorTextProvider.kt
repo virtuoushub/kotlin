@@ -37,6 +37,7 @@ import org.jetbrains.jet.lang.psi.JetCodeFragment
 import org.jetbrains.jet.lang.psi.JetUserType
 import org.jetbrains.jet.lang.psi.JetImportDirective
 import org.jetbrains.jet.lang.psi.JetPackageDirective
+import org.jetbrains.jet.lang.psi.psiUtil.getParentByType
 
 class KotlinEditorTextProvider : EditorTextProvider {
     override fun getEditorText(elementAtCaret: PsiElement): TextWithImports? {
@@ -56,7 +57,7 @@ class KotlinEditorTextProvider : EditorTextProvider {
                 return null
             }
 
-            val jetElement = PsiTreeUtil.getParentOfType(element, javaClass<JetElement>())
+            val jetElement = element.getParentByType<JetElement>()
             if (jetElement == null) return null
 
             val parent = jetElement.getParent()

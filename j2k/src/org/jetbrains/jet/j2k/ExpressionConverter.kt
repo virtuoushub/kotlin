@@ -70,7 +70,7 @@ class DefaultExpressionConverter : JavaElementVisitor(), ExpressionConverter {
     }
 
     override fun visitArrayAccessExpression(expression: PsiArrayAccessExpression) {
-        val assignment = PsiTreeUtil.getParentOfType(expression, javaClass<PsiAssignmentExpression>())
+        val assignment = expression.getParentByType<PsiAssignmentExpression>()
         val lvalue = assignment != null && expression == assignment.getLExpression();
         result = ArrayAccessExpression(codeConverter.convertExpression(expression.getArrayExpression()),
                                        codeConverter.convertExpression(expression.getIndexExpression()),
@@ -211,7 +211,7 @@ class DefaultExpressionConverter : JavaElementVisitor(), ExpressionConverter {
 
         if (target is KotlinLightMethod) {
             val origin = target.origin
-            val isTopLevel = origin?.getParentByType(javaClass<JetClassOrObject>(), true) == null
+            val isTopLevel = origin?.getParentByType<JetClassOrObject>(strict = true) == null
             if (origin is JetProperty || origin is JetPropertyAccessor || origin is JetParameter) {
                 val property = if (origin is JetPropertyAccessor)
                     origin.getParent() as JetProperty

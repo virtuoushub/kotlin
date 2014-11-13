@@ -107,7 +107,7 @@ fun createNameCounterpartMap(from: JetElement, to: JetElement): Map<JetSimpleNam
             object: JetTreeVisitorVoid() {
                 override fun visitSimpleNameExpression(expression: JetSimpleNameExpression) {
                     val offset = expression.getTextRange()!!.getStartOffset() - fromOffset
-                    val newExpression = to.findElementAt(offset)?.getParentByType(javaClass<JetSimpleNameExpression>())
+                    val newExpression = to.findElementAt(offset)?.getParentByType<JetSimpleNameExpression>()
                     assert(newExpression!= null, "Couldn't find expression at $offset in '${to.getText()}'")
 
                     map[expression] = newExpression!!
@@ -200,7 +200,7 @@ private fun makeCall(
     fun insertCall(anchor: PsiElement, wrappedCall: JetExpression) {
         val firstExpression = rangeToReplace.elements.firstOrNull { it is JetExpression } as? JetExpression
         if (firstExpression?.isFunctionLiteralOutsideParentheses() ?: false) {
-            val functionLiteralArgument = PsiTreeUtil.getParentOfType(firstExpression, javaClass<JetFunctionLiteralArgument>())!!
+            val functionLiteralArgument = firstExpression?.getParentByType<JetFunctionLiteralArgument>()!!
             functionLiteralArgument.moveInsideParenthesesAndReplaceWith(wrappedCall, extractableDescriptor.originalContext)
             return
         }
@@ -402,7 +402,7 @@ fun ExtractableCodeDescriptor.generateDeclaration(options: ExtractionGeneratorOp
          * before calls/types themselves
          */
         for ((offsetInBody, resolveResult) in extractionData.refOffsetToDeclaration.entrySet().sortDescendingBy { it.key }) {
-            val expr = file.findElementAt(bodyOffset + offsetInBody)?.getParentByType(javaClass<JetSimpleNameExpression>())
+            val expr = file.findElementAt(bodyOffset + offsetInBody)?.getParentByType<JetSimpleNameExpression>()
             assert(expr != null, "Couldn't find expression at $offsetInBody in '${body.getText()}'")
 
             originalOffsetByExpr[expr!!] = offsetInBody
