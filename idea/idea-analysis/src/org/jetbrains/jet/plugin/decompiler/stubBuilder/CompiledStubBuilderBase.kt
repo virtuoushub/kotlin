@@ -51,6 +51,8 @@ import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeProjectionStubImpl
 import org.jetbrains.jet.lang.psi.JetProjectionKind
 import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type.Argument.Projection
+import org.jetbrains.jet.lang.psi.stubs.elements.JetPlaceHolderStubElementType
+import org.jetbrains.jet.lang.psi.JetFunctionType
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
@@ -143,6 +145,7 @@ public abstract class CompiledStubBuilderBase(
 
     protected abstract fun getInternalFqName(name: Name): FqName?
 
+    //TODO_R: parameter order inconsistent
     private fun createTypeStub(type: ProtoBuf.Type, parent: StubElement<out PsiElement>) {
         val id = type.getConstructor().getId()
         //TODO_R: really?
@@ -151,9 +154,21 @@ public abstract class CompiledStubBuilderBase(
         when (type.getConstructor().getKind()) {
             ProtoBuf.Type.Constructor.Kind.CLASS -> {
                 val fqName = nameResolver.getFqName(id)
-                //                val isFunctionType = KotlinBuiltIns.getInstance().isExactFunctionType(fqName)
+                val isFunctionType = KotlinBuiltIns.getInstance().isExactFunctionType(fqName)
+                val typeArgumentList = type.getArgumentList()
+                if (isFunctionType) {
+                    val functionType = KotlinPlaceHolderStubImpl<JetFunctionType>(realParent, JetStubElementTypes.FUNCTION_TYPE)
+                    val returnType = typeArgumentList.last().getType()
+                    val parameterList = KotlinPlaceHolderStubImpl<JetParameterList>(functionType, JetStubElementTypes.VALUE_PARAMETER_LIST)
+                    typeArgumentList.subList(0, typeArgumentList.size - 1).forEach { argument ->
+                        val parameter = KotlinParameterStubImpl(parameterList, fqName = null, name = null, isMutable = false, hasValOrValNode = false, hasDefaultValue = false)
+                        createTypeReferenceStub(parameter, argument.getType())
+                    }
+                    createTypeReferenceStub(functionType, returnType)
+                    return
+                }
                 val typeStub = createStubForType(fqName, realParent)
-                val argumentList = type.getArgumentList()
+                val argumentList = typeArgumentList
                 if (argumentList.isNotEmpty()) {
                     val typeArgList = KotlinPlaceHolderStubImpl<JetTypeArgumentList>(typeStub, JetStubElementTypes.TYPE_ARGUMENT_LIST)
                     argumentList.forEach { typeArgument ->
