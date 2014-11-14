@@ -50,6 +50,7 @@ import org.jetbrains.jet.lang.psi.JetTypeArgumentList
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeProjectionStubImpl
 import org.jetbrains.jet.lang.psi.JetProjectionKind
 import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
+import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type.Argument.Projection
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
@@ -156,7 +157,12 @@ public abstract class CompiledStubBuilderBase(
                 if (argumentList.isNotEmpty()) {
                     val typeArgList = KotlinPlaceHolderStubImpl<JetTypeArgumentList>(typeStub, JetStubElementTypes.TYPE_ARGUMENT_LIST)
                     argumentList.forEach { typeArgument ->
-                        val typeProjection = KotlinTypeProjectionStubImpl(typeArgList, JetProjectionKind.NONE.ordinal())
+                        val projectionKind = typeArgument.getProjection().toProjectionKind()
+                        val typeProjection = KotlinTypeProjectionStubImpl(typeArgList, projectionKind.ordinal())
+                        val token = projectionKind.getToken() as? JetModifierKeywordToken
+                        if (token != null) {
+                            createModifierListStub(typeProjection, listOf(token))
+                        }
                         val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(typeProjection, JetStubElementTypes.TYPE_REFERENCE)
                         createTypeStub(typeArgument.getType(), typeReference)
                     }
@@ -169,6 +175,13 @@ public abstract class CompiledStubBuilderBase(
         }
     }
 }
+
+private fun Projection.toProjectionKind() = when (this) {
+    Projection.IN -> JetProjectionKind.IN
+    Projection.OUT -> JetProjectionKind.OUT
+    Projection.INV -> JetProjectionKind.NONE
+}
+
 
 public fun createFileStub(packageFqName: FqName): KotlinFileStubImpl {
     val fileStub = KotlinFileStubImpl(null, packageFqName.asString(), packageFqName.isRoot())
