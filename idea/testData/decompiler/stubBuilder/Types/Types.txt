@@ -1,0 +1,15 @@
+PsiJetFileStubImpl[package=test]
+  PACKAGE_DIRECTIVE:
+    REFERENCE_EXPRESSION:[referencedName=test]
+  CLASS:[fqName=test.Types, isEnumEntry=false, isLocal=false, isTopLevel=true, isTrait=false, name=Types, superNames=[]]
+    MODIFIER_LIST:[internal final]
+    VALUE_PARAMETER_LIST:
+    CLASS_BODY:
+      PROPERTY:[fqName=test.Types.g, hasDelegate=false, hasDelegateExpression=false, hasInitializer=false, hasReceiverTypeRef=false, hasReturnTypeRef=true, isTopLevel=false, isVar=false, name=g]
+        MODIFIER_LIST:[internal final]
+        TYPE_REFERENCE:
+          NULLABLE_TYPE:
+            USER_TYPE:[isAbsoluteInRootPackage=false]
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                REFERENCE_EXPRESSION:[referencedName=kotlin]
+              REFERENCE_EXPRESSION:[referencedName=Int]

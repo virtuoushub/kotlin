@@ -36,15 +36,21 @@ public class ClsStubBuilderTestGenerated extends AbstractClsStubBuilderTest {
         JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("idea/testData/decompiler/stubBuilder"), Pattern.compile("^([^\\.]+)$"), false);
     }
 
-    @TestMetadata("ClassWithNoMembers")
-    public void testClassWithNoMembers() throws Exception {
-        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/ClassWithNoMembers/");
+    @TestMetadata("ClassMembers")
+    public void testClassMembers() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/ClassMembers/");
         doTest(fileName);
     }
 
     @TestMetadata("TopLevelMembersPackage")
     public void testTopLevelMembersPackage() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/TopLevelMembersPackage/");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Types")
+    public void testTypes() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/Types/");
         doTest(fileName);
     }
 }
