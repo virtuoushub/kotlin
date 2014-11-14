@@ -45,6 +45,11 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Callable.CallableKin
 import com.intellij.util.io.StringRef
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.lang.psi.JetNullableType
+import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns
+import org.jetbrains.jet.lang.psi.JetTypeArgumentList
+import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeProjectionStubImpl
+import org.jetbrains.jet.lang.psi.JetProjectionKind
+import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
@@ -145,7 +150,17 @@ public abstract class CompiledStubBuilderBase(
         when (type.getConstructor().getKind()) {
             ProtoBuf.Type.Constructor.Kind.CLASS -> {
                 val fqName = nameResolver.getFqName(id)
-                createStubForType(fqName, realParent)
+                //                val isFunctionType = KotlinBuiltIns.getInstance().isExactFunctionType(fqName)
+                val typeStub = createStubForType(fqName, realParent)
+                val argumentList = type.getArgumentList()
+                if (argumentList.isNotEmpty()) {
+                    val typeArgList = KotlinPlaceHolderStubImpl<JetTypeArgumentList>(typeStub, JetStubElementTypes.TYPE_ARGUMENT_LIST)
+                    argumentList.forEach { typeArgument ->
+                        val typeProjection = KotlinTypeProjectionStubImpl(typeArgList, JetProjectionKind.NONE.ordinal())
+                        val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(typeProjection, JetStubElementTypes.TYPE_REFERENCE)
+                        createTypeStub(typeArgument.getType(), typeReference)
+                    }
+                }
             }
             ProtoBuf.Type.Constructor.Kind.TYPE_PARAMETER -> {
                 //TODO: rocket science goes here
@@ -177,14 +192,23 @@ private fun createStubForPackageName(packageDirectiveStub: KotlinPlaceHolderStub
     }
 }
 
-private fun createStubForType(typeFqName: FqName, parent: StubElement<out PsiElement>) {
+//TODO_r: naming HELL
+private fun createStubForType(typeFqName: FqName, parent: StubElement<out PsiElement>): KotlinUserTypeStub? {
     val segments = typeFqName.pathSegments().toArrayList()
     assert(segments.notEmpty)
     var current: StubElement<out PsiElement> = parent
     var next: StubElement<out PsiElement>? = null
+    var result: KotlinUserTypeStub? = null
+    //TODO_R: really?
     while (true) {
         val lastSegment = segments.popLast()
-        current = next ?: KotlinUserTypeStubImpl(current, isAbsoluteInRootPackage = false)
+        if (next != null) {
+            current = next!!
+        }
+        else {
+            result = KotlinUserTypeStubImpl(current, isAbsoluteInRootPackage = false)
+            current = result!!
+        }
         if (segments.notEmpty) {
             next = KotlinUserTypeStubImpl(current, isAbsoluteInRootPackage = false)
         }
@@ -193,6 +217,7 @@ private fun createStubForType(typeFqName: FqName, parent: StubElement<out PsiEle
             break
         }
     }
+    return result!!
 }
 
 private fun <T> MutableList<T>.popLast(): T {
