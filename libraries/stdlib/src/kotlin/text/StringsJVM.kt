@@ -139,9 +139,6 @@ public fun CharSequence.length(): Int = (this as java.lang.CharSequence).length(
 public val CharSequence.size: Int
     get() = this.length
 
-public val String.size: Int
-    get() = length()
-
 public fun String.toBoolean(): Boolean = java.lang.Boolean.parseBoolean(this)
 public fun String.toShort(): Short = java.lang.Short.parseShort(this)
 public fun String.toInt(): Int = java.lang.Integer.parseInt(this)

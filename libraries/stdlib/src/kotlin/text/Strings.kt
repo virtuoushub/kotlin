@@ -65,6 +65,12 @@ public val String.indices: IntRange
     get() = 0..length() - 1
 
 /**
+ * Returns the index of the last character in the String or -1 if the String is empty
+ */
+public val String.lastIndex: Int
+    get() = this.length() - 1
+
+/**
  * Returns a subsequence specified by given set of indices.
  */
 public fun CharSequence.slice(indices: Iterable<Int>): CharSequence {
