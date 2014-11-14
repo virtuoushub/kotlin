@@ -50,7 +50,7 @@ public abstract class CompiledStubBuilderBase(
 ) {
     protected fun createCallableStub(parentStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
         val callableStub = doCreateCallableStub(callableProto, parentStub)
-        createModifierListStub(callableStub, callableProto.getFlags(), ignoreModality = true)
+        createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = true)
         if (callableProto.hasReceiverType()) {
             createTypeReferenceStub(callableStub, callableProto.getReceiverType())
         }
@@ -70,6 +70,7 @@ public abstract class CompiledStubBuilderBase(
         val parameterListStub = KotlinPlaceHolderStubImpl<JetParameterList>(callableStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
         for (valueParameter in callableProto.getValueParameterList()) {
             val name = nameResolver.getName(valueParameter.getName())
+            val isVararg = valueParameter.hasVarargElementType()
             val parameterStub = KotlinParameterStubImpl(
                     parameterListStub,
                     name = name.asString().ref(),
@@ -78,7 +79,11 @@ public abstract class CompiledStubBuilderBase(
                     hasValOrValNode = false,
                     isMutable = false
             )
-            createTypeReferenceStub(parameterStub, valueParameter.getType())
+            if (isVararg) {
+                createModifierListStub(parameterStub, listOf(JetTokens.VARARG_KEYWORD))
+            }
+            val typeProto = if (isVararg) valueParameter.getVarargElementType() else valueParameter.getType()
+            createTypeReferenceStub(parameterStub, typeProto)
         }
     }
 
@@ -188,7 +193,8 @@ private fun <T> MutableList<T>.popFirst(): T {
     return first!!
 }
 
-fun createModifierListStub(
+//TODO_r: merge utilities
+fun createModifierListStubForDeclaration(
         parent: StubElement<out PsiElement>,
         flags: Int,
         ignoreModality: Boolean = false
@@ -204,6 +210,18 @@ fun createModifierListStub(
             JetStubElementTypes.MODIFIER_LIST
     )
 }
+
+fun createModifierListStub(
+        parent: StubElement<out PsiElement>,
+        modifiers: Collection<JetModifierKeywordToken>
+) {
+    KotlinModifierListStubImpl(
+            parent,
+            ModifierMaskUtils.computeMask { it in modifiers },
+            JetStubElementTypes.MODIFIER_LIST
+    )
+}
+
 
 private fun modalityToModifier(modality: Modality): JetModifierKeywordToken {
     return when (modality) {

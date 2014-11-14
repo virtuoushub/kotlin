@@ -56,7 +56,7 @@ public class CompiledClassStubBuilder(
 
     public fun createStub() {
         createRootStub()
-        createModifierListStub(rootStub, classProto.getFlags())
+        createModifierListStubForDeclaration(rootStub, classProto.getFlags())
         createConstructorStub()
         createClassBodyAndMemberStubs()
     }
