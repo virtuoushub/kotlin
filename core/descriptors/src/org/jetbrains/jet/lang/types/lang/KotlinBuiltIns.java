@@ -756,6 +756,10 @@ public class KotlinBuiltIns {
         return isTypeConstructorFqNameInSet(type, fqNames.functionClasses);
     }
 
+    public boolean isExactFunctionType(@NotNull FqName type) {
+        return fqNames.functionClasses.contains(type.toUnsafe());
+    }
+
     public boolean isExactExtensionFunctionType(@NotNull JetType type) {
         return isTypeConstructorFqNameInSet(type, fqNames.extensionFunctionClasses);
     }
