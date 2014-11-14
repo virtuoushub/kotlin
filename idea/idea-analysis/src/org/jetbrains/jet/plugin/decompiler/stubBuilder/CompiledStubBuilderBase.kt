@@ -42,6 +42,7 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Visibility
 import org.jetbrains.jet.lang.psi.JetParameterList
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinParameterStubImpl
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Callable.CallableKind
+import com.intellij.util.io.StringRef
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
@@ -223,3 +224,8 @@ private fun visibilityToModifier(visibility: Visibility): JetModifierKeywordToke
         else -> throw IllegalStateException("Unexpected visibility: $visibility")
     }
 }
+
+
+//TODO_r: eliminate toString().ref
+//TODO_r: move to some util?
+fun String.ref() = StringRef.fromString(this)

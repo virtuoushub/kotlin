@@ -107,6 +107,3 @@ public class CompiledClassStubBuilder(
         KotlinPlaceHolderStubImpl<JetParameterList>(rootStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
     }
 }
-
-//TODO: eliminate toString().ref
-fun String.ref() = StringRef.fromString(this)
