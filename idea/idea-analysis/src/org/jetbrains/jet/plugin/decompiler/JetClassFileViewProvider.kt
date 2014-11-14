@@ -24,6 +24,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.SingleRootFileViewProvider
 import org.jetbrains.jet.plugin.JetLanguage
 import kotlin.properties.Delegates
+import org.jetbrains.jet.lang.psi.JetFile
 
 public class JetClassFileViewProvider(
         manager: PsiManager,
@@ -40,7 +41,8 @@ public class JetClassFileViewProvider(
         return if (!isInternal) jetClsFile!!.getText() else ""
     }
 
-    override fun createFile(project: Project, file: VirtualFile, fileType: FileType): PsiFile? = jetClsFile
+    //TODO: this is hack obv
+    override fun createFile(project: Project, file: VirtualFile, fileType: FileType): PsiFile? = JetFile(this, true)
 
     override fun createCopy(copy: VirtualFile): SingleRootFileViewProvider {
         return JetClassFileViewProvider(getManager(), copy, false, isInternal)
