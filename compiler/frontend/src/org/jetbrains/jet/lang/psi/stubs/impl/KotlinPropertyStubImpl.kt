@@ -26,7 +26,7 @@ import com.intellij.psi.PsiElement
 
 public class KotlinPropertyStubImpl(
         parent: StubElement<out PsiElement>,
-        private val name: StringRef,
+        private val name: StringRef?,
         private val isVar: Boolean,
         private val isTopLevel: Boolean,
         private val hasDelegate: Boolean,
