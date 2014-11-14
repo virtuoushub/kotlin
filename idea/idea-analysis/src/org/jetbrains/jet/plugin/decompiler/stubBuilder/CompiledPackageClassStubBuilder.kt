@@ -32,12 +32,12 @@ public class CompiledPackageClassStubBuilder(
     public fun createStub(): KotlinFileStub {
         val fileStub = createFileStub(packageFqName)
         for (callableProto in packageProto.getMemberList()) {
-            createCallableStub(fileStub, callableProto)
+            createCallableStub(fileStub, callableProto, isTopLevel = true)
         }
         return fileStub
     }
 
-    override fun getInternalFqName(name: String): FqName? {
-        return packageFqName.child(Name.identifier(name))
+    override fun getInternalFqName(name: Name): FqName? {
+        return packageFqName.child(name)
     }
 }

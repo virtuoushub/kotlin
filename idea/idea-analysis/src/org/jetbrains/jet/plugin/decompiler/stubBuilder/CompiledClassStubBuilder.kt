@@ -32,13 +32,7 @@ import org.jetbrains.jet.lang.psi.JetClassBody
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinPlaceHolderStubImpl
 import org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes
 import com.intellij.util.io.StringRef
-import org.jetbrains.jet.lexer.JetModifierKeywordToken
-import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Visibility
-import org.jetbrains.jet.lexer.JetTokens
-import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Modality
 import com.intellij.psi.PsiNamedElement
-import org.jetbrains.jet.lang.psi.stubs.impl.KotlinModifierListStubImpl
-import org.jetbrains.jet.lang.psi.stubs.impl.ModifierMaskUtils
 import org.jetbrains.jet.lang.psi.JetParameterList
 import kotlin.properties.Delegates
 
@@ -52,7 +46,7 @@ public class CompiledClassStubBuilder(
     private val classProto = classData.getClassProto()
     private var rootStub: KotlinStubWithFqName<out PsiNamedElement> by Delegates.notNull()
 
-    override fun getInternalFqName(name: String) = null
+    override fun getInternalFqName(name: Name) = classFqName.child(name)
 
     public fun createStub() {
         createRootStub()
@@ -64,7 +58,7 @@ public class CompiledClassStubBuilder(
     private fun createClassBodyAndMemberStubs() {
         val classBody = KotlinPlaceHolderStubImpl<JetClassBody>(rootStub, JetStubElementTypes.CLASS_BODY)
         for (callableProto in classProto.getMemberList()) {
-            createCallableStub(classBody, callableProto)
+            createCallableStub(classBody, callableProto, isTopLevel = false)
         }
     }
 

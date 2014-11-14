@@ -43,14 +43,20 @@ import org.jetbrains.jet.lang.psi.JetParameterList
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinParameterStubImpl
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Callable.CallableKind
 import com.intellij.util.io.StringRef
+import org.jetbrains.jet.lang.resolve.name.Name
+import org.jetbrains.jet.lang.psi.JetNullableType
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
         protected val packageFqName: FqName
 ) {
-    protected fun createCallableStub(parentStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
-        val callableStub = doCreateCallableStub(callableProto, parentStub)
-        createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = true)
+    protected fun createCallableStub(
+            parentStub: StubElement<out PsiElement>,
+            callableProto: ProtoBuf.Callable,
+            isTopLevel: Boolean
+    ) {
+        val callableStub = doCreateCallableStub(callableProto, parentStub, isTopLevel)
+        createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = isTopLevel)
         if (callableProto.hasReceiverType()) {
             createTypeReferenceStub(callableStub, callableProto.getReceiverType())
         }
@@ -87,22 +93,27 @@ public abstract class CompiledStubBuilderBase(
         }
     }
 
-    private fun doCreateCallableStub(callableProto: ProtoBuf.Callable, parentStub: StubElement<out PsiElement>): StubElement<out PsiElement> {
+    private fun doCreateCallableStub(
+            callableProto: ProtoBuf.Callable,
+            parentStub: StubElement<out PsiElement>,
+            isTopLevel: Boolean
+    ): StubElement<out PsiElement> {
         val callableKind = Flags.CALLABLE_KIND.get(callableProto.getFlags())
-        val callableName = nameResolver.getName(callableProto.getName()).asString()
+        val callableName = nameResolver.getName(callableProto.getName())
         val callableFqName = getInternalFqName(callableName)
         val hasReceiverType = callableProto.hasReceiverType()
-        val callableNameRef = callableName.ref()
+        val callableNameRef = callableName.asString().ref()
         return when (callableKind) {
             ProtoBuf.Callable.CallableKind.FUN -> {
+                val isAbstract = Flags.MODALITY.get(callableProto.getFlags()) == Modality.ABSTRACT
                 KotlinFunctionStubImpl(
                         parentStub,
                         callableNameRef,
-                        isTopLevel = callableFqName != null,
+                        isTopLevel = isTopLevel,
                         fqName = callableFqName,
                         isExtension = hasReceiverType,
                         hasBlockBody = true,
-                        hasBody = true,
+                        hasBody = !isAbstract,
                         hasTypeParameterListBeforeFunctionName = false
                 )
             }
@@ -110,7 +121,7 @@ public abstract class CompiledStubBuilderBase(
                 KotlinPropertyStubImpl(
                         parentStub, callableNameRef,
                         isVar = callableKind == CallableKind.VAR,
-                        isTopLevel = callableFqName != null,
+                        isTopLevel = isTopLevel,
                         hasDelegate = false,
                         hasDelegateExpression = false,
                         hasInitializer = false,
@@ -124,14 +135,17 @@ public abstract class CompiledStubBuilderBase(
         }
     }
 
-    protected abstract fun getInternalFqName(name: String): FqName?
+    protected abstract fun getInternalFqName(name: Name): FqName?
 
     private fun createTypeStub(type: ProtoBuf.Type, parent: StubElement<out PsiElement>) {
         val id = type.getConstructor().getId()
+        //TODO_R: really?
+        val isNullable = type.hasNullable() && type.getNullable()
+        val realParent = if (isNullable) KotlinPlaceHolderStubImpl<JetNullableType>(parent, JetStubElementTypes.NULLABLE_TYPE) else parent
         when (type.getConstructor().getKind()) {
             ProtoBuf.Type.Constructor.Kind.CLASS -> {
                 val fqName = nameResolver.getFqName(id)
-                createStubForType(fqName, parent)
+                createStubForType(fqName, realParent)
             }
             ProtoBuf.Type.Constructor.Kind.TYPE_PARAMETER -> {
                 //TODO: rocket science goes here
