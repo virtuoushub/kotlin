@@ -16,3 +16,6 @@ public val String.ext: String
     get() = this
 
 public fun Int.ext(): Int = this + 3
+
+private fun funWithVarargParam(c: Int, vararg v: Int) {
+}
