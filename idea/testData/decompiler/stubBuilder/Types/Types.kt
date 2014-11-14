@@ -6,5 +6,6 @@ abstract class Types {
     abstract val map: Map<Int, Int>
     abstract val nullableMap: Map<Int?, Int?>?
     abstract val projections: Map<in Int, out String>
-//    val function: () -> Unit = {}
+    val function: () -> Unit = {}
+    abstract val functionWithParam: (String, Int) -> List<String>
 }

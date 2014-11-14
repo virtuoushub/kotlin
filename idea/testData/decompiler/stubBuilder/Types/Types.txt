@@ -5,6 +5,45 @@ PsiJetFileStubImpl[package=test]
     MODIFIER_LIST:[abstract internal]
     VALUE_PARAMETER_LIST:
     CLASS_BODY:
+      PROPERTY:[fqName=test.Types.function, hasDelegate=false, hasDelegateExpression=false, hasInitializer=false, hasReceiverTypeRef=false, hasReturnTypeRef=true, isTopLevel=false, isVar=false, name=function]
+        MODIFIER_LIST:[internal final]
+        TYPE_REFERENCE:
+          FUNCTION_TYPE:
+            VALUE_PARAMETER_LIST:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  REFERENCE_EXPRESSION:[referencedName=kotlin]
+                REFERENCE_EXPRESSION:[referencedName=Unit]
+      PROPERTY:[fqName=test.Types.functionWithParam, hasDelegate=false, hasDelegateExpression=false, hasInitializer=false, hasReceiverTypeRef=false, hasReturnTypeRef=true, isTopLevel=false, isVar=false, name=functionWithParam]
+        MODIFIER_LIST:[abstract internal]
+        TYPE_REFERENCE:
+          FUNCTION_TYPE:
+            VALUE_PARAMETER_LIST:
+              VALUE_PARAMETER:[fqName=null, hasDefaultValue=false, hasValOrValNode=false, isMutable=false, name=null]
+                TYPE_REFERENCE:
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    USER_TYPE:[isAbsoluteInRootPackage=false]
+                      REFERENCE_EXPRESSION:[referencedName=kotlin]
+                    REFERENCE_EXPRESSION:[referencedName=String]
+              VALUE_PARAMETER:[fqName=null, hasDefaultValue=false, hasValOrValNode=false, isMutable=false, name=null]
+                TYPE_REFERENCE:
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    USER_TYPE:[isAbsoluteInRootPackage=false]
+                      REFERENCE_EXPRESSION:[referencedName=kotlin]
+                    REFERENCE_EXPRESSION:[referencedName=Int]
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  REFERENCE_EXPRESSION:[referencedName=kotlin]
+                REFERENCE_EXPRESSION:[referencedName=List]
+                TYPE_ARGUMENT_LIST:
+                  TYPE_PROJECTION:[projectionKind=NONE]
+                    TYPE_REFERENCE:
+                      USER_TYPE:[isAbsoluteInRootPackage=false]
+                        USER_TYPE:[isAbsoluteInRootPackage=false]
+                          REFERENCE_EXPRESSION:[referencedName=kotlin]
+                        REFERENCE_EXPRESSION:[referencedName=String]
       PROPERTY:[fqName=test.Types.list, hasDelegate=false, hasDelegateExpression=false, hasInitializer=false, hasReceiverTypeRef=false, hasReturnTypeRef=true, isTopLevel=false, isVar=false, name=list]
         MODIFIER_LIST:[abstract internal]
         TYPE_REFERENCE:
