@@ -50,6 +50,9 @@ public abstract class CompiledStubBuilderBase(
     protected fun createCallableStub(parentStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
         val callableStub = doCreateCallableStub(callableProto, parentStub)
         createModifierListStub(callableStub, callableProto.getFlags(), ignoreModality = true)
+        if (callableProto.hasReceiverType()) {
+            createTypeReferenceStub(callableStub, callableProto.getReceiverType())
+        }
         createValueParametersStub(callableStub, callableProto)
         createTypeReferenceStub(callableStub, callableProto.getReturnType())
     }
@@ -82,47 +85,34 @@ public abstract class CompiledStubBuilderBase(
         val callableKind = Flags.CALLABLE_KIND.get(callableProto.getFlags())
         val callableName = nameResolver.getName(callableProto.getName()).asString()
         val callableFqName = getInternalFqName(callableName)
+        val hasReceiverType = callableProto.hasReceiverType()
         val callableNameRef = callableName.ref()
         return when (callableKind) {
-            ProtoBuf.Callable.CallableKind.FUN ->
+            ProtoBuf.Callable.CallableKind.FUN -> {
                 KotlinFunctionStubImpl(
                         parentStub,
                         callableNameRef,
                         isTopLevel = callableFqName != null,
                         fqName = callableFqName,
-                        isExtension = callableProto.hasReceiverType(),
+                        isExtension = hasReceiverType,
                         hasBlockBody = true,
                         hasBody = true,
                         hasTypeParameterListBeforeFunctionName = false
                 )
-        //TODO: merge these two
-            ProtoBuf.Callable.CallableKind.VAL ->
+            }
+            ProtoBuf.Callable.CallableKind.VAL, ProtoBuf.Callable.CallableKind.VAR -> {
                 KotlinPropertyStubImpl(
                         parentStub, callableNameRef,
-                        isVar = false,
+                        isVar = callableKind == CallableKind.VAR,
                         isTopLevel = callableFqName != null,
                         hasDelegate = false,
                         hasDelegateExpression = false,
                         hasInitializer = false,
-                        hasReceiverTypeRef = false,
+                        hasReceiverTypeRef = hasReceiverType,
                         hasReturnTypeRef = true,
                         fqName = callableFqName
                 )
-        //TODO: merge these two
-            ProtoBuf.Callable.CallableKind.VAR ->
-                KotlinPropertyStubImpl(
-                        parentStub,
-                        callableNameRef,
-                        isVar = true,
-                        isTopLevel = callableFqName != null,
-                        hasDelegate = false,
-                        hasDelegateExpression = false,
-                        hasInitializer = false,
-                        hasReceiverTypeRef = false,
-                        hasReturnTypeRef = true,
-                        fqName = callableFqName
-                )
-
+            }
             ProtoBuf.Callable.CallableKind.CONSTRUCTOR -> throw IllegalStateException("Stubs for constructors are not supported!")
             else -> throw IllegalStateException("Unknown callable kind $callableKind")
         }
