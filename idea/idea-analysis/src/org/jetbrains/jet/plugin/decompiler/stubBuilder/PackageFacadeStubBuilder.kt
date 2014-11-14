@@ -21,23 +21,34 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf
 import org.jetbrains.jet.lang.resolve.name.FqName
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.lang.psi.stubs.KotlinFileStub
+import org.jetbrains.jet.descriptors.serialization.ClassDataFinder
+import org.jetbrains.jet.lang.resolve.name.ClassId
+import org.jetbrains.jet.descriptors.serialization.ClassData
 
-public class CompiledPackageClassStubBuilder(
+public class PackageFacadeStubBuilder(
         packageData: PackageData,
-        packageFqName: FqName
-) : CompiledStubBuilderBase(packageData.getNameResolver(), packageFqName) {
+        val packageFqName: FqName
+) {
+    //TODO: does it belong here
+    private val throwingClassDataFinder = object : ClassDataFinder {
+        override fun findClassData(classId: ClassId) = throw UnsupportedOperationException()
+    }
 
+    private val c = ClsStubBuilderContext(
+            packageData.getNameResolver(),
+            MemberFqNameProvider(packageFqName.toUnsafe()),
+            TypeParameterContext.EMPTY,
+            throwingClassDataFinder
+    )
+
+    private val memberStubBuilder = CallableStubBuilder(c)
     private val packageProto = packageData.getPackageProto()
 
     public fun createStub(): KotlinFileStub {
         val fileStub = createFileStub(packageFqName)
         for (callableProto in packageProto.getMemberList()) {
-            createCallableStub(fileStub, callableProto)
+            memberStubBuilder.createCallableStub(fileStub, callableProto, isTopLevel = true)
         }
         return fileStub
-    }
-
-    override fun getInternalFqName(name: String): FqName? {
-        return packageFqName.child(Name.identifier(name))
     }
 }

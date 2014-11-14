@@ -27,6 +27,9 @@ import org.jetbrains.jet.lang.resolve.kotlin.KotlinBinaryClassCache
 import org.jetbrains.jet.lang.resolve.kotlin.header.KotlinClassHeader
 import org.jetbrains.jet.descriptors.serialization.JavaProtoBufUtil
 import org.jetbrains.jet.lang.psi.JetFile
+import org.jetbrains.jet.plugin.decompiler.textBuilder.LocalClassFinder
+import org.jetbrains.jet.plugin.decompiler.textBuilder.LocalClassDataFinder
+import com.intellij.openapi.diagnostic.Logger
 
 public class KotlinClsStubBuilder : ClsStubBuilder() {
     override fun getStubVersion() = ClassFileStubBuilder.STUB_VERSION + 1
@@ -48,19 +51,25 @@ public class KotlinClsStubBuilder : ClsStubBuilder() {
         val header = kotlinBinaryClass.getClassHeader()
         val packageFqName = classFqName.parent()
         return when (header.kind) {
-            KotlinClassHeader.Kind.PACKAGE_FACADE -> CompiledPackageClassStubBuilder(
+            KotlinClassHeader.Kind.PACKAGE_FACADE -> PackageFacadeStubBuilder(
                     JavaProtoBufUtil.readPackageDataFrom(header.annotationData), packageFqName
             ).createStub()
 
             KotlinClassHeader.Kind.CLASS -> {
+                //TODO_R: logic belongs somewhere
                 val fileStub = createFileStub(packageFqName)
-                CompiledClassStubBuilder(
-                        JavaProtoBufUtil.readClassDataFrom(header.annotationData),
-                        classFqName, packageFqName, fileStub, file
-                ).createStub()
+                //TODO_R: null?
+                val localClassFinder = LocalClassFinder(file.getParent()!!, packageFqName)
+                val localClassDataFinder = LocalClassDataFinder(localClassFinder, LOG)
+                ClassStubBuilderForTopLevelClass(JavaProtoBufUtil.readClassDataFrom(header.annotationData), classFqName, fileStub, localClassDataFinder).createStub()
                 fileStub
             }
             else -> throw IllegalStateException("Should have processed " + file.getPath() + " with ${header.kind}")
         }
+    }
+
+    class object {
+        val LOG = Logger.getInstance(javaClass<KotlinClsStubBuilder>())
+
     }
 }
