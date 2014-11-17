@@ -17,4 +17,26 @@ class TypeParams<in T1 : Any, out T2, T3 : (Int) -> Int, T4, T5 : Any?, T6 : T5,
 
     fun <G1 : Any?, G2 : G1, G3> withOwnParamsAndTypeConstraints(p1: G1, p2: G2, p3: G3, p4: T1, p5: T2) where G3 : G1, G3 : String, G3 : String? {
     }
+
+    fun <T1, T2, T3> withOwnParamsClashing(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) {
+    }
+
+    fun <T1> T1.withOwnParamExtension(p: T1) {
+    }
+
+    fun T1.withOwnParamExtensionAfterName<T1>(p: T1) {
+    }
+
+    val <G1> withOwnParam: G1
+        get() = throw IllegalStateException()
+
+    val <G1: Int?> withOwnBoundedParam: G1
+        get() = throw IllegalStateException()
+
+    val <G1: T2> withOwnBoundedParamByOther: G1
+        get() = throw IllegalStateException()
+
+    val useSomeParam: T1
+        get() = throw IllegalStateException()
+
 }
