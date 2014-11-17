@@ -16,7 +16,6 @@
 
 package org.jetbrains.jet.plugin.decompiler.stubBuilder
 
-import org.jetbrains.jet.descriptors.serialization.NameResolver
 import com.intellij.psi.stubs.StubElement
 import com.intellij.psi.PsiElement
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf
@@ -25,26 +24,26 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Modality
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinFunctionStubImpl
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinPropertyStubImpl
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Callable.CallableKind
-import org.jetbrains.jet.lang.resolve.name.Name
-import org.jetbrains.jet.lang.resolve.name.FqName
 
 //TODO: name
-public class CompiledStubBuilderForMembers(
-        context: ClsStubBuilderContext
-) : CompiledStubBuilderBase(context) {
-
+public class CallableStubBuilder(
+        val context: ClsStubBuilderContext
+)  {
     public fun createCallableStub(
             parentStub: StubElement<out PsiElement>,
             callableProto: ProtoBuf.Callable,
             isTopLevel: Boolean
     ) {
+        val contextWithTypeParams = context.withTypeParams(callableProto.getTypeParameterList())
+        val typeStubBuilder = TypeStubBuilder(contextWithTypeParams)
         val callableStub = doCreateCallableStub(callableProto, parentStub, isTopLevel)
         createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = isTopLevel)
+        typeStubBuilder.createTypeParameterListStub(callableStub, callableProto.getTypeParameterList())
         if (callableProto.hasReceiverType()) {
-            createTypeReferenceStub(callableStub, callableProto.getReceiverType())
+            typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReceiverType())
         }
-        createValueParametersStub(callableStub, callableProto)
-        createTypeReferenceStub(callableStub, callableProto.getReturnType())
+        typeStubBuilder.createValueParametersStub(callableStub, callableProto)
+        typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReturnType())
     }
 
     private fun doCreateCallableStub(
@@ -53,8 +52,8 @@ public class CompiledStubBuilderForMembers(
             isTopLevel: Boolean
     ): StubElement<out PsiElement> {
         val callableKind = Flags.CALLABLE_KIND.get(callableProto.getFlags())
-        val callableName = c.nameResolver.getName(callableProto.getName())
-        val callableFqName = c.memberFqNameProvider.getFqNameForMember(callableName)
+        val callableName = context.nameResolver.getName(callableProto.getName())
+        val callableFqName = context.memberFqNameProvider.getFqNameForMember(callableName)
         val hasReceiverType = callableProto.hasReceiverType()
         val callableNameRef = callableName.asString().ref()
         return when (callableKind) {
@@ -68,7 +67,7 @@ public class CompiledStubBuilderForMembers(
                         isExtension = hasReceiverType,
                         hasBlockBody = true,
                         hasBody = !isAbstract,
-                        hasTypeParameterListBeforeFunctionName = false
+                        hasTypeParameterListBeforeFunctionName = callableProto.getTypeParameterList().isNotEmpty()
                 )
             }
             ProtoBuf.Callable.CallableKind.VAL, ProtoBuf.Callable.CallableKind.VAR -> {

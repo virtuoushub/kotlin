@@ -48,13 +48,13 @@ public class KotlinClsStubBuilder : ClsStubBuilder() {
         val header = kotlinBinaryClass.getClassHeader()
         val packageFqName = classFqName.parent()
         return when (header.kind) {
-            KotlinClassHeader.Kind.PACKAGE_FACADE -> CompiledPackageClassStubBuilder(
+            KotlinClassHeader.Kind.PACKAGE_FACADE -> PackageFacadeStubBuilder(
                     JavaProtoBufUtil.readPackageDataFrom(header.annotationData), packageFqName
             ).createStub()
 
             KotlinClassHeader.Kind.CLASS -> {
                 val fileStub = createFileStub(packageFqName)
-                CompiledClassStubBuilder(
+                ClassStubBuilder(
                         JavaProtoBufUtil.readClassDataFrom(header.annotationData),
                         classFqName, packageFqName, fileStub
                 ).createStub()
