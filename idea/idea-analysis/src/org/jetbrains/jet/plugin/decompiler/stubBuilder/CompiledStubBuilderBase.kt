@@ -21,8 +21,6 @@ import org.jetbrains.jet.descriptors.serialization.Flags
 import org.jetbrains.jet.descriptors.serialization.NameResolver
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinFileStubImpl
-import org.jetbrains.jet.lang.psi.stubs.impl.KotlinFunctionStubImpl
-import org.jetbrains.jet.lang.psi.stubs.impl.KotlinPropertyStubImpl
 import org.jetbrains.jet.lang.resolve.name.FqName
 import com.intellij.psi.PsiElement
 import org.jetbrains.jet.lang.psi.stubs.impl.KotlinPlaceHolderStubImpl
@@ -51,41 +49,25 @@ import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeProjectionStubImpl
 import org.jetbrains.jet.lang.psi.JetProjectionKind
 import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type.Argument.Projection
-import org.jetbrains.jet.lang.psi.stubs.elements.JetPlaceHolderStubElementType
 import org.jetbrains.jet.lang.psi.JetFunctionType
 import org.jetbrains.jet.lang.psi.JetFunctionTypeReceiver
 
 public abstract class CompiledStubBuilderBase(
-        protected val nameResolver: NameResolver,
-        protected val packageFqName: FqName
+        protected val c: ClsStubBuilderContext
 ) {
-    protected fun createCallableStub(
-            parentStub: StubElement<out PsiElement>,
-            callableProto: ProtoBuf.Callable,
-            isTopLevel: Boolean
-    ) {
-        val callableStub = doCreateCallableStub(callableProto, parentStub, isTopLevel)
-        createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = isTopLevel)
-        if (callableProto.hasReceiverType()) {
-            createTypeReferenceStub(callableStub, callableProto.getReceiverType())
-        }
-        createValueParametersStub(callableStub, callableProto)
-        createTypeReferenceStub(callableStub, callableProto.getReturnType())
-    }
-
     //TODO: visibility?
     protected fun createTypeReferenceStub(parent: StubElement<out PsiElement>, typeProto: ProtoBuf.Type) {
         val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(parent, JetStubElementTypes.TYPE_REFERENCE)
         createTypeStub(typeProto, typeReference)
     }
 
-    private fun createValueParametersStub(callableStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
+    protected fun createValueParametersStub(callableStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
         if (Flags.CALLABLE_KIND.get(callableProto.getFlags()) != CallableKind.FUN) {
             return
         }
         val parameterListStub = KotlinPlaceHolderStubImpl<JetParameterList>(callableStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
         for (valueParameter in callableProto.getValueParameterList()) {
-            val name = nameResolver.getName(valueParameter.getName())
+            val name = c.nameResolver.getName(valueParameter.getName())
             val isVararg = valueParameter.hasVarargElementType()
             val parameterStub = KotlinParameterStubImpl(
                     parameterListStub,
@@ -103,50 +85,6 @@ public abstract class CompiledStubBuilderBase(
         }
     }
 
-    private fun doCreateCallableStub(
-            callableProto: ProtoBuf.Callable,
-            parentStub: StubElement<out PsiElement>,
-            isTopLevel: Boolean
-    ): StubElement<out PsiElement> {
-        val callableKind = Flags.CALLABLE_KIND.get(callableProto.getFlags())
-        val callableName = nameResolver.getName(callableProto.getName())
-        val callableFqName = getInternalFqName(callableName)
-        val hasReceiverType = callableProto.hasReceiverType()
-        val callableNameRef = callableName.asString().ref()
-        return when (callableKind) {
-            ProtoBuf.Callable.CallableKind.FUN -> {
-                val isAbstract = Flags.MODALITY.get(callableProto.getFlags()) == Modality.ABSTRACT
-                KotlinFunctionStubImpl(
-                        parentStub,
-                        callableNameRef,
-                        isTopLevel = isTopLevel,
-                        fqName = callableFqName,
-                        isExtension = hasReceiverType,
-                        hasBlockBody = true,
-                        hasBody = !isAbstract,
-                        hasTypeParameterListBeforeFunctionName = false
-                )
-            }
-            ProtoBuf.Callable.CallableKind.VAL, ProtoBuf.Callable.CallableKind.VAR -> {
-                KotlinPropertyStubImpl(
-                        parentStub, callableNameRef,
-                        isVar = callableKind == CallableKind.VAR,
-                        isTopLevel = isTopLevel,
-                        hasDelegate = false,
-                        hasDelegateExpression = false,
-                        hasInitializer = false,
-                        hasReceiverTypeRef = hasReceiverType,
-                        hasReturnTypeRef = true,
-                        fqName = callableFqName
-                )
-            }
-            ProtoBuf.Callable.CallableKind.CONSTRUCTOR -> throw IllegalStateException("Stubs for constructors are not supported!")
-            else -> throw IllegalStateException("Unknown callable kind $callableKind")
-        }
-    }
-
-    protected abstract fun getInternalFqName(name: Name): FqName?
-
     //TODO_R: parameter order inconsistent
     private fun createTypeStub(type: ProtoBuf.Type, parent: StubElement<out PsiElement>) {
         val id = type.getConstructor().getId()
@@ -156,7 +94,7 @@ public abstract class CompiledStubBuilderBase(
         when (type.getConstructor().getKind()) {
             ProtoBuf.Type.Constructor.Kind.CLASS -> {
                 //TODO_r: add proto/stub specifiers to this code
-                val fqName = nameResolver.getFqName(id)
+                val fqName = c.nameResolver.getFqName(id)
                 val isFunctionType = KotlinBuiltIns.getInstance().isExactFunctionType(fqName)
                 val isExtensionFunctionType = KotlinBuiltIns.getInstance().isExactExtensionFunctionType(fqName)
                 val typeArgumentList = type.getArgumentList()
@@ -199,9 +137,8 @@ public abstract class CompiledStubBuilderBase(
                 }
             }
             ProtoBuf.Type.Constructor.Kind.TYPE_PARAMETER -> {
-
-                //TODO: rocket science goes here
-//                throw IllegalStateException("Unexpected $type")
+                println(id)
+                createStubForType(FqName.topLevel(c.typeParameters.typeParameters.get(id)), realParent)
             }
         }
     }

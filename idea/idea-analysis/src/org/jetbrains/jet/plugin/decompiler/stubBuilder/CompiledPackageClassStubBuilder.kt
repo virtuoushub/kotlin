@@ -24,20 +24,17 @@ import org.jetbrains.jet.lang.psi.stubs.KotlinFileStub
 
 public class CompiledPackageClassStubBuilder(
         packageData: PackageData,
-        packageFqName: FqName
-) : CompiledStubBuilderBase(packageData.getNameResolver(), packageFqName) {
+        val packageFqName: FqName
+) : CompiledStubBuilderBase(ClsStubBuilderContext(packageData.getNameResolver(), MemberFqNameProvider(packageFqName), TypeParameterContext.EMPTY)) {
 
     private val packageProto = packageData.getPackageProto()
 
     public fun createStub(): KotlinFileStub {
         val fileStub = createFileStub(packageFqName)
+        val memberStubBuilder = CompiledStubBuilderForMembers(c)
         for (callableProto in packageProto.getMemberList()) {
-            createCallableStub(fileStub, callableProto, isTopLevel = true)
+            memberStubBuilder.createCallableStub(fileStub, callableProto, isTopLevel = true)
         }
         return fileStub
-    }
-
-    override fun getInternalFqName(name: Name): FqName? {
-        return packageFqName.child(name)
     }
 }

@@ -49,12 +49,10 @@ public class CompiledClassStubBuilder(
         private val classFqName: FqName,
         packageFqName: FqName,
         private val parent: StubElement<out PsiElement>,
-        private val file: VirtualFile
-) : CompiledStubBuilderBase(classData.getNameResolver(), packageFqName) {
+        typeParameterContext: TypeParameterContext = TypeParameterContext.EMPTY
+) : CompiledStubBuilderBase(ClsStubBuilderContext(classData.getNameResolver(), MemberFqNameProvider(classFqName), typeParameterContext)) {
     private val classProto = classData.getClassProto()
     private var rootStub: KotlinStubWithFqName<out PsiNamedElement> by Delegates.notNull()
-
-    override fun getInternalFqName(name: Name) = classFqName.child(name)
 
     public fun createStub() {
         createRootStub()
@@ -74,7 +72,7 @@ public class CompiledClassStubBuilder(
         val typeParameterListStub = KotlinPlaceHolderStubImpl<JetTypeParameterList>(rootStub, JetStubElementTypes.TYPE_PARAMETER_LIST)
         val protosForWhereClause = arrayListOf<Pair<Name, Type>>()
         for (typeParameterProto in typeParameterProtoList) {
-            val name = nameResolver.getName(typeParameterProto.getName())
+            val name = c.nameResolver.getName(typeParameterProto.getName())
             val typeParameterStub = KotlinTypeParameterStubImpl(
                     typeParameterListStub,
                     name = name.asString().ref(),
@@ -104,9 +102,11 @@ public class CompiledClassStubBuilder(
     }
 
     private fun createClassBodyAndMemberStubs() {
+        val typeParamNames = classProto.getTypeParameterList().map { c.nameResolver.getName(it.getName()) }
         val classBody = KotlinPlaceHolderStubImpl<JetClassBody>(rootStub, JetStubElementTypes.CLASS_BODY)
+        val memberStubBuilder = CompiledStubBuilderForMembers(c.withTypeParameters(typeParamNames))
         for (callableProto in classProto.getMemberList()) {
-            createCallableStub(classBody, callableProto, isTopLevel = false)
+            memberStubBuilder.createCallableStub(classBody, callableProto, isTopLevel = false)
         }
     }
 
@@ -139,7 +139,7 @@ public class CompiledClassStubBuilder(
         val superTypeStrings = classProto.getSupertypeList().map {
             type ->
             assert(type.getConstructor().getKind() == ProtoBuf.Type.Constructor.Kind.CLASS)
-            val superFqName = nameResolver.getFqName(type.getConstructor().getId())
+            val superFqName = c.nameResolver.getFqName(type.getConstructor().getId())
             superFqName.asString()
         }
         return superTypeStrings.filter { it != "kotlin.Any" }.map { it.ref() }.copyToArray()
@@ -155,7 +155,7 @@ public class CompiledClassStubBuilder(
         if (constructor.getKind() != ProtoBuf.Type.Constructor.Kind.CLASS) {
             return false
         }
-        val fqName = nameResolver.getFqName(constructor.getId())
+        val fqName = c.nameResolver.getFqName(constructor.getId())
         return KotlinBuiltIns.getInstance().isAny(fqName.toUnsafe()) && this.hasNullable() && this.getNullable()
     }
 }

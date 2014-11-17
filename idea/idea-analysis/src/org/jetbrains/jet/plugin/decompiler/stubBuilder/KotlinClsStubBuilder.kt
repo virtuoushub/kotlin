@@ -56,7 +56,7 @@ public class KotlinClsStubBuilder : ClsStubBuilder() {
                 val fileStub = createFileStub(packageFqName)
                 CompiledClassStubBuilder(
                         JavaProtoBufUtil.readClassDataFrom(header.annotationData),
-                        classFqName, packageFqName, fileStub, file
+                        classFqName, packageFqName, fileStub
                 ).createStub()
                 fileStub
             }
