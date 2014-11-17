@@ -764,6 +764,10 @@ public class KotlinBuiltIns {
         return isTypeConstructorFqNameInSet(type, fqNames.extensionFunctionClasses);
     }
 
+    public boolean isExactExtensionFunctionType(@NotNull FqName type) {
+        return fqNames.extensionFunctionClasses.contains(type.toUnsafe());
+    }
+
     private static boolean isTypeConstructorFqNameInSet(@NotNull JetType type, @NotNull Set<FqNameUnsafe> classes) {
         ClassifierDescriptor declarationDescriptor = type.getConstructor().getDeclarationDescriptor();
 
