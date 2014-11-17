@@ -22,7 +22,7 @@ import org.jetbrains.jet.lang.psi.stubs.KotlinTypeConstraintStub
 import org.jetbrains.jet.lang.psi.stubs.elements.JetStubElementTypes
 import com.intellij.psi.PsiElement
 
-public class KotlinTypeConstraintImpl(
+public class KotlinTypeConstraintStubImpl(
         parent: StubElement<out PsiElement>,
         private val isClassObjectConstraint: Boolean
 ) : KotlinStubBaseImpl<JetTypeConstraint>(parent, JetStubElementTypes.TYPE_CONSTRAINT), KotlinTypeConstraintStub {
