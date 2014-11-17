@@ -53,6 +53,7 @@ import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type.Argument.Projection
 import org.jetbrains.jet.lang.psi.stubs.elements.JetPlaceHolderStubElementType
 import org.jetbrains.jet.lang.psi.JetFunctionType
+import org.jetbrains.jet.lang.psi.JetFunctionTypeReceiver
 
 public abstract class CompiledStubBuilderBase(
         protected val nameResolver: NameResolver,
@@ -153,17 +154,30 @@ public abstract class CompiledStubBuilderBase(
         val realParent = if (isNullable) KotlinPlaceHolderStubImpl<JetNullableType>(parent, JetStubElementTypes.NULLABLE_TYPE) else parent
         when (type.getConstructor().getKind()) {
             ProtoBuf.Type.Constructor.Kind.CLASS -> {
+                //TODO_r: add proto/stub specifiers to this code
                 val fqName = nameResolver.getFqName(id)
                 val isFunctionType = KotlinBuiltIns.getInstance().isExactFunctionType(fqName)
+                val isExtensionFunctionType = KotlinBuiltIns.getInstance().isExactExtensionFunctionType(fqName)
                 val typeArgumentList = type.getArgumentList()
-                if (isFunctionType) {
+                if (isFunctionType || isExtensionFunctionType) {
                     val functionType = KotlinPlaceHolderStubImpl<JetFunctionType>(realParent, JetStubElementTypes.FUNCTION_TYPE)
-                    val returnType = typeArgumentList.last().getType()
+                    if (isExtensionFunctionType) {
+                        val functionTypeReceiverStub
+                                = KotlinPlaceHolderStubImpl<JetFunctionTypeReceiver>(functionType, JetStubElementTypes.FUNCTION_TYPE_RECEIVER)
+                        val receiverTypeProto = typeArgumentList.first().getType()
+                        createTypeReferenceStub(functionTypeReceiverStub, receiverTypeProto)
+                    }
+
                     val parameterList = KotlinPlaceHolderStubImpl<JetParameterList>(functionType, JetStubElementTypes.VALUE_PARAMETER_LIST)
-                    typeArgumentList.subList(0, typeArgumentList.size - 1).forEach { argument ->
+                    //TODO_R: assertion that sub list makes sense
+                    val typeArgumentsWithoutReceiverAndReturnType
+                            = typeArgumentList.subList(if (isExtensionFunctionType) 1 else 0, typeArgumentList.size - 1)
+                    typeArgumentsWithoutReceiverAndReturnType.forEach { argument ->
                         val parameter = KotlinParameterStubImpl(parameterList, fqName = null, name = null, isMutable = false, hasValOrValNode = false, hasDefaultValue = false)
                         createTypeReferenceStub(parameter, argument.getType())
                     }
+
+                    val returnType = typeArgumentList.last().getType()
                     createTypeReferenceStub(functionType, returnType)
                     return
                 }
