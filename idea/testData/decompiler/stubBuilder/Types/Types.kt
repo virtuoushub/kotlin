@@ -8,4 +8,8 @@ abstract class Types {
     abstract val projections: Map<in Int, out String>
     val function: () -> Unit = {}
     abstract val functionWithParam: (String, Int) -> List<String>
+    abstract val extFunction: String.() -> List<String>
+    abstract val extFunctionWithParam: String.(Int, String) -> List<String>
+
+    abstract val extFunctionWithNullables: String.(Int?, String?) -> List<String?>?
 }
