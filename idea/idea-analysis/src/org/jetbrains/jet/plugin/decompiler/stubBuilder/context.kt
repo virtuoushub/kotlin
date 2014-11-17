@@ -25,6 +25,7 @@ public class MemberFqNameProvider(private val parentFqName: FqName) {
     fun getFqNameForMember(name: Name) = parentFqName.child(name)
 }
 
+//TODO_R: this should store a map from id to name, otherwise some inconsistencies may arise
 //TODO: share lists
 class TypeParameterContext(val typeParameters: List<Name>) {
     fun inner(names: List<Name>) = TypeParameterContext(typeParameters + names)
