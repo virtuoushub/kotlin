@@ -181,12 +181,14 @@ public class TypeStubBuilder(
             }
         }
         val howToConstructTypeConstraintList = {
-            val typeConstraintListStub = KotlinPlaceHolderStubImpl<JetTypeConstraintList>(parent, JetStubElementTypes.TYPE_CONSTRAINT_LIST)
-            protosForWhereClause.forEach {
-                val typeConstraintStub = KotlinTypeConstraintStubImpl(typeConstraintListStub, isClassObjectConstraint = false)
-                //TODO: pair usage
-                KotlinNameReferenceExpressionStubImpl(typeConstraintStub, it.first.asString().ref())
-                createTypeReferenceStub(typeConstraintStub, it.second)
+            if (protosForWhereClause.isNotEmpty()) {
+                val typeConstraintListStub = KotlinPlaceHolderStubImpl<JetTypeConstraintList>(parent, JetStubElementTypes.TYPE_CONSTRAINT_LIST)
+                protosForWhereClause.forEach {
+                    val typeConstraintStub = KotlinTypeConstraintStubImpl(typeConstraintListStub, isClassObjectConstraint = false)
+                    //TODO: pair usage
+                    KotlinNameReferenceExpressionStubImpl(typeConstraintStub, it.first.asString().ref())
+                    createTypeReferenceStub(typeConstraintStub, it.second)
+                }
             }
         }
         return howToConstructTypeConstraintList

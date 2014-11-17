@@ -28,7 +28,7 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Callable.CallableKin
 //TODO: name
 public class CallableStubBuilder(
         val context: ClsStubBuilderContext
-)  {
+) {
     public fun createCallableStub(
             parentStub: StubElement<out PsiElement>,
             callableProto: ProtoBuf.Callable,
@@ -38,12 +38,13 @@ public class CallableStubBuilder(
         val typeStubBuilder = TypeStubBuilder(contextWithTypeParams)
         val callableStub = doCreateCallableStub(callableProto, parentStub, isTopLevel)
         createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), ignoreModality = isTopLevel)
-        typeStubBuilder.createTypeParameterListStub(callableStub, callableProto.getTypeParameterList())
+        val createTypeConstraintList = typeStubBuilder.createTypeParameterListStub(callableStub, callableProto.getTypeParameterList())
         if (callableProto.hasReceiverType()) {
             typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReceiverType())
         }
         typeStubBuilder.createValueParametersStub(callableStub, callableProto)
         typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReturnType())
+        createTypeConstraintList()
     }
 
     private fun doCreateCallableStub(
