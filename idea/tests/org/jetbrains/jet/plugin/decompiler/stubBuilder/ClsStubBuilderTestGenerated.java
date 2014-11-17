@@ -48,6 +48,12 @@ public class ClsStubBuilderTestGenerated extends AbstractClsStubBuilderTest {
         doTest(fileName);
     }
 
+    @TestMetadata("TypeParams")
+    public void testTypeParams() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/TypeParams/");
+        doTest(fileName);
+    }
+
     @TestMetadata("Types")
     public void testTypes() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/Types/");

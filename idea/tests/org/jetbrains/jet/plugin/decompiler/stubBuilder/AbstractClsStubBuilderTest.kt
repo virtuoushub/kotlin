@@ -38,6 +38,8 @@ public open class AbstractClsStubBuilderTest : LightCodeInsightFixtureTestCase()
         val classFile = getClassFileToDecompile(sourcePath)
         val stubTreeFromCls = KotlinClsStubBuilder().buildFileStub(FileContentImpl.createByFile(classFile))!!
         val psiFile = myFixture.configureByFile(classFile.getPath())
+        //TODO_R: SOUT!
+        println(psiFile.getText())
         val stubTreeFromDecompiledText = JetFileStubBuilder().buildStubTree(psiFile)
         val expectedText = stubTreeFromDecompiledText.serializeToString()
         Assert.assertEquals(expectedText, stubTreeFromCls.serializeToString())
