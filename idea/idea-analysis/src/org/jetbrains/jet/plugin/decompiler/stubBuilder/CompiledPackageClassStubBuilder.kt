@@ -25,13 +25,13 @@ import org.jetbrains.jet.lang.psi.stubs.KotlinFileStub
 public class CompiledPackageClassStubBuilder(
         packageData: PackageData,
         val packageFqName: FqName
-) : CompiledStubBuilderBase(ClsStubBuilderContext(packageData.getNameResolver(), MemberFqNameProvider(packageFqName), TypeParameterContext.EMPTY)) {
-
+) {
+    private val c = ClsStubBuilderContext(packageData.getNameResolver(), MemberFqNameProvider(packageFqName), TypeParameterContext.EMPTY)
+    private val memberStubBuilder = CompiledStubBuilderForMembers(c)
     private val packageProto = packageData.getPackageProto()
 
     public fun createStub(): KotlinFileStub {
         val fileStub = createFileStub(packageFqName)
-        val memberStubBuilder = CompiledStubBuilderForMembers(c)
         for (callableProto in packageProto.getMemberList()) {
             memberStubBuilder.createCallableStub(fileStub, callableProto, isTopLevel = true)
         }

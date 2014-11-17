@@ -51,12 +51,13 @@ import org.jetbrains.jet.lang.psi.stubs.KotlinUserTypeStub
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type.Argument.Projection
 import org.jetbrains.jet.lang.psi.JetFunctionType
 import org.jetbrains.jet.lang.psi.JetFunctionTypeReceiver
+import org.jetbrains.jet.utils.addToStdlib.singletonOrEmptyList
 
 public abstract class CompiledStubBuilderBase(
         protected val c: ClsStubBuilderContext
 ) {
     //TODO: visibility?
-    protected fun createTypeReferenceStub(parent: StubElement<out PsiElement>, typeProto: ProtoBuf.Type) {
+    fun createTypeReferenceStub(parent: StubElement<out PsiElement>, typeProto: ProtoBuf.Type) {
         val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(parent, JetStubElementTypes.TYPE_REFERENCE)
         createTypeStub(typeProto, typeReference)
     }
@@ -128,16 +129,13 @@ public abstract class CompiledStubBuilderBase(
                         val projectionKind = typeArgument.getProjection().toProjectionKind()
                         val typeProjection = KotlinTypeProjectionStubImpl(typeArgList, projectionKind.ordinal())
                         val token = projectionKind.getToken() as? JetModifierKeywordToken
-                        if (token != null) {
-                            createModifierListStub(typeProjection, listOf(token))
-                        }
+                        createModifierListStub(typeProjection, token.singletonOrEmptyList())
                         val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(typeProjection, JetStubElementTypes.TYPE_REFERENCE)
                         createTypeStub(typeArgument.getType(), typeReference)
                     }
                 }
             }
             ProtoBuf.Type.Constructor.Kind.TYPE_PARAMETER -> {
-                println(id)
                 createStubForType(FqName.topLevel(c.typeParameters.typeParameters.get(id)), realParent)
             }
         }
@@ -235,6 +233,9 @@ fun createModifierListStub(
         parent: StubElement<out PsiElement>,
         modifiers: Collection<JetModifierKeywordToken>
 ) {
+    if (modifiers.isEmpty()) {
+        return
+    }
     KotlinModifierListStubImpl(
             parent,
             ModifierMaskUtils.computeMask { it in modifiers },
