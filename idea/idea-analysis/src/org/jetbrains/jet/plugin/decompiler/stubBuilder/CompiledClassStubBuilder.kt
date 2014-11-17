@@ -35,6 +35,14 @@ import com.intellij.util.io.StringRef
 import com.intellij.psi.PsiNamedElement
 import org.jetbrains.jet.lang.psi.JetParameterList
 import kotlin.properties.Delegates
+import org.jetbrains.jet.lang.psi.JetTypeParameterList
+import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeParameterStubImpl
+import org.jetbrains.jet.descriptors.serialization.ProtoBuf.Type
+import org.jetbrains.jet.lang.psi.JetTypeConstraintList
+import org.jetbrains.jet.lang.psi.JetTypeConstraint
+import org.jetbrains.jet.lang.psi.stubs.impl.KotlinTypeConstraintStubImpl
+import org.jetbrains.jet.lang.psi.stubs.impl.KotlinNameReferenceExpressionStubImpl
+import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns
 
 public class CompiledClassStubBuilder(
         classData: ClassData,
@@ -51,8 +59,48 @@ public class CompiledClassStubBuilder(
     public fun createStub() {
         createRootStub()
         createModifierListStubForDeclaration(rootStub, classProto.getFlags())
+        //TODO: clearer login/naming
+        val typeConstraintBuilder = createTypeParameterListStub()
         createConstructorStub()
+        typeConstraintBuilder()
         createClassBodyAndMemberStubs()
+    }
+
+    private fun createTypeParameterListStub(): () -> Unit {
+        val typeParameterProtoList = classProto.getTypeParameterList()
+
+        if (typeParameterProtoList.isEmpty()) return {}
+
+        val typeParameterListStub = KotlinPlaceHolderStubImpl<JetTypeParameterList>(rootStub, JetStubElementTypes.TYPE_PARAMETER_LIST)
+        val protosForWhereClause = arrayListOf<Pair<Name, Type>>()
+        for (typeParameterProto in typeParameterProtoList) {
+            val name = nameResolver.getName(typeParameterProto.getName())
+            val typeParameterStub = KotlinTypeParameterStubImpl(
+                    typeParameterListStub,
+                    name = name.asString().ref(),
+                    isInVariance = false,
+                    isOutVariance = false
+            )
+            val upperBoundsAsTypes = typeParameterProto.getUpperBoundList()
+            val defaultBounds = upperBoundsAsTypes.singleOrNull()?.isNullableAny() ?: false
+            if (defaultBounds) {
+                continue
+            }
+            if (upperBoundsAsTypes.isNotEmpty()) {
+                createTypeReferenceStub(typeParameterStub, upperBoundsAsTypes.first())
+                protosForWhereClause addAll upperBoundsAsTypes.drop(1).map { Pair(name, it) }
+            }
+        }
+        val howToConstructTypeConstraintList = {
+            val typeConstraintListStub = KotlinPlaceHolderStubImpl<JetTypeConstraintList>(rootStub, JetStubElementTypes.TYPE_CONSTRAINT_LIST)
+            protosForWhereClause.forEach {
+                val typeConstraintStub = KotlinTypeConstraintStubImpl(typeConstraintListStub, isClassObjectConstraint = false)
+                //TODO: pair usage
+                KotlinNameReferenceExpressionStubImpl(typeConstraintStub, it.first.asString().ref())
+                createTypeReferenceStub(typeConstraintStub, it.second)
+            }
+        }
+        return howToConstructTypeConstraintList
     }
 
     private fun createClassBodyAndMemberStubs() {
@@ -99,5 +147,15 @@ public class CompiledClassStubBuilder(
 
     fun createConstructorStub() {
         KotlinPlaceHolderStubImpl<JetParameterList>(rootStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
+    }
+
+
+    private fun Type.isNullableAny(): Boolean {
+        val constructor = getConstructor()
+        if (constructor.getKind() != ProtoBuf.Type.Constructor.Kind.CLASS) {
+            return false
+        }
+        val fqName = nameResolver.getFqName(constructor.getId())
+        return KotlinBuiltIns.getInstance().isAny(fqName.toUnsafe()) && this.hasNullable() && this.getNullable()
     }
 }

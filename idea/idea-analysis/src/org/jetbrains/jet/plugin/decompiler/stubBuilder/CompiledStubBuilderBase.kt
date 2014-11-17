@@ -73,7 +73,8 @@ public abstract class CompiledStubBuilderBase(
         createTypeReferenceStub(callableStub, callableProto.getReturnType())
     }
 
-    private fun createTypeReferenceStub(parent: StubElement<out PsiElement>, typeProto: ProtoBuf.Type) {
+    //TODO: visibility?
+    protected fun createTypeReferenceStub(parent: StubElement<out PsiElement>, typeProto: ProtoBuf.Type) {
         val typeReference = KotlinPlaceHolderStubImpl<JetTypeReference>(parent, JetStubElementTypes.TYPE_REFERENCE)
         createTypeStub(typeProto, typeReference)
     }
@@ -198,8 +199,9 @@ public abstract class CompiledStubBuilderBase(
                 }
             }
             ProtoBuf.Type.Constructor.Kind.TYPE_PARAMETER -> {
+
                 //TODO: rocket science goes here
-                throw IllegalStateException("Unexpected $type")
+//                throw IllegalStateException("Unexpected $type")
             }
         }
     }
