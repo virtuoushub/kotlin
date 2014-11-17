@@ -11,4 +11,7 @@ class TypeParams<in T1: Any, out T2, T3: (Int) -> Int, T4, T5: Any?, T6: T5, T7:
     fun useParamsInTypeArg(p1: List<T1>, p2: Map<T2?, T3?>, p3: (T4).(T1, T2, T3) -> T5) {
 
     }
+
+    fun <G1, G2, G3> withOwnParams(p1: G1, p2: G2, p3: G3, p4: T1, p5: T2) {
+    }
 }
