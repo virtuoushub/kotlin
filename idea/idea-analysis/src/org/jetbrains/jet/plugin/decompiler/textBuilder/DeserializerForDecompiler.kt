@@ -17,7 +17,6 @@
 package org.jetbrains.jet.plugin.decompiler.textBuilder
 
 import org.jetbrains.jet.lang.resolve.name.ClassId
-import org.jetbrains.jet.descriptors.serialization.ClassDataFinder
 import org.jetbrains.jet.descriptors.serialization.JavaProtoBufUtil
 import org.jetbrains.jet.lang.descriptors.*
 import org.jetbrains.jet.lang.descriptors.impl.MutablePackageFragmentDescriptor
@@ -31,13 +30,10 @@ import org.jetbrains.jet.descriptors.serialization.descriptors.DeserializedPacka
 import org.jetbrains.jet.lang.resolve.java.resolver.ErrorReporter
 import org.jetbrains.jet.lang.resolve.java.PackageClassUtils
 import com.intellij.openapi.diagnostic.Logger
-import org.jetbrains.jet.lang.resolve.java.structure.JavaClass
 import org.jetbrains.jet.descriptors.serialization.context.DeserializationGlobalContext
 import org.jetbrains.jet.lang.PlatformToKotlinClassMap
 import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns
-import org.jetbrains.jet.descriptors.serialization.ClassData
 import org.jetbrains.jet.lang.descriptors.impl.ModuleDescriptorImpl
-import org.jetbrains.jet.plugin.decompiler.isKotlinWithCompatibleAbiVersion
 
 public fun DeserializerForDecompiler(classFile: VirtualFile): DeserializerForDecompiler {
     val kotlinClass = KotlinBinaryClassCache.getKotlinBinaryClass(classFile)
@@ -71,22 +67,9 @@ public class DeserializerForDecompiler(val packageDirectory: VirtualFile, val di
         return membersScope.getDescriptors()
     }
 
-    private val localClassFinder = object : KotlinClassFinder {
-        override fun findKotlinClass(javaClass: JavaClass) = findKotlinClass(javaClass.classId)
+    private val localClassFinder = LocalClassFinder(packageDirectory, directoryPackageFqName)
+    private val localClassDataFinder = LocalClassDataFinder(localClassFinder, LOG)
 
-        override fun findKotlinClass(classId: ClassId): KotlinJvmBinaryClass? {
-            if (classId.getPackageFqName() != directoryPackageFqName) {
-                return null
-            }
-            val segments = DeserializedResolverUtils.kotlinFqNameToJavaFqName(classId.getRelativeClassName()).pathSegments()
-            val targetName = segments.joinToString("$", postfix = ".class")
-            val virtualFile = packageDirectory.findChild(targetName)
-            if (virtualFile != null && isKotlinWithCompatibleAbiVersion(virtualFile)) {
-                return KotlinBinaryClassCache.getKotlinBinaryClass(virtualFile)
-            }
-            return null
-        }
-    }
     private val storageManager = LockBasedStorageManager.NO_LOCKS
 
     private val loadersStorage = DescriptorLoadersStorage(storageManager);
@@ -108,18 +91,6 @@ public class DeserializerForDecompiler(val packageDirectory: VirtualFile, val di
         constantLoader.setKotlinClassFinder(localClassFinder)
         constantLoader.setErrorReporter(LOGGING_REPORTER)
         constantLoader.setStorage(loadersStorage)
-    }
-
-    private val classDataFinder = object : ClassDataFinder {
-        override fun findClassData(classId: ClassId): ClassData? {
-            val binaryClass = localClassFinder.findKotlinClass(classId) ?: return null
-            val data = binaryClass.getClassHeader().annotationData
-            if (data == null) {
-                LOG.error("Annotation data missing for ${binaryClass.getClassId()}")
-                return null
-            }
-            return JavaProtoBufUtil.readClassDataFrom(data)
-        }
     }
 
     private val packageFragmentProvider = object : PackageFragmentProvider {
@@ -145,18 +116,12 @@ public class DeserializerForDecompiler(val packageDirectory: VirtualFile, val di
         moduleDescriptor.seal()
         moduleContainingMissingDependencies.seal()
     }
-    val deserializationContext = DeserializationGlobalContext(storageManager, moduleDescriptor, classDataFinder, annotationLoader,
+    val deserializationContext = DeserializationGlobalContext(storageManager, moduleDescriptor, localClassDataFinder, annotationLoader,
                                                               constantLoader, packageFragmentProvider, JavaFlexibleTypeCapabilitiesDeserializer)
 
     private fun createDummyPackageFragment(fqName: FqName): MutablePackageFragmentDescriptor {
         return MutablePackageFragmentDescriptor(moduleDescriptor, fqName)
     }
-
-    private val JavaClass.classId: ClassId
-        get() {
-            val outer = getOuterClass()
-            return if (outer == null) ClassId.topLevel(getFqName()!!) else outer.classId.createNestedClassId(getName())
-        }
 
     class object {
         private val LOG = Logger.getInstance(javaClass<DeserializerForDecompiler>())
