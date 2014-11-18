@@ -42,6 +42,12 @@ public class ClsStubBuilderTestGenerated extends AbstractClsStubBuilderTest {
         doTest(fileName);
     }
 
+    @TestMetadata("NestedClasses")
+    public void testNestedClasses() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/NestedClasses/");
+        doTest(fileName);
+    }
+
     @TestMetadata("TopLevelMembersPackage")
     public void testTopLevelMembersPackage() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/TopLevelMembersPackage/");
