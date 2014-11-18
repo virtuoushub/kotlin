@@ -34,15 +34,21 @@ import com.intellij.psi.PsiNamedElement
 import org.jetbrains.jet.lang.psi.JetParameterList
 import kotlin.properties.Delegates
 
-public class ClassStubBuilder(
+public fun ClassStubBuilderForTopLevelClass(
         classData: ClassData,
+        classFqName: FqName,
+        parent: StubElement<out PsiElement>
+): ClassStubBuilder {
+    val context = ClsStubBuilderContext(classData.getNameResolver(), MemberFqNameProvider(classFqName), TypeParameterContext.EMPTY)
+    return ClassStubBuilder(classFqName, classData.getClassProto(), parent, context)
+}
+
+public class ClassStubBuilder(
         private val classFqName: FqName,
-        packageFqName: FqName,
-        private val parent: StubElement<out PsiElement>,
-        typeParameterContext: TypeParameterContext = TypeParameterContext.EMPTY
+        private val classProto: ProtoBuf.Class,
+        private val parentStub: StubElement<out PsiElement>,
+        private val c: ClsStubBuilderContext
 ) {
-    private val c = ClsStubBuilderContext(classData.getNameResolver(), MemberFqNameProvider(classFqName), typeParameterContext)
-    private val classProto = classData.getClassProto()
     private var rootStub: KotlinStubWithFqName<out PsiNamedElement> by Delegates.notNull()
     private val contextWithTypeParameters = c.withTypeParams(classProto.getTypeParameterList())
     private val typeStubBuilder = TypeStubBuilder(contextWithTypeParameters)
@@ -58,11 +64,13 @@ public class ClassStubBuilder(
     }
 
     private fun createClassBodyAndMemberStubs() {
-        val memberStubBuilder = CallableStubBuilder(contextWithTypeParameters)
         val classBody = KotlinPlaceHolderStubImpl<JetClassBody>(rootStub, JetStubElementTypes.CLASS_BODY)
+        val memberStubBuilder = CallableStubBuilder(contextWithTypeParameters)
         for (callableProto in classProto.getMemberList()) {
             memberStubBuilder.createCallableStub(classBody, callableProto, isTopLevel = false)
         }
+
+        createInnerAndNestedClasses(classBody)
     }
 
     private fun createRootStub() {
@@ -71,7 +79,7 @@ public class ClassStubBuilder(
         val shortName = classFqName.shortName().asString().ref()
         if (kind == ProtoBuf.Class.Kind.OBJECT) {
             rootStub = KotlinObjectStubImpl(
-                    parent, shortName, classFqName, getSuperTypeRefs(),
+                    parentStub, shortName, classFqName, getSuperTypeRefs(),
                     isTopLevel = true,
                     isClassObject = false,
                     isLocal = false,
@@ -80,7 +88,7 @@ public class ClassStubBuilder(
         }
         else {
             rootStub = KotlinClassStubImpl(
-                    JetClassElementType.getStubType(isEnumEntry), parent, classFqName.asString().ref(), shortName,
+                    JetClassElementType.getStubType(isEnumEntry), parentStub, classFqName.asString().ref(), shortName,
                     getSuperTypeRefs(),
                     isTrait = kind == ProtoBuf.Class.Kind.TRAIT,
                     isEnumEntry = kind == ProtoBuf.Class.Kind.ENUM_ENTRY,
@@ -102,6 +110,14 @@ public class ClassStubBuilder(
 
     fun createConstructorStub() {
         KotlinPlaceHolderStubImpl<JetParameterList>(rootStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
+    }
+
+    fun createInnerAndNestedClasses(classBody: KotlinPlaceHolderStubImpl<JetClassBody>) {
+        classProto.getNestedClassNameList().forEach { id ->
+            val nestedClassName = c.nameResolver.getName(id)
+
+        }
+//        ClassStubBuilder()
     }
 }
 
