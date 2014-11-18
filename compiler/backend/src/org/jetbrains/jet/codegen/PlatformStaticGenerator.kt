@@ -34,9 +34,10 @@ class PlatformStaticGenerator(
         val typeMapper = state.getTypeMapper()
         val callable = typeMapper.mapToCallableMethod(descriptor, false, p1.getContext())
         val asmMethod = callable.getAsmMethod()
+        val flags = Opcodes.ACC_STATIC or AsmUtil.getMethodAsmFlags(descriptor, OwnerKind.IMPLEMENTATION)
         val methodVisitor = p2.newMethod(
                 Synthetic(declarationOrigin.element, descriptor),
-                Opcodes.ACC_STATIC or AsmUtil.getMethodAsmFlags(descriptor, OwnerKind.IMPLEMENTATION),
+                flags,
                 asmMethod.getName()!!,
                 asmMethod.getDescriptor()!!,
                 typeMapper.mapSignature(descriptor).getGenericsSignature(),
@@ -44,7 +45,7 @@ class PlatformStaticGenerator(
 
         AnnotationCodegen.forMethod(methodVisitor, typeMapper)!!.genAnnotations(descriptor, asmMethod.getReturnType())
 
-        if (state.getClassBuilderMode() == ClassBuilderMode.FULL) {
+        if (state.getClassBuilderMode() == ClassBuilderMode.FULL && flags and Opcodes.ACC_NATIVE == 0) {
             methodVisitor.visitCode();
             val iv = InstructionAdapter(methodVisitor)
             val classDescriptor = descriptor.getContainingDeclaration() as ClassDescriptor
