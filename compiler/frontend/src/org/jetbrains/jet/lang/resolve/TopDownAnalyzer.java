@@ -31,6 +31,7 @@ import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.resolve.name.FqName;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.resolve.scopes.WritableScope;
+import org.jetbrains.jet.lang.resolve.varianceChecker.VarianceChecker;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -45,6 +46,8 @@ public class TopDownAnalyzer {
     private TypeHierarchyResolver typeHierarchyResolver;
     @NotNull
     private OverrideResolver overrideResolver;
+    @NotNull
+    private VarianceChecker varianceChecker;
     @NotNull
     private OverloadResolver overloadResolver;
     @NotNull
@@ -79,6 +82,11 @@ public class TopDownAnalyzer {
     @Inject
     public void setOverrideResolver(@NotNull OverrideResolver overrideResolver) {
         this.overrideResolver = overrideResolver;
+    }
+
+    @Inject
+    public void setVarianceChecker(@NotNull VarianceChecker varianceChecker) {
+        this.varianceChecker = varianceChecker;
     }
 
     @Inject
@@ -128,6 +136,7 @@ public class TopDownAnalyzer {
         typeHierarchyResolver.process(c, outerScope, owner, declarations);
         declarationResolver.process(c);
         overrideResolver.process(c);
+        varianceChecker.process(c);
         lockScopes(c);
 
         overloadResolver.process(c);

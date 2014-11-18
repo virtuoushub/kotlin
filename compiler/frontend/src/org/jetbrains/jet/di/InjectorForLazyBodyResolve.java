@@ -56,6 +56,7 @@ import org.jetbrains.jet.lang.resolve.ImportsResolver;
 import org.jetbrains.jet.lang.psi.JetImportsFactory;
 import org.jetbrains.jet.lang.resolve.OverloadResolver;
 import org.jetbrains.jet.lang.resolve.OverrideResolver;
+import org.jetbrains.jet.lang.resolve.varianceChecker.VarianceChecker;
 import org.jetbrains.jet.lang.resolve.lazy.KotlinCodeAnalyzer;
 import org.jetbrains.annotations.NotNull;
 import javax.annotation.PreDestroy;
@@ -104,6 +105,7 @@ public class InjectorForLazyBodyResolve {
     private final JetImportsFactory jetImportsFactory;
     private final OverloadResolver overloadResolver;
     private final OverrideResolver overrideResolver;
+    private final VarianceChecker varianceChecker;
 
     public InjectorForLazyBodyResolve(
         @NotNull Project project,
@@ -152,6 +154,7 @@ public class InjectorForLazyBodyResolve {
         this.jetImportsFactory = new JetImportsFactory();
         this.overloadResolver = new OverloadResolver();
         this.overrideResolver = new OverrideResolver();
+        this.varianceChecker = new VarianceChecker(bindingTrace);
 
         this.lazyTopDownAnalyzer.setBodyResolver(bodyResolver);
         this.lazyTopDownAnalyzer.setDeclarationResolver(declarationResolver);
@@ -159,6 +162,7 @@ public class InjectorForLazyBodyResolve {
         this.lazyTopDownAnalyzer.setOverloadResolver(overloadResolver);
         this.lazyTopDownAnalyzer.setOverrideResolver(overrideResolver);
         this.lazyTopDownAnalyzer.setTrace(bindingTrace);
+        this.lazyTopDownAnalyzer.setVarianceChecker(varianceChecker);
 
         bodyResolver.setAnnotationResolver(annotationResolver);
         bodyResolver.setCallResolver(callResolver);
