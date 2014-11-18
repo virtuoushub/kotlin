@@ -21,6 +21,8 @@ import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.core.CoreJavaFileManager;
 import com.intellij.core.JavaCoreApplicationEnvironment;
 import com.intellij.core.JavaCoreProjectEnvironment;
+import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
+import com.intellij.ide.plugins.PluginManagerCoreProxy;
 import com.intellij.lang.java.JavaParserDefinition;
 import com.intellij.mock.MockApplication;
 import com.intellij.mock.MockProject;
@@ -54,7 +56,6 @@ import org.jetbrains.jet.lang.parsing.JetParserDefinition;
 import org.jetbrains.jet.lang.parsing.JetScriptDefinitionProvider;
 import org.jetbrains.jet.lang.psi.JetFile;
 import org.jetbrains.jet.lang.resolve.CodeAnalyzerInitializer;
-import org.jetbrains.jet.lang.resolve.DiagnosticsWithSuppression;
 import org.jetbrains.jet.lang.resolve.kotlin.KotlinBinaryClassCache;
 import org.jetbrains.jet.lang.resolve.kotlin.VirtualFileFinderFactory;
 import org.jetbrains.jet.lang.resolve.lazy.declarations.CliDeclarationProviderFactoryService;
@@ -64,9 +65,9 @@ import org.jetbrains.jet.utils.PathUtil;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static com.intellij.core.CoreApplicationEnvironment.registerApplicationExtensionPoint;
 import static org.jetbrains.jet.cli.common.messages.CompilerMessageSeverity.ERROR;
 import static org.jetbrains.jet.cli.common.messages.CompilerMessageSeverity.WARNING;
 
@@ -82,6 +83,23 @@ public class JetCoreEnvironment {
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration
     ) {
+        return createForProduction(parentDisposable, configuration, ExtensionsConfig.JVM);
+    }
+
+    @NotNull
+    public static JetCoreEnvironment createForJsProduction(
+            @NotNull Disposable parentDisposable,
+            @NotNull CompilerConfiguration configuration
+    ) {
+        return createForProduction(parentDisposable, configuration, ExtensionsConfig.JS);
+    }
+
+    @NotNull
+    private static JetCoreEnvironment createForProduction(
+            @NotNull Disposable parentDisposable,
+            @NotNull CompilerConfiguration configuration,
+            @NotNull ExtensionsConfig extensionsConfig
+    ) {
         // JPS may run many instances of the compiler in parallel (there's an option for compiling independent modules in parallel in IntelliJ)
         // All projects share the same ApplicationEnvironment, and when the last project is disposed, the ApplicationEnvironment is disposed as well
         Disposer.register(parentDisposable, new Disposable() {
@@ -95,7 +113,8 @@ public class JetCoreEnvironment {
             }
         });
         JetCoreEnvironment environment =
-                new JetCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(), configuration);
+                new JetCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(extensionsConfig), configuration);
+
         synchronized (APPLICATION_LOCK) {
             ourProjectCount++;
         }
@@ -104,18 +123,42 @@ public class JetCoreEnvironment {
 
     @TestOnly
     @NotNull
-    public static JetCoreEnvironment createForTests(@NotNull Disposable parentDisposable, @NotNull CompilerConfiguration configuration) {
+    public static JetCoreEnvironment createForTests(
+            @NotNull Disposable parentDisposable,
+            @NotNull CompilerConfiguration configuration
+    ) {
+        return createForTests(parentDisposable, configuration, ExtensionsConfig.JVM);
+    }
+
+    @TestOnly
+    @NotNull
+    public static JetCoreEnvironment createForJsTests(
+            @NotNull Disposable parentDisposable,
+            @NotNull CompilerConfiguration configuration
+    ) {
+        return createForTests(parentDisposable, configuration, ExtensionsConfig.JS);
+    }
+
+    @TestOnly
+    @NotNull
+    private static JetCoreEnvironment createForTests(
+            @NotNull Disposable parentDisposable,
+            @NotNull CompilerConfiguration configuration,
+            @NotNull ExtensionsConfig extensionsConfig
+    ) {
         // Tests are supposed to create a single project and dispose it right after use
-        return new JetCoreEnvironment(parentDisposable, createApplicationEnvironment(parentDisposable), configuration);
+        return new JetCoreEnvironment(parentDisposable, createApplicationEnvironment(parentDisposable, extensionsConfig), configuration);
     }
 
     @NotNull
-    private static JavaCoreApplicationEnvironment getOrCreateApplicationEnvironmentForProduction() {
+    private static JavaCoreApplicationEnvironment getOrCreateApplicationEnvironmentForProduction(
+            @NotNull ExtensionsConfig additionalExtensionsConfig
+    ) {
         synchronized (APPLICATION_LOCK) {
             if (ourApplicationEnvironment != null) return ourApplicationEnvironment;
 
             Disposable parentDisposable = Disposer.newDisposable();
-            ourApplicationEnvironment = createApplicationEnvironment(parentDisposable);
+            ourApplicationEnvironment = createApplicationEnvironment(parentDisposable, additionalExtensionsConfig);
             ourProjectCount = 0;
             Disposer.register(parentDisposable, new Disposable() {
                 @Override
@@ -139,10 +182,14 @@ public class JetCoreEnvironment {
     }
 
     @NotNull
-    private static JavaCoreApplicationEnvironment createApplicationEnvironment(@NotNull Disposable parentDisposable) {
+    private static JavaCoreApplicationEnvironment createApplicationEnvironment(
+            @NotNull Disposable parentDisposable,
+            @NotNull ExtensionsConfig additionalExtensionsConfig
+    ) {
         JavaCoreApplicationEnvironment applicationEnvironment = new JavaCoreApplicationEnvironment(parentDisposable);
 
-        registerApplicationExtensionPointsForCLI();
+        registerApplicationExtensionPointsAndExtensionsFrom(ExtensionsConfig.COMMON);
+        registerApplicationExtensionPointsAndExtensionsFrom(additionalExtensionsConfig);
 
         registerApplicationServicesForCLI(applicationEnvironment);
         registerApplicationServices(applicationEnvironment);
@@ -150,12 +197,21 @@ public class JetCoreEnvironment {
         return applicationEnvironment;
     }
 
-    private static void registerApplicationExtensionPointsForCLI() {
-        registerApplicationExtensionPoint(DiagnosticsWithSuppression.SuppressStringProvider.EP_NAME,
-                                          DiagnosticsWithSuppression.SuppressStringProvider.class);
+    private static void registerApplicationExtensionPointsAndExtensionsFrom(ExtensionsConfig config) {
+        String configFilePath = "extensionPoints/" + config.fileName;
 
-        registerApplicationExtensionPoint(DiagnosticsWithSuppression.DiagnosticSuppressor.EP_NAME,
-                                          DiagnosticsWithSuppression.DiagnosticSuppressor.class);
+        IdeaPluginDescriptorImpl descriptor;
+        File jar = PathUtil.getPathUtilJar();
+        if (jar.isFile()) {
+            descriptor = PluginManagerCoreProxy.loadDescriptorFromJar(jar, configFilePath);
+        }
+        else {
+            // hack for load extensions when compiler run directly from out directory(e.g. in tests)
+            File productionDir = jar.getParentFile();
+            File pluginDir = new File(productionDir, "idea");
+            descriptor = PluginManagerCoreProxy.loadDescriptorFromDir(pluginDir, configFilePath);
+        }
+        PluginManagerCoreProxy.registerExtensionPointsAndExtensions(Extensions.getRootArea(), Collections.singletonList(descriptor));
     }
 
     private static void registerApplicationServicesForCLI(@NotNull JavaCoreApplicationEnvironment applicationEnvironment) {
@@ -304,6 +360,18 @@ public class JetCoreEnvironment {
         }
         else {
             throw new CompileEnvironmentException(message);
+        }
+    }
+
+    private static enum ExtensionsConfig {
+        COMMON("common.xml"),
+        JVM("kotlin2jvm.xml"),
+        JS("kotlin2js.xml");
+
+        String fileName;
+
+        ExtensionsConfig(String fileName) {
+            this.fileName = fileName;
         }
     }
 }
