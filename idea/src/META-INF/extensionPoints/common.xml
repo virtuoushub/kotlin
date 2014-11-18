@@ -1,0 +1,8 @@
+<idea-plugin>
+    <extensionPoints>
+        <extensionPoint qualifiedName="org.jetbrains.kotlin.suppressStringProvider"
+                        interface="org.jetbrains.jet.lang.resolve.DiagnosticsWithSuppression$SuppressStringProvider"/>
+        <extensionPoint qualifiedName="org.jetbrains.kotlin.diagnosticSuppressor"
+                        interface="org.jetbrains.jet.lang.resolve.DiagnosticsWithSuppression$DiagnosticSuppressor"/>
+    </extensionPoints>
+</idea-plugin>
