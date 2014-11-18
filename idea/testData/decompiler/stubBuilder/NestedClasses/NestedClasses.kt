@@ -1,25 +1,25 @@
 package test
 
-class NestedClasses {
+class NestedClasses<TOuter> {
     fun f() {
     }
 
-    private class Nested {
-        fun f() {
+    private class Nested<TN> {
+        fun f(p1: TN) {
         }
 
-        public class NN {
-            fun f() {
+        public class NN<TNN> {
+            fun f(p1: TNN) {
             }
         }
 
-        inner class NI {
-            fun f() {
+        inner class NI<TNI : TN> {
+            fun f(p1: TN, p2: TNI) {
             }
         }
     }
 
-    public inner class Inner {
+    public inner class Inner<TI : TOuter> {
         fun f() {
         }
 
