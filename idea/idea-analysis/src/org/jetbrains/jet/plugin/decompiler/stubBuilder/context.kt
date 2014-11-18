@@ -19,6 +19,7 @@ package org.jetbrains.jet.plugin.decompiler.stubBuilder
 import org.jetbrains.jet.descriptors.serialization.NameResolver
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.lang.resolve.name.FqName
+import org.jetbrains.jet.descriptors.serialization.ClassDataFinder
 
 //TODO: naming all over the place
 public class MemberFqNameProvider(private val parentFqName: FqName) {
@@ -38,12 +39,15 @@ class TypeParameterContext(val typeParameters: List<Name>) {
 class ClsStubBuilderContext(
         val nameResolver: NameResolver,
         val memberFqNameProvider: MemberFqNameProvider,
-        val typeParameters: TypeParameterContext
+        val typeParameters: TypeParameterContext,
+        //TODO_R: is it okay to have in base context
+        val classDataFinder: ClassDataFinder
 )
 
 fun ClsStubBuilderContext.withTypeParameters(newTypeParameters: List<Name>) = ClsStubBuilderContext(
         this.nameResolver,
         this.memberFqNameProvider,
-        this.typeParameters.inner(newTypeParameters)
+        this.typeParameters.inner(newTypeParameters),
+        this.classDataFinder
 )
 

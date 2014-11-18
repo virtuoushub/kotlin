@@ -273,17 +273,37 @@ private fun <T> MutableList<T>.popFirst(): T {
     return first!!
 }
 
+private enum class FlagsToModifiers {
+    MODALITY {
+        override fun getModifiers(flags: Int): JetModifierKeywordToken? {
+            //TODO_R: inline or oneline
+            return modalityToModifier(Flags.MODALITY.get(flags))
+        }
+    }
+
+    VISIBILITY {
+        override fun getModifiers(flags: Int): JetModifierKeywordToken? {
+            //TODO_R: inline or oneline
+            return visibilityToModifier(Flags.VISIBILITY.get(flags))
+        }
+    }
+
+    INNER {
+        override fun getModifiers(flags: Int): JetModifierKeywordToken? {
+            return if (Flags.INNER.get(flags)) JetTokens.INNER_KEYWORD else null
+        }
+    }
+
+    abstract fun getModifiers(flags: Int): JetModifierKeywordToken?
+}
+
 //TODO_r: merge utilities
 fun createModifierListStubForDeclaration(
         parent: StubElement<out PsiElement>,
         flags: Int,
-        ignoreModality: Boolean = false
+        vararg flagsToTranslate: FlagsToModifiers
 ) {
-    val modifiers = arrayListOf(visibilityToModifier(Flags.VISIBILITY.get(flags)))
-    if (!ignoreModality) {
-        modifiers.add(modalityToModifier(Flags.MODALITY.get(flags)))
-    }
-
+    val modifiers = flagsToTranslate.map { it.getModifiers(flags) }.filterNotNull()
     KotlinModifierListStubImpl(
             parent,
             ModifierMaskUtils.computeMask { it in modifiers },

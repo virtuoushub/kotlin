@@ -21,12 +21,26 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf
 import org.jetbrains.jet.lang.resolve.name.FqName
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.lang.psi.stubs.KotlinFileStub
+import org.jetbrains.jet.descriptors.serialization.ClassDataFinder
+import org.jetbrains.jet.lang.resolve.name.ClassId
+import org.jetbrains.jet.descriptors.serialization.ClassData
 
 public class PackageFacadeStubBuilder(
         packageData: PackageData,
         val packageFqName: FqName
 ) {
-    private val c = ClsStubBuilderContext(packageData.getNameResolver(), MemberFqNameProvider(packageFqName), TypeParameterContext.EMPTY)
+    //TODO: does it belong here
+    private val throwingClassDataFinder = object : ClassDataFinder {
+        override fun findClassData(classId: ClassId) = throw UnsupportedOperationException()
+    }
+
+    private val c = ClsStubBuilderContext(
+            packageData.getNameResolver(),
+            MemberFqNameProvider(packageFqName),
+            TypeParameterContext.EMPTY,
+            throwingClassDataFinder
+    )
+
     private val memberStubBuilder = CallableStubBuilder(c)
     private val packageProto = packageData.getPackageProto()
 
