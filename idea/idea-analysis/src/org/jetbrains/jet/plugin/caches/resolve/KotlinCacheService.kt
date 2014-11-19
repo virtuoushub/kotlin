@@ -45,12 +45,19 @@ public fun JetElement.getLazyResolveSession(): ResolutionFacade {
     return KotlinCacheService.getInstance(getProject()).getAnalysisFacade(listOf(this))
 }
 
-public fun JetElement.getAnalysisResults(vararg extraFiles: JetFile): AnalyzeExhaust {
+public fun JetFile.getAnalysisResults(vararg extraFiles: JetFile): AnalyzeExhaust {
     return KotlinCacheService.getInstance(getProject()).getAnalysisResults(listOf(this) + extraFiles.toList())
 }
 
 public fun JetElement.getBindingContext(): BindingContext {
-    return getAnalysisResults().bindingContext
+    return getLazyResolveSession().resolveToElement(this)
+}
+
+public fun JetElement.getAnalyzeExhaust(): AnalyzeExhaust {
+    val session = getLazyResolveSession()
+    val module = session.getModuleDescriptorForElement(this)
+    val bindingContext = session.resolveToElement(this)
+    return AnalyzeExhaust.success(bindingContext, module)
 }
 
 public fun getAnalysisResultsForElements(elements: Collection<JetElement>): AnalyzeExhaust {

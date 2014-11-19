@@ -20,6 +20,8 @@ import com.intellij.openapi.editor.Editor
 import org.jetbrains.jet.lang.psi.JetFunctionLiteralArgument
 import org.jetbrains.jet.plugin.util.psiModificationUtil.moveInsideParentheses
 import org.jetbrains.jet.plugin.caches.resolve.getBindingContext
+import org.jetbrains.jet.plugin.caches.resolve.getLazyResolveSession
+import org.jetbrains.jet.plugin.project.AnalyzerFacadeWithCache
 
 public class MoveLambdaInsideParenthesesIntention : JetSelfTargetingIntention<JetFunctionLiteralArgument>(
         "move.lambda.inside.parentheses", javaClass()) {
@@ -27,7 +29,7 @@ public class MoveLambdaInsideParenthesesIntention : JetSelfTargetingIntention<Je
     override fun isApplicableTo(element: JetFunctionLiteralArgument): Boolean = true
 
     override fun applyTo(element: JetFunctionLiteralArgument, editor: Editor) {
-        element.moveInsideParentheses(element.getBindingContext())
+        element.moveInsideParentheses(AnalyzerFacadeWithCache.getContextForElement(element))
     }
 }
 

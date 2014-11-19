@@ -17,6 +17,7 @@ import org.jetbrains.jet.plugin.caches.resolve.getAnalysisResults
 import org.jetbrains.jet.lang.psi.JetFile
 import org.jetbrains.jet.lang.psi.JetAnnotationEntry
 import java.util.Collections
+import org.jetbrains.jet.plugin.caches.resolve.getAnalyzeExhaust
 
 public object CreateClassFromConstructorCallActionFactory: JetSingleIntentionActionFactory() {
     override fun createAction(diagnostic: Diagnostic): IntentionAction? {
@@ -39,7 +40,7 @@ public object CreateClassFromConstructorCallActionFactory: JetSingleIntentionAct
 
         val file = fullCallExpr.getContainingFile() as? JetFile ?: return null
 
-        val (context, moduleDescriptor) = callExpr.getAnalysisResults()
+        val (context, moduleDescriptor) = callExpr.getAnalyzeExhaust()
 
         val call = callExpr.getCall(context) ?: return null
         val targetParent = getTargetParentByCall(call, file) ?: return null

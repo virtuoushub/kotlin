@@ -28,6 +28,7 @@ import org.jetbrains.jet.lang.descriptors.PackageViewDescriptor
 import org.jetbrains.jet.lang.resolve.name.FqName
 import java.util.ArrayList
 import org.jetbrains.jet.utils.addToStdlib.singletonOrEmptyList
+import org.jetbrains.jet.plugin.caches.resolve.getAnalyzeExhaust
 
 public object CreateClassFromReferenceExpressionActionFactory : JetIntentionActionsFactory() {
     override fun doCreateActions(diagnostic: Diagnostic): List<IntentionAction> {
@@ -38,7 +39,7 @@ public object CreateClassFromReferenceExpressionActionFactory : JetIntentionActi
 
         val name = refExpr.getReferencedName()
 
-        val (context, moduleDescriptor) = refExpr.getAnalysisResults()
+        val (context, moduleDescriptor) = refExpr.getAnalyzeExhaust()
 
         val fullCallExpr = refExpr.getParent()?.let {
             when {

@@ -76,6 +76,7 @@ import org.jetbrains.jet.lang.psi.JetElement
 import org.jetbrains.jet.plugin.util.attachment.attachmentByPsiFile
 import com.intellij.openapi.diagnostic.Attachment
 import org.jetbrains.jet.plugin.util.attachment.mergeAttachments
+import org.jetbrains.jet.plugin.caches.resolve.getLazyResolveSession
 
 private val RECEIVER_NAME = "\$receiver"
 private val THIS_NAME = "this"
@@ -220,7 +221,7 @@ class KotlinEvaluator(val codeFragment: JetCodeFragment,
         private fun JetNamedFunction.getParametersForDebugger(): ParametersDescriptor {
             return runReadAction {
                 val parameters = ParametersDescriptor()
-                val bindingContext = getAnalysisResults().bindingContext
+                val bindingContext = getLazyResolveSession().resolveToElement(this)
                 val descriptor = bindingContext[BindingContext.FUNCTION, this]
                 if (descriptor != null) {
                     val receiver = descriptor.getExtensionReceiverParameter()
