@@ -21,7 +21,7 @@ import org.jetbrains.jet.lang.resolve.BindingContext
 import org.jetbrains.jet.lang.types.ErrorUtils
 import kotlin.platform.platformStatic
 
-public data open class AnalyzeExhaust private (
+public data open class AnalyzeExhaust protected (
         public val bindingContext: BindingContext,
         public val moduleDescriptor: ModuleDescriptor
 ) {
