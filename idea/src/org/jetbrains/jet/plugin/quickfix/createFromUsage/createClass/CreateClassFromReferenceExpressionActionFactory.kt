@@ -13,7 +13,6 @@ import org.jetbrains.jet.lang.psi.JetQualifiedExpression
 import org.jetbrains.jet.lang.psi.psiUtil.getAssignmentByLHS
 import org.jetbrains.jet.lang.psi.JetCallExpression
 import org.jetbrains.jet.lang.psi.JetImportDirective
-import org.jetbrains.jet.plugin.caches.resolve.getAnalysisResults
 import org.jetbrains.jet.lang.resolve.calls.callUtil.getCall
 import org.jetbrains.jet.lang.psi.JetFile
 import org.jetbrains.jet.lang.resolve.BindingContext
@@ -23,11 +22,6 @@ import org.jetbrains.jet.lang.psi.JetReferenceExpression
 import java.util.Arrays
 import org.jetbrains.jet.lang.psi.JetDotQualifiedExpression
 import org.jetbrains.jet.lang.psi.psiUtil.isDotReceiver
-import com.intellij.codeInsight.daemon.quickFix.CreateClassOrPackageFix
-import org.jetbrains.jet.lang.descriptors.PackageViewDescriptor
-import org.jetbrains.jet.lang.resolve.name.FqName
-import java.util.ArrayList
-import org.jetbrains.jet.utils.addToStdlib.singletonOrEmptyList
 import org.jetbrains.jet.plugin.caches.resolve.getAnalyzeExhaust
 
 public object CreateClassFromReferenceExpressionActionFactory : JetIntentionActionsFactory() {

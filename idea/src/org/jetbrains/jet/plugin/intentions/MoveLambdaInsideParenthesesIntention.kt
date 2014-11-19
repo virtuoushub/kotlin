@@ -19,8 +19,6 @@ package org.jetbrains.jet.plugin.intentions
 import com.intellij.openapi.editor.Editor
 import org.jetbrains.jet.lang.psi.JetFunctionLiteralArgument
 import org.jetbrains.jet.plugin.util.psiModificationUtil.moveInsideParentheses
-import org.jetbrains.jet.plugin.caches.resolve.getBindingContext
-import org.jetbrains.jet.plugin.caches.resolve.getLazyResolveSession
 import org.jetbrains.jet.plugin.project.AnalyzerFacadeWithCache
 
 public class MoveLambdaInsideParenthesesIntention : JetSelfTargetingIntention<JetFunctionLiteralArgument>(
