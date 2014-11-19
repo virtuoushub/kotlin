@@ -45,7 +45,7 @@ public fun JetElement.getLazyResolveSession(): ResolutionFacade {
     return KotlinCacheService.getInstance(getProject()).getAnalysisFacade(listOf(this))
 }
 
-public fun JetFile.getAnalysisResults(vararg extraFiles: JetFile): AnalyzeExhaust {
+public fun JetFile.analyzeFile(vararg extraFiles: JetFile): AnalyzeExhaust {
     return KotlinCacheService.getInstance(getProject()).getAnalysisResults(listOf(this) + extraFiles.toList())
 }
 

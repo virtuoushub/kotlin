@@ -101,7 +101,7 @@ public class JetPsiChecker implements Annotator, HighlightRangeExtension {
 
         JetFile file = (JetFile) element.getContainingFile();
 
-        AnalyzeExhaust analyzeExhaust = ResolvePackage.getAnalysisResults(file);
+        AnalyzeExhaust analyzeExhaust = ResolvePackage.analyzeFile(file);
         if (analyzeExhaust.isError()) {
             throw new ProcessCanceledException(analyzeExhaust.getError());
         }

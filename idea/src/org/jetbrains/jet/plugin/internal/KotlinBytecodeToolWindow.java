@@ -107,7 +107,7 @@ public class KotlinBytecodeToolWindow extends JPanel implements Disposable {
 
             GenerationState state;
             try {
-                AnalyzeExhaust exhaust = ResolvePackage.getAnalysisResults(jetFile);
+                AnalyzeExhaust exhaust = ResolvePackage.analyzeFile(jetFile);
                 if (exhaust.isError()) {
                     return printStackTraceToString(exhaust.getError());
                 }

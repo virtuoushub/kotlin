@@ -44,7 +44,7 @@ import org.jetbrains.eval4j.jdi.asValue
 import org.jetbrains.jet.lang.psi.JetNamedFunction
 import org.jetbrains.jet.codegen.ClassFileFactory
 import org.jetbrains.jet.OutputFileCollection
-import org.jetbrains.jet.plugin.caches.resolve.getAnalysisResults
+import org.jetbrains.jet.plugin.caches.resolve.analyzeFile
 import org.jetbrains.jet.lang.psi.JetCodeFragment
 import org.jetbrains.jet.lang.psi.codeFragmentUtil.skipVisibilityCheck
 import com.intellij.openapi.diagnostic.Logger
@@ -281,7 +281,7 @@ class KotlinEvaluator(val codeFragment: JetCodeFragment,
                     throw EvaluateExceptionUtil.createEvaluateException(e.getMessage())
                 }
 
-                val analyzeExhaust = this.getAnalysisResults(createFlexibleTypesFile())
+                val analyzeExhaust = this.analyzeFile(createFlexibleTypesFile())
                 if (analyzeExhaust.isError()) {
                     throw EvaluateExceptionUtil.createEvaluateException(analyzeExhaust.error)
                 }
