@@ -17,6 +17,8 @@
 package org.jetbrains.jet.utils;
 
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,11 +27,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class LibraryUtils {
     private static final Logger LOG = Logger.getInstance(LibraryUtils.class);
@@ -37,7 +43,9 @@ public class LibraryUtils {
     public static final String TITLE_KOTLIN_JVM_RUNTIME_AND_STDLIB;
     public static final String TITLE_KOTLIN_JAVASCRIPT_STDLIB;
     public static final String TITLE_KOTLIN_JAVASCRIPT_LIB;
-    private static final String MANIFEST_PATH = "META-INF/MANIFEST.MF";
+    private static final String METAINF = "META-INF/";
+    private static final String MANIFEST_PATH = METAINF + "MANIFEST.MF";
+    private static final String METAINF_RESOURCES = METAINF + "resources/";
     private static final Attributes.Name KOTLIN_JS_MODULE_NAME = new Attributes.Name("Kotlin-JS-Module-Name");
 
     static {
@@ -150,6 +158,82 @@ public class LibraryUtils {
         return checkImplTitle(library, TITLE_KOTLIN_JVM_RUNTIME_AND_STDLIB);
     }
 
+
+    private static void readZip(String file, @NotNull List<JsFile> jsFiles) throws IOException {
+        ZipFile zipFile = new ZipFile(file);
+        try {
+            traverseArchive(zipFile, jsFiles);
+        }
+        finally {
+            zipFile.close();
+        }
+    }
+
+    private static void traverseArchive(@NotNull ZipFile zipFile, @NotNull List<JsFile> jsFiles) throws IOException {
+        Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
+        while (zipEntries.hasMoreElements()) {
+            ZipEntry entry = zipEntries.nextElement();
+            String entryName = entry.getName();
+            if (!entry.isDirectory() && entryName.endsWith(".js")) {
+                if (entryName.startsWith(METAINF)) {
+                    if(entryName.startsWith(METAINF_RESOURCES)) {
+                        entryName = entryName.substring(METAINF_RESOURCES.length());
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                InputStream stream = zipFile.getInputStream(entry);
+                String text = StringUtil.convertLineSeparators(FileUtil.loadTextAndClose(stream));
+                JsFile jsFile = new JsFile(entryName, text);
+                jsFiles.add(jsFile);
+            }
+        }
+    }
+
+    public static void loadJsFilesFromZipOrJar(@NotNull File file, @NotNull List<JsFile> jsFiles) {
+        try {
+            readZip(file.getAbsolutePath(), jsFiles);
+        }
+        catch (IOException ex) {
+            LOG.warn(ex.toString());
+        }
+    }
+
+    public static void loadJsFilesFromZipOrJar(@NotNull String filePath, @NotNull List<JsFile> jsFiles) {
+        try {
+            readZip(filePath, jsFiles);
+        }
+        catch (IOException ex) {
+            LOG.warn(ex.toString());
+        }
+    }
+
+    public static List<JsFile> loadJsFiles(@NotNull List<String> libraries) {
+        List<JsFile> jsFiles = new ArrayList<JsFile>();
+        for (String library : libraries) {
+            loadJsFilesFromZipOrJar(library, jsFiles);
+        }
+        return jsFiles;
+    }
+
+    public static void copyJsFilesFromLibraries(@NotNull List<String> libraries, @NotNull String  outputLibraryJSPath) {
+        List<JsFile> jsFiles = loadJsFiles(libraries);
+        writeJsFiles(jsFiles, outputLibraryJSPath);
+    }
+
+    public static void writeJsFiles(@NotNull List<JsFile> jsFiles, @NotNull String  outputLibraryJSPath) {
+        for(JsFile jsFile : jsFiles) {
+            try {
+                File outputFile = new File(outputLibraryJSPath, jsFile.relativePath);
+                FileUtil.writeToFile(outputFile, jsFile.content.getBytes());
+            }
+            catch (IOException ex) {
+                LOG.warn(ex.getMessage());
+            }
+        }
+    }
+
     public static VirtualFile getJarFile(@NotNull List<VirtualFile> classesRoots, @NotNull String jarName) {
         for (VirtualFile root : classesRoots) {
             if (root.getName().equals(jarName)) {
@@ -159,4 +243,20 @@ public class LibraryUtils {
 
         return null;
     }
+
+    public static class JsFile {
+        public final String relativePath;
+        public final String content;
+
+        public JsFile(@NotNull String relativePath, @NotNull String content) {
+            this.relativePath = relativePath;
+            this.content = content;
+        }
+
+        @Override
+        public String toString() {
+            return "JsFile(" + relativePath + ")";
+        }
+    }
+
 }
