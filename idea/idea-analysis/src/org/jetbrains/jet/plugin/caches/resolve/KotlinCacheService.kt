@@ -50,7 +50,7 @@ public fun JetFile.analyzeFile(vararg extraFiles: JetFile): AnalyzeExhaust {
 }
 
 public fun JetElement.getBindingContext(): BindingContext {
-    return getLazyResolveSession().resolveToElement(this)
+    return KotlinCacheService.getInstance(getProject()).getAnalysisResults(listOf(this)).bindingContext
 }
 
 public fun JetElement.getAnalyzeExhaust(): AnalyzeExhaust {
