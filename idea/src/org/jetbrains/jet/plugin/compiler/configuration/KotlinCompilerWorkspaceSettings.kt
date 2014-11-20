@@ -31,6 +31,7 @@ State(
 )
 public class KotlinCompilerWorkspaceSettings() : PersistentStateComponent<KotlinCompilerWorkspaceSettings> {
     public var incrementalCompilationEnabled: Boolean = false
+    public var outputDirectory: String? = "lib"
 
     override fun getState(): KotlinCompilerWorkspaceSettings {
         return this

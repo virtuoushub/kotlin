@@ -53,6 +53,9 @@ public class KotlinCompilerConfigurableTab implements SearchableConfigurable, Co
     private JLabel labelForOutputPrefixFile;
     private JLabel labelForOutputPostfixFile;
     private JCheckBox incrementalCompilationCheckBox;
+    @SuppressWarnings("unused")
+    private JLabel labelForOutputDirectory;
+    private JTextField outputDirectory;
 
     public KotlinCompilerConfigurableTab(ConfigurableEP ep) {
         this.extPoint = ep;
@@ -93,6 +96,7 @@ public class KotlinCompilerConfigurableTab implements SearchableConfigurable, Co
                ComparingUtils.isModified(additionalArgsOptionsField, compilerSettings.getAdditionalArguments()) ||
 
                ComparingUtils.isModified(incrementalCompilationCheckBox, compilerWorkspaceSettings.getIncrementalCompilationEnabled()) ||
+               ComparingUtils.isModified(outputDirectory, compilerWorkspaceSettings.getOutputDirectory()) ||
 
                ComparingUtils.isModified(generateSourceMapsCheckBox, k2jsCompilerArguments.sourceMap) ||
                isModified(outputPrefixFile, k2jsCompilerArguments.outputPrefix) ||
@@ -105,6 +109,7 @@ public class KotlinCompilerConfigurableTab implements SearchableConfigurable, Co
         compilerSettings.setAdditionalArguments(additionalArgsOptionsField.getText());
 
         compilerWorkspaceSettings.setIncrementalCompilationEnabled(incrementalCompilationCheckBox.isSelected());
+        compilerWorkspaceSettings.setOutputDirectory(StringUtil.nullize(outputDirectory.getText(), true));
 
         k2jsCompilerArguments.sourceMap = generateSourceMapsCheckBox.isSelected();
         k2jsCompilerArguments.outputPrefix = StringUtil.nullize(outputPrefixFile.getText(), true);
@@ -117,6 +122,7 @@ public class KotlinCompilerConfigurableTab implements SearchableConfigurable, Co
         additionalArgsOptionsField.setText(compilerSettings.getAdditionalArguments());
 
         incrementalCompilationCheckBox.setSelected(compilerWorkspaceSettings.getIncrementalCompilationEnabled());
+        outputDirectory.setText(compilerWorkspaceSettings.getOutputDirectory());
 
         generateSourceMapsCheckBox.setSelected(k2jsCompilerArguments.sourceMap);
         outputPrefixFile.setText(k2jsCompilerArguments.outputPrefix);

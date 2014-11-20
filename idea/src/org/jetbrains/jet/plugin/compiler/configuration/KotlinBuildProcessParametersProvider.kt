@@ -21,9 +21,11 @@ import com.intellij.openapi.components.ServiceManager
 
 public class KotlinBuildProcessParametersProvider(private val compilerWorkspaceSettings: KotlinCompilerWorkspaceSettings): BuildProcessParametersProvider() {
     override fun getVMArguments(): MutableList<String> {
-        return if (compilerWorkspaceSettings.incrementalCompilationEnabled)
-            arrayListOf("-Dkotlin.incremental.compilation=true")
-        else
-            arrayListOf()
+        val list: MutableList<String> = arrayListOf()
+        if (compilerWorkspaceSettings.incrementalCompilationEnabled)
+            list.add("-Dkotlin.incremental.compilation=true")
+        if (compilerWorkspaceSettings.outputDirectory != null)
+            list.add("-Dkotlin.js.library.runtime.output=${compilerWorkspaceSettings.outputDirectory}")
+        return list
     }
 }

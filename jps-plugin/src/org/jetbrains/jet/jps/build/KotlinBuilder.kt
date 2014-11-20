@@ -60,6 +60,7 @@ import org.jetbrains.jet.compiler.CompilerSettings
 import org.jetbrains.jps.model.JpsProject
 import org.jetbrains.jet.compiler.runner.OutputItemsCollector
 import org.jetbrains.jet.compiler.runner.SimpleOutputItem
+import org.jetbrains.jet.utils.LibraryUtils
 
 public class KotlinBuilder : ModuleLevelBuilder(BuilderCategory.SOURCE_PROCESSOR) {
     class object {
@@ -308,6 +309,13 @@ public class KotlinBuilder : ModuleLevelBuilder(BuilderCategory.SOURCE_PROCESSOR
         val k2JsArguments = JpsKotlinCompilerSettings.getK2JsCompilerArguments(project)
 
         runK2JsCompiler(commonArguments, k2JsArguments, compilerSettings, messageCollector, environment, outputItemCollector, sourceFiles, libraryFiles, outputFile)
+        val outputLibraryRuntimeDirectoryProperty = System.getProperty("kotlin.js.library.runtime.output")
+        if (outputLibraryRuntimeDirectoryProperty != null) {
+            val outputLibraryRuntimeDirectory = File(outputDir, outputLibraryRuntimeDirectoryProperty).getAbsolutePath()
+            val libraryFilesToCopy = arrayListOf("")
+            JpsJsModuleUtils.getLibraryFiles(representativeTarget, libraryFilesToCopy)
+            LibraryUtils.copyJsFilesFromLibraries(libraryFilesToCopy, outputLibraryRuntimeDirectory)
+        }
         return outputItemCollector
     }
 
