@@ -16,22 +16,21 @@
 
 package org.jetbrains.jet.plugin.codeInsight
 
+import java.util.HashSet
 import org.jetbrains.jet.lang.descriptors.*
 import org.jetbrains.jet.lang.psi.*
 import org.jetbrains.jet.lang.psi.psiUtil.*
-import org.jetbrains.jet.lang.resolve.BindingContext
-import org.jetbrains.jet.lang.resolve.calls.smartcasts.SmartCastUtils
-import org.jetbrains.jet.lang.resolve.calls.smartcasts.DataFlowInfo
-import org.jetbrains.jet.lang.resolve.scopes.JetScope
-import org.jetbrains.jet.lang.resolve.scopes.receivers.ExpressionReceiver
-
-import java.util.*
 import org.jetbrains.jet.lang.resolve.bindingContextUtil.getDataFlowInfo
 import org.jetbrains.jet.lang.resolve.name.Name
-import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverValue
 import org.jetbrains.jet.lang.resolve.scopes.getDescriptorsFiltered
 import org.jetbrains.jet.lang.resolve.scopes.DescriptorKindFilter
 import org.jetbrains.jet.lang.resolve.scopes.DescriptorKindExclude
+import org.jetbrains.jet.lang.resolve.scopes.JetScope
+import org.jetbrains.jet.lang.resolve.scopes.receivers.ReceiverValue
+import org.jetbrains.jet.lang.resolve.scopes.receivers.ExpressionReceiver
+import org.jetbrains.jet.lang.resolve.BindingContext
+import org.jetbrains.jet.lang.resolve.calls.smartcasts.SmartCastUtils
+import org.jetbrains.jet.lang.resolve.calls.smartcasts.DataFlowInfo
 import org.jetbrains.jet.plugin.util.extensionsUtils.isExtensionCallable
 
 public class ReferenceVariantsHelper(
