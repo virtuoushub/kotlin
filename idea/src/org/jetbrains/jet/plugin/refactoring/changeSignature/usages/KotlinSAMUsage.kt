@@ -18,5 +18,9 @@ package org.jetbrains.jet.plugin.refactoring.changeSignature.usages
 
 import com.intellij.usageView.UsageInfo
 import org.jetbrains.jet.lang.psi.JetFunctionLiteral
+import org.jetbrains.jet.lang.descriptors.FunctionDescriptor
 
-public class KotlinSAMUsage(val functionLiteral: JetFunctionLiteral): UsageInfo(functionLiteral)
+public class KotlinSAMUsage(
+        val functionLiteral: JetFunctionLiteral,
+        val functionDescriptor: FunctionDescriptor
+): UsageInfo(functionLiteral)

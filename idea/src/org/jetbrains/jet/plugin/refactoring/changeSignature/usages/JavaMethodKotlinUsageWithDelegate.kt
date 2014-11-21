@@ -22,6 +22,7 @@ import org.jetbrains.jet.plugin.refactoring.changeSignature.JetChangeInfo
 import com.intellij.usageView.UsageInfo
 import org.jetbrains.jet.lang.psi.JetElement
 import org.jetbrains.jet.lang.psi.JetFunction
+import org.jetbrains.jet.lang.descriptors.FunctionDescriptor
 
 public abstract class JavaMethodKotlinUsageWithDelegate<T: JetElement>(
         val jetElement: T,
@@ -34,12 +35,13 @@ public abstract class JavaMethodKotlinUsageWithDelegate<T: JetElement>(
 public class JavaMethodKotlinCallUsage(
         callElement: JetCallElement,
         javaMethodChangeInfo: JetChangeInfo): JavaMethodKotlinUsageWithDelegate<JetCallElement>(callElement, javaMethodChangeInfo) {
-    override protected val delegateUsage = JetFunctionCallUsage(jetElement, javaMethodChangeInfo.getMethod(), false)
+    override protected val delegateUsage = JetFunctionCallUsage(jetElement, javaMethodChangeInfo.getFunctionDescriptor().getDescriptor(), false)
 }
 
 public class JavaMethodKotlinDerivedDefinitionUsage(
         function: JetFunction,
+        functionDescriptor: FunctionDescriptor,
         javaMethodChangeInfo: JetChangeInfo): JavaMethodKotlinUsageWithDelegate<JetFunction>(function, javaMethodChangeInfo) {
     [suppress("CAST_NEVER_SUCCEEDS")]
-    override protected val delegateUsage = JetFunctionDefinitionUsage(jetElement, true) as JetUsageInfo<JetFunction>
+    override protected val delegateUsage = JetFunctionDefinitionUsage(jetElement, functionDescriptor, true) as JetUsageInfo<JetFunction>
 }
