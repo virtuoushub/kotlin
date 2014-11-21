@@ -1,6 +1,6 @@
 package test
 
-abstract class ClassMembers {
+abstract class ClassMembers(val p: Int, open var p2: String, p3: Int, p4: Int = 10, final val p5: String = "aaa") {
     val foo = 3
     fun bar(): Int {
         return 3

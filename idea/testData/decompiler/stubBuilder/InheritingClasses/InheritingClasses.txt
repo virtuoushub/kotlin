@@ -1,0 +1,79 @@
+PsiJetFileStubImpl[package=a]
+  PACKAGE_DIRECTIVE:
+    REFERENCE_EXPRESSION:[referencedName=a]
+  CLASS:[fqName=a.InheritingClasses, isEnumEntry=false, isLocal=false, isTopLevel=true, isTrait=false, name=InheritingClasses, superNames=[]]
+    MODIFIER_LIST:[internal final]
+    VALUE_PARAMETER_LIST:
+    CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.A, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=false, name=A, superNames=[]]
+        MODIFIER_LIST:[open internal]
+        VALUE_PARAMETER_LIST:
+        CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.B, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=false, name=B, superNames=[A]]
+        MODIFIER_LIST:[open internal]
+        VALUE_PARAMETER_LIST:
+        DELEGATION_SPECIFIER_LIST:
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=A]
+        CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.C, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=true, name=C, superNames=[]]
+        MODIFIER_LIST:[internal]
+        CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.D, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=true, name=D, superNames=[C]]
+        MODIFIER_LIST:[internal]
+        DELEGATION_SPECIFIER_LIST:
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=C]
+        CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.E, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=true, name=E, superNames=[]]
+        MODIFIER_LIST:[internal]
+        CLASS_BODY:
+      CLASS:[fqName=a.InheritingClasses.G, isEnumEntry=false, isLocal=false, isTopLevel=false, isTrait=false, name=G, superNames=[B, C, D, E]]
+        MODIFIER_LIST:[internal final]
+        VALUE_PARAMETER_LIST:
+        DELEGATION_SPECIFIER_LIST:
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=B]
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=C]
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=D]
+          DELEGATOR_SUPER_CLASS:
+            TYPE_REFERENCE:
+              USER_TYPE:[isAbsoluteInRootPackage=false]
+                USER_TYPE:[isAbsoluteInRootPackage=false]
+                  USER_TYPE:[isAbsoluteInRootPackage=false]
+                    REFERENCE_EXPRESSION:[referencedName=a]
+                  REFERENCE_EXPRESSION:[referencedName=InheritingClasses]
+                REFERENCE_EXPRESSION:[referencedName=E]
+        CLASS_BODY:

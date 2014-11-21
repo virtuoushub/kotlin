@@ -42,9 +42,21 @@ public class ClsStubBuilderTestGenerated extends AbstractClsStubBuilderTest {
         doTest(fileName);
     }
 
+    @TestMetadata("InheritingClasses")
+    public void testInheritingClasses() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/InheritingClasses/");
+        doTest(fileName);
+    }
+
     @TestMetadata("NestedClasses")
     public void testNestedClasses() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/NestedClasses/");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Objects")
+    public void testObjects() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/Objects/");
         doTest(fileName);
     }
 
