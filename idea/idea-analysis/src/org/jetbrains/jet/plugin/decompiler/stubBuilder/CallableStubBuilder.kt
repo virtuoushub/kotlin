@@ -48,7 +48,7 @@ public class CallableStubBuilder(
         if (callableProto.hasReceiverType()) {
             typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReceiverType())
         }
-        typeStubBuilder.createValueParametersStub(callableStub, callableProto)
+        typeStubBuilder.createValueParameterListStub(callableStub, callableProto)
         typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReturnType())
         createTypeConstraintList()
     }

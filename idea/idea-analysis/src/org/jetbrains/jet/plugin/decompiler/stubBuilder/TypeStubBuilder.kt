@@ -67,8 +67,9 @@ public class TypeStubBuilder(
         createTypeStub(typeProto, typeReference)
     }
 
-    fun createValueParametersStub(callableStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
-        if (Flags.CALLABLE_KIND.get(callableProto.getFlags()) != CallableKind.FUN) {
+    fun createValueParameterListStub(callableStub: StubElement<out PsiElement>, callableProto: ProtoBuf.Callable) {
+        //TODO: const
+        if (Flags.CALLABLE_KIND.get(callableProto.getFlags()) in setOf(CallableKind.VAL, CallableKind.VAR)) {
             return
         }
         val parameterListStub = KotlinPlaceHolderStubImpl<JetParameterList>(callableStub, JetStubElementTypes.VALUE_PARAMETER_LIST)

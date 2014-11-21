@@ -35,6 +35,8 @@ import org.jetbrains.jet.lang.psi.JetParameterList
 import kotlin.properties.Delegates
 import org.jetbrains.jet.lang.resolve.name.ClassId
 import org.jetbrains.jet.plugin.decompiler.textBuilder.LocalClassDataFinder
+import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList
+import org.jetbrains.jet.lang.psi.JetDelegatorToSuperClass
 
 public fun ClassStubBuilderForTopLevelClass(
         classData: ClassData,
@@ -56,12 +58,24 @@ public class ClassStubBuilder(
     private val contextWithTypeParameters = c.withTypeParams(classProto.getTypeParameterList())
     private val typeStubBuilder = TypeStubBuilder(contextWithTypeParameters)
 
+    //TODO: fishy filtering of any (test explicit dependency on any)
+    private val supertypeFqNames = classProto.getSupertypeList().map {
+        //TODO: add assertion here
+        type ->
+        c.nameResolver.getFqName(type.getConstructor().getId())
+    }.filter { it.asString() != "kotlin.Any" } //TODO: any fqname
+
+
     public fun createStub() {
         createRootStub()
-        createModifierListStubForDeclaration(rootStub, classProto.getFlags(), FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER)
+        //TODO: extract create modifier list
+        val relevantFlags = if (isClass()) array(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER) else array(FlagsToModifiers.VISIBILITY)
+        createModifierListStubForDeclaration(rootStub, classProto.getFlags(), *relevantFlags)
         //TODO: clearer logic/naming
         val typeConstraintBuilder = typeStubBuilder.createTypeParameterListStub(rootStub, classProto.getTypeParameterList())
+        //TODO_R: test order of these two
         createConstructorStub()
+        createDelegationSpecifierList()
         typeConstraintBuilder()
         createClassBodyAndMemberStubs()
     }
@@ -84,7 +98,7 @@ public class ClassStubBuilder(
                     //TODO: to safe??
                     parentStub, shortName, classId.asSingleFqName().toSafe(), getSuperTypeRefs(),
                     //TODO_R: istoplevel
-                    isTopLevel = true,
+                    isTopLevel = classId.isTopLevelClass(),
                     isClassObject = false,
                     isLocal = false,
                     isObjectLiteral = false
@@ -101,23 +115,34 @@ public class ClassStubBuilder(
                     isTrait = kind == ProtoBuf.Class.Kind.TRAIT,
                     isEnumEntry = kind == ProtoBuf.Class.Kind.ENUM_ENTRY,
                     isLocal = false,
-                    isTopLevel = classId.getRelativeClassName().pathSegments().size == 1
+                    isTopLevel = classId.isTopLevelClass()
             )
         }
     }
 
     private fun getSuperTypeRefs(): Array<StringRef> {
-        val superTypeStrings = classProto.getSupertypeList().map {
-            type ->
-            assert(type.getConstructor().getKind() == ProtoBuf.Type.Constructor.Kind.CLASS)
-            val superFqName = c.nameResolver.getFqName(type.getConstructor().getId())
-            superFqName.asString()
-        }
-        return superTypeStrings.filter { it != "kotlin.Any" }.map { it.ref() }.copyToArray()
+        return supertypeFqNames.map {
+            it.shortName().asString().ref()
+        }.copyToArray()
     }
 
     fun createConstructorStub() {
-        KotlinPlaceHolderStubImpl<JetParameterList>(rootStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
+        //TODO_R: test moar
+        if (!isClass()) return
+
+        val primaryConstructorProto = classProto.getPrimaryConstructor()
+        if (primaryConstructorProto.hasData()) {
+            typeStubBuilder.createValueParameterListStub(rootStub, primaryConstructorProto.getData())
+        }
+        else {
+            //default
+            KotlinPlaceHolderStubImpl<JetParameterList>(rootStub, JetStubElementTypes.VALUE_PARAMETER_LIST)
+        }
+    }
+
+    //TODO_R: naming
+    private fun isClass(): Boolean {
+        return Flags.CLASS_KIND.get(classProto.getFlags()) == ProtoBuf.Class.Kind.CLASS
     }
 
     fun createInnerAndNestedClasses(classBody: KotlinPlaceHolderStubImpl<JetClassBody>) {
@@ -135,6 +160,25 @@ public class ClassStubBuilder(
             )
             ClassStubBuilder(nestedClassID, classData.getClassProto(), classBody, innerContext).createStub()
         }
+    }
+
+    fun createDelegationSpecifierList() {
+
+        if (supertypeFqNames.isEmpty()) return
+
+        val delegationSpecifierListStub =
+                KotlinPlaceHolderStubImpl<JetDelegationSpecifierList>(rootStub, JetStubElementTypes.DELEGATION_SPECIFIER_LIST)
+
+        //TODO_R: duplication with supertyperefs
+        classProto.getSupertypeList().forEach {
+            type ->
+            assert(type.getConstructor().getKind() == ProtoBuf.Type.Constructor.Kind.CLASS)
+            val superClassStub = KotlinPlaceHolderStubImpl<JetDelegatorToSuperClass>(
+                    delegationSpecifierListStub, JetStubElementTypes.DELEGATOR_SUPER_CLASS
+            )
+            typeStubBuilder.createTypeReferenceStub(superClassStub, type)
+        }
+        //        return superTypeStrings.filter { it != "kotlin.Any" }.map { it.ref() }.copyToArray()
     }
 }
 
