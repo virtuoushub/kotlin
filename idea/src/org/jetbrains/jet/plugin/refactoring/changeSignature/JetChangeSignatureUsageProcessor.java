@@ -18,6 +18,7 @@ package org.jetbrains.jet.plugin.refactoring.changeSignature;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Ref;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiReference;
@@ -34,16 +35,17 @@ import com.intellij.util.containers.HashSet;
 import com.intellij.util.containers.MultiMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.asJava.KotlinLightMethod;
 import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.descriptors.impl.FunctionDescriptorImpl;
 import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.BindingContext;
 import org.jetbrains.jet.lang.resolve.DescriptorToSourceUtils;
+import org.jetbrains.jet.lang.resolve.java.descriptor.JavaClassDescriptor;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.resolve.scopes.JetScope;
 import org.jetbrains.jet.lang.types.JetType;
 import org.jetbrains.jet.plugin.caches.resolve.ResolvePackage;
+import org.jetbrains.jet.plugin.refactoring.RefactoringPackage;
 import org.jetbrains.jet.plugin.refactoring.changeSignature.usages.*;
 import org.jetbrains.jet.plugin.references.JetSimpleNameReference;
 import org.jetbrains.jet.renderer.DescriptorRenderer;
@@ -59,6 +61,9 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
 
         if (info instanceof JetChangeInfo) {
             findAllMethodUsages((JetChangeInfo)info, result);
+        }
+        else {
+            findSAMUsages(info, result);
         }
 
         return result.toArray(new UsageInfo[result.size()]);
@@ -136,6 +141,37 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
                     result.add(new JetEnumEntryWithoutSuperCallUsage((JetEnumEntry) declaration));
                 }
             }
+        }
+    }
+
+    private static void findSAMUsages(ChangeInfo changeInfo, Set<UsageInfo> result) {
+        PsiElement method = changeInfo.getMethod();
+        if (!RefactoringPackage.isTrueJavaMethod(method)) return;
+
+        FunctionDescriptor methodDescriptor = ResolvePackage.getJavaMethodDescriptor((PsiMethod) method);
+
+        DeclarationDescriptor containingDescriptor = methodDescriptor.getContainingDeclaration();
+        if (!(containingDescriptor instanceof JavaClassDescriptor)) return;
+
+        if (((JavaClassDescriptor) containingDescriptor).getFunctionTypeForSamInterface() == null) return;
+
+        PsiClass samClass = ((PsiMethod) method).getContainingClass();
+        if (samClass == null) return;
+
+        for (PsiReference ref : ReferencesSearch.search(samClass)) {
+            if (!(ref instanceof JetSimpleNameReference)) continue;
+
+            JetSimpleNameExpression callee = ((JetSimpleNameReference) ref).getExpression();
+            JetCallExpression callExpression = PsiTreeUtil.getParentOfType(callee, JetCallExpression.class);
+            if (callExpression == null || callExpression.getCalleeExpression() != callee) continue;
+
+            List<? extends ValueArgument> arguments = callExpression.getValueArguments();
+            if (arguments.size() != 1) continue;
+
+            JetExpression argExpression = arguments.get(0).getArgumentExpression();
+            if (!(argExpression instanceof JetFunctionLiteralExpression)) continue;
+
+            result.add(new KotlinSAMUsage(((JetFunctionLiteralExpression) argExpression).getFunctionLiteral()));
         }
     }
 
@@ -247,16 +283,22 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
     private JetMethodDescriptor originalJavaMethodDescriptor;
 
     private static boolean isJavaMethodUsage(UsageInfo usageInfo) {
-        if (!(usageInfo instanceof MoveRenameUsageInfo)) return false;
-        PsiElement referencedElement = ((MoveRenameUsageInfo) usageInfo).getReferencedElement();
-        return referencedElement instanceof PsiMethod && !(referencedElement instanceof KotlinLightMethod);
+        if (usageInfo instanceof KotlinSAMUsage) return true;
+
+        return usageInfo instanceof MoveRenameUsageInfo
+               && RefactoringPackage.isTrueJavaMethod(((MoveRenameUsageInfo) usageInfo).getReferencedElement());
     }
 
     @Nullable
-    private static UsageInfo createFunctionCallUsage(
+    private static UsageInfo createReplacementUsage(
             UsageInfo originalUsageInfo,
             JetChangeInfo javaMethodChangeInfo
     ) {
+        if (originalUsageInfo instanceof KotlinSAMUsage) {
+            JetFunctionLiteral functionLiteral = ((KotlinSAMUsage) originalUsageInfo).getFunctionLiteral();
+            return new JavaMethodKotlinDerivedDefinitionUsage(functionLiteral, javaMethodChangeInfo);
+        }
+
         JetCallElement callElement = PsiTreeUtil.getParentOfType(originalUsageInfo.getElement(), JetCallElement.class);
         return callElement != null ? new JavaMethodKotlinCallUsage(callElement, javaMethodChangeInfo) : null;
     }
@@ -307,7 +349,7 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
                 UsageInfo oldUsageInfo = usages[i];
                 if (!isJavaMethodUsage(oldUsageInfo)) continue;
 
-                UsageInfo newUsageInfo = createFunctionCallUsage(oldUsageInfo, javaMethodChangeInfo);
+                UsageInfo newUsageInfo = createReplacementUsage(oldUsageInfo, javaMethodChangeInfo);
                 if (newUsageInfo != null) {
                     usages[i] = newUsageInfo;
                     if (oldUsageInfo == usageInfo) {
@@ -317,8 +359,8 @@ public class JetChangeSignatureUsageProcessor implements ChangeSignatureUsagePro
             }
         }
 
-        if (usageInfo instanceof JavaMethodKotlinCallUsage) {
-            return ((JavaMethodKotlinCallUsage) usageInfo).processUsage();
+        if (usageInfo instanceof JavaMethodKotlinUsageWithDelegate) {
+            return ((JavaMethodKotlinUsageWithDelegate) usageInfo).processUsage();
         }
 
         if (usageInfo instanceof MoveRenameUsageInfo && isJavaMethodUsage) {
