@@ -1,0 +1,28 @@
+PsiJetFileStubImpl[package=test.class_object]
+  PACKAGE_DIRECTIVE:
+    DOT_QUALIFIED_EXPRESSION:
+      REFERENCE_EXPRESSION:[referencedName=test]
+      REFERENCE_EXPRESSION:[referencedName=class_object]
+  CLASS:[fqName=test.class_object.ClassObject, isEnumEntry=false, isLocal=false, isTopLevel=true, isTrait=false, name=ClassObject, superNames=[]]
+    MODIFIER_LIST:[internal final]
+    VALUE_PARAMETER_LIST:
+    CLASS_BODY:
+      CLASS_OBJECT:
+        MODIFIER_LIST:[internal]
+        OBJECT_DECLARATION:[fqName=null, isClassObject=true, isLocal=false, isObjectLiteral=false, isTopLevel=false, name=null, superNames=[]]
+          CLASS_BODY:
+      PROPERTY:[fqName=test.class_object.ClassObject.c, hasDelegate=false, hasDelegateExpression=false, hasInitializer=false, hasReceiverTypeRef=false, hasReturnTypeRef=true, isTopLevel=false, isVar=false, name=c]
+        MODIFIER_LIST:[internal final]
+        TYPE_REFERENCE:
+          USER_TYPE:[isAbsoluteInRootPackage=false]
+            USER_TYPE:[isAbsoluteInRootPackage=false]
+              REFERENCE_EXPRESSION:[referencedName=kotlin]
+            REFERENCE_EXPRESSION:[referencedName=Int]
+      FUN:[fqName=test.class_object.ClassObject.f, hasBlockBody=true, hasBody=true, hasTypeParameterListBeforeFunctionName=false, isExtension=false, isTopLevel=false, name=f]
+        MODIFIER_LIST:[internal final]
+        VALUE_PARAMETER_LIST:
+        TYPE_REFERENCE:
+          USER_TYPE:[isAbsoluteInRootPackage=false]
+            USER_TYPE:[isAbsoluteInRootPackage=false]
+              REFERENCE_EXPRESSION:[referencedName=kotlin]
+            REFERENCE_EXPRESSION:[referencedName=Unit]
