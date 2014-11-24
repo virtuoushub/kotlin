@@ -37,6 +37,7 @@ import org.jetbrains.jet.lang.resolve.name.ClassId
 import org.jetbrains.jet.plugin.decompiler.textBuilder.LocalClassDataFinder
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperClass
+import org.jetbrains.jet.lexer.JetTokens
 
 public fun ClassStubBuilderForTopLevelClass(
         classData: ClassData,
@@ -67,10 +68,12 @@ public class ClassStubBuilder(
 
 
     public fun createStub() {
+        //TODO: consturctor
         createRootStub()
         //TODO: extract create modifier list
-        val relevantFlags = if (isClass()) array(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER) else array(FlagsToModifiers.VISIBILITY)
-        createModifierListStubForDeclaration(rootStub, classProto.getFlags(), *relevantFlags)
+        val relevantFlags = if (isClass()) listOf(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER) else listOf(FlagsToModifiers.VISIBILITY)
+        val enumModifier = if (Flags.CLASS_KIND[classProto.getFlags()] == ProtoBuf.Class.Kind.ENUM_CLASS) listOf(JetTokens.ENUM_KEYWORD) else listOf()
+        createModifierListStubForDeclaration(rootStub, classProto.getFlags(), flagsToTranslate = relevantFlags, additionalModifiers = enumModifier)
         //TODO: clearer logic/naming
         val typeConstraintBuilder = typeStubBuilder.createTypeParameterListStub(rootStub, classProto.getTypeParameterList())
         //TODO_R: test order of these two
@@ -83,6 +86,22 @@ public class ClassStubBuilder(
     private fun createClassBodyAndMemberStubs() {
         val classBody = KotlinPlaceHolderStubImpl<JetClassBody>(rootStub, JetStubElementTypes.CLASS_BODY)
         val memberStubBuilder = CallableStubBuilder(contextWithTypeParameters)
+
+        classProto.getEnumEntryList().forEach { nameID ->
+            val name = c.nameResolver.getName(nameID)
+            KotlinClassStubImpl(
+                    JetStubElementTypes.ENUM_ENTRY,
+                    classBody,
+                    qualifiedName = c.memberFqNameProvider.getFqNameForMember(name).asString().ref(),
+                    name = name.asString().ref(),
+                    superNames = array(),
+                    isTrait = false,
+                    isEnumEntry = true,
+                    isLocal = false,
+                    isTopLevel = false
+            )
+        }
+
         for (callableProto in classProto.getMemberList()) {
             memberStubBuilder.createCallableStub(classBody, callableProto, isTopLevel = false)
         }
@@ -142,7 +161,8 @@ public class ClassStubBuilder(
 
     //TODO_R: naming
     private fun isClass(): Boolean {
-        return Flags.CLASS_KIND.get(classProto.getFlags()) == ProtoBuf.Class.Kind.CLASS
+        val kind = Flags.CLASS_KIND.get(classProto.getFlags())
+        return kind == ProtoBuf.Class.Kind.CLASS || kind == ProtoBuf.Class.Kind.ENUM_CLASS
     }
 
     fun createInnerAndNestedClasses(classBody: KotlinPlaceHolderStubImpl<JetClassBody>) {

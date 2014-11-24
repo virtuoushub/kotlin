@@ -38,12 +38,8 @@ public class CallableStubBuilder(
         val typeStubBuilder = TypeStubBuilder(contextWithTypeParams)
         val callableStub = doCreateCallableStub(callableProto, parentStub, isTopLevel)
         //TODO_R: nicer code
-        if (isTopLevel) {
-            createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), FlagsToModifiers.VISIBILITY)
-        }
-        else {
-            createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY)
-        }
+        val relevantModifiers = if (isTopLevel) listOf(FlagsToModifiers.VISIBILITY) else listOf(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY)
+        createModifierListStubForDeclaration(callableStub, callableProto.getFlags(), relevantModifiers)
         val createTypeConstraintList = typeStubBuilder.createTypeParameterListStub(callableStub, callableProto.getTypeParameterList())
         if (callableProto.hasReceiverType()) {
             typeStubBuilder.createTypeReferenceStub(callableStub, callableProto.getReceiverType())

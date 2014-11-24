@@ -302,9 +302,10 @@ private enum class FlagsToModifiers {
 fun createModifierListStubForDeclaration(
         parent: StubElement<out PsiElement>,
         flags: Int,
-        vararg flagsToTranslate: FlagsToModifiers
+        flagsToTranslate: List<FlagsToModifiers> = listOf(),
+        additionalModifiers: List<JetModifierKeywordToken> = listOf()
 ) {
-    val modifiers = flagsToTranslate.map { it.getModifiers(flags) }.filterNotNull()
+    val modifiers = flagsToTranslate.map { it.getModifiers(flags) }.filterNotNull() + additionalModifiers
     KotlinModifierListStubImpl(
             parent,
             ModifierMaskUtils.computeMask { it in modifiers },
