@@ -20,10 +20,14 @@ import org.jetbrains.jet.descriptors.serialization.NameResolver
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.lang.resolve.name.FqName
 import org.jetbrains.jet.descriptors.serialization.ClassDataFinder
+import org.jetbrains.jet.lang.resolve.name.FqNameUnsafe
 
 //TODO: naming all over the place
-public class MemberFqNameProvider(private val parentFqName: FqName) {
-    fun getFqNameForMember(name: Name) = parentFqName.child(name)
+//TODO: unsafe in constructor?
+//TODO: do we need it at all?
+public class MemberFqNameProvider(private val parentFqName: FqNameUnsafe) {
+    //TODO: ...
+    fun getFqNameForMember(name: Name): FqName? = if (parentFqName.isSafe()) parentFqName.toSafe().child(name) else null
 }
 
 //TODO_R: this should store a map from id to name, otherwise some inconsistencies may arise

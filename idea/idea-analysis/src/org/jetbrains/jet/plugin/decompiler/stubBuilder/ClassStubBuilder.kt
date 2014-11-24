@@ -38,6 +38,8 @@ import org.jetbrains.jet.plugin.decompiler.textBuilder.LocalClassDataFinder
 import org.jetbrains.jet.lang.psi.JetDelegationSpecifierList
 import org.jetbrains.jet.lang.psi.JetDelegatorToSuperClass
 import org.jetbrains.jet.lexer.JetTokens
+import org.jetbrains.jet.lang.resolve.name.SpecialNames.getClassObjectName
+import org.jetbrains.jet.lang.psi.JetClassObject
 
 public fun ClassStubBuilderForTopLevelClass(
         classData: ClassData,
@@ -45,7 +47,7 @@ public fun ClassStubBuilderForTopLevelClass(
         parent: StubElement<out PsiElement>,
         localClassDataFinder: LocalClassDataFinder
 ): ClassStubBuilder {
-    val context = ClsStubBuilderContext(classData.getNameResolver(), MemberFqNameProvider(classFqName), TypeParameterContext.EMPTY, localClassDataFinder)
+    val context = ClsStubBuilderContext(classData.getNameResolver(), MemberFqNameProvider(classFqName.toUnsafe()), TypeParameterContext.EMPTY, localClassDataFinder)
     return ClassStubBuilder(ClassId.topLevel(classFqName), classData.getClassProto(), parent, context)
 }
 
@@ -58,6 +60,7 @@ public class ClassStubBuilder(
     private var rootStub: KotlinStubWithFqName<out PsiNamedElement> by Delegates.notNull()
     private val contextWithTypeParameters = c.withTypeParams(classProto.getTypeParameterList())
     private val typeStubBuilder = TypeStubBuilder(contextWithTypeParameters)
+    private val classKind = Flags.CLASS_KIND[classProto.getFlags()]
 
     //TODO: fishy filtering of any (test explicit dependency on any)
     private val supertypeFqNames = classProto.getSupertypeList().map {
@@ -68,12 +71,7 @@ public class ClassStubBuilder(
 
 
     public fun createStub() {
-        //TODO: consturctor
-        createRootStub()
-        //TODO: extract create modifier list
-        val relevantFlags = if (isClass()) listOf(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER) else listOf(FlagsToModifiers.VISIBILITY)
-        val enumModifier = if (Flags.CLASS_KIND[classProto.getFlags()] == ProtoBuf.Class.Kind.ENUM_CLASS) listOf(JetTokens.ENUM_KEYWORD) else listOf()
-        createModifierListStubForDeclaration(rootStub, classProto.getFlags(), flagsToTranslate = relevantFlags, additionalModifiers = enumModifier)
+        createRootStubAndModifierList()
         //TODO: clearer logic/naming
         val typeConstraintBuilder = typeStubBuilder.createTypeParameterListStub(rootStub, classProto.getTypeParameterList())
         //TODO_R: test order of these two
@@ -83,16 +81,38 @@ public class ClassStubBuilder(
         createClassBodyAndMemberStubs()
     }
 
+    private fun createRootStubAndModifierList() {
+        val isClassObject = classKind == ProtoBuf.Class.Kind.CLASS_OBJECT
+        if (isClassObject) {
+            createModifierListForClass(parentStub)
+            createRootStub()
+        }
+        else {
+            createRootStub()
+            createModifierListForClass(rootStub)
+        }
+    }
+
+    private fun createModifierListForClass(parent: StubElement<out PsiElement>) {
+        val relevantFlags = if (isClass()) listOf(FlagsToModifiers.VISIBILITY, FlagsToModifiers.MODALITY, FlagsToModifiers.INNER) else listOf(FlagsToModifiers.VISIBILITY)
+        val enumModifier = if (classKind == ProtoBuf.Class.Kind.ENUM_CLASS) listOf(JetTokens.ENUM_KEYWORD) else listOf()
+        createModifierListStubForDeclaration(parent, classProto.getFlags(), flagsToTranslate = relevantFlags, additionalModifiers = enumModifier)
+    }
+
     private fun createClassBodyAndMemberStubs() {
         val classBody = KotlinPlaceHolderStubImpl<JetClassBody>(rootStub, JetStubElementTypes.CLASS_BODY)
         val memberStubBuilder = CallableStubBuilder(contextWithTypeParameters)
+
+        //        val classObjectProto = classProto.getClassObject()
+        //
+        createClassObjectStub(classBody)
 
         classProto.getEnumEntryList().forEach { nameID ->
             val name = c.nameResolver.getName(nameID)
             KotlinClassStubImpl(
                     JetStubElementTypes.ENUM_ENTRY,
                     classBody,
-                    qualifiedName = c.memberFqNameProvider.getFqNameForMember(name).asString().ref(),
+                    qualifiedName = c.memberFqNameProvider.getFqNameForMember(name)?.asString()?.ref(),
                     name = name.asString().ref(),
                     superNames = array(),
                     isTrait = false,
@@ -109,16 +129,32 @@ public class ClassStubBuilder(
         createInnerAndNestedClasses(classBody)
     }
 
+    private fun createClassObjectStub(classBody: KotlinPlaceHolderStubImpl<JetClassBody>) {
+        if (!classProto.hasClassObject()) {
+            return
+        }
+        //TODO: special case
+        if (classKind == ProtoBuf.Class.Kind.OBJECT) {
+            return
+        }
+
+        val classObjectStub = KotlinPlaceHolderStubImpl<JetClassObject>(classBody, JetStubElementTypes.CLASS_OBJECT)
+        val classObjectId = classId.createNestedClassId(getClassObjectName(classId.getRelativeClassName().shortName()))
+        buildNestedClass(classObjectStub, classObjectId)
+    }
+
     private fun createRootStub() {
-        val kind = Flags.CLASS_KIND.get(classProto.getFlags())
-        val shortName = classId.getRelativeClassName().shortName().asString().ref()
-        if (kind == ProtoBuf.Class.Kind.OBJECT) {
+        //TODO: fq name magic
+        val fqName = if (classId.asSingleFqName().isSafe()) classId.asSingleFqName().toSafe() else null
+        val shortName = fqName?.shortName()?.asString()?.ref()
+        //TODO: when (classKind)
+        if (classKind == ProtoBuf.Class.Kind.OBJECT || classKind == ProtoBuf.Class.Kind.CLASS_OBJECT) {
             rootStub = KotlinObjectStubImpl(
                     //TODO: to safe??
-                    parentStub, shortName, classId.asSingleFqName().toSafe(), getSuperTypeRefs(),
+                    parentStub, shortName, fqName, getSuperTypeRefs(),
                     //TODO_R: istoplevel
                     isTopLevel = classId.isTopLevelClass(),
-                    isClassObject = false,
+                    isClassObject = classKind == ProtoBuf.Class.Kind.CLASS_OBJECT,
                     isLocal = false,
                     isObjectLiteral = false
             )
@@ -126,13 +162,13 @@ public class ClassStubBuilder(
         else {
             rootStub = KotlinClassStubImpl(
                     //TODO_R: as singleFqname
-                    JetClassElementType.getStubType(kind == ProtoBuf.Class.Kind.ENUM_ENTRY),
+                    JetClassElementType.getStubType(classKind == ProtoBuf.Class.Kind.ENUM_ENTRY),
                     parentStub,
-                    classId.asSingleFqName().asString().ref(),
+                    fqName?.asString()?.ref(),
                     shortName,
                     getSuperTypeRefs(),
-                    isTrait = kind == ProtoBuf.Class.Kind.TRAIT,
-                    isEnumEntry = kind == ProtoBuf.Class.Kind.ENUM_ENTRY,
+                    isTrait = classKind == ProtoBuf.Class.Kind.TRAIT,
+                    isEnumEntry = classKind == ProtoBuf.Class.Kind.ENUM_ENTRY,
                     isLocal = false,
                     isTopLevel = classId.isTopLevelClass()
             )
@@ -161,25 +197,29 @@ public class ClassStubBuilder(
 
     //TODO_R: naming
     private fun isClass(): Boolean {
-        val kind = Flags.CLASS_KIND.get(classProto.getFlags())
-        return kind == ProtoBuf.Class.Kind.CLASS || kind == ProtoBuf.Class.Kind.ENUM_CLASS
+        return classKind == ProtoBuf.Class.Kind.CLASS || classKind == ProtoBuf.Class.Kind.ENUM_CLASS
     }
 
     fun createInnerAndNestedClasses(classBody: KotlinPlaceHolderStubImpl<JetClassBody>) {
         classProto.getNestedClassNameList().forEach { id ->
             val nestedClassName = c.nameResolver.getName(id)
             val nestedClassID = classId.createNestedClassId(nestedClassName)
-            //TODO_R: log if null
-            val classData = c.classDataFinder.findClassData(nestedClassID)!!
-            //TODO: refactor
-            val innerContext = ClsStubBuilderContext(
-                    classData.getNameResolver(),
-                    MemberFqNameProvider(nestedClassID.asSingleFqName().toSafe()),
-                    contextWithTypeParameters.typeParameters,
-                    c.classDataFinder
-            )
-            ClassStubBuilder(nestedClassID, classData.getClassProto(), classBody, innerContext).createStub()
+            buildNestedClass(classBody, nestedClassID)
         }
+    }
+
+    //TODO: rename
+    private fun buildNestedClass(classBody: StubElement<out PsiElement>, nestedClassID: ClassId) {
+        //TODO_R: log if null
+        val classData = c.classDataFinder.findClassData(nestedClassID)!!
+        //TODO: refactor
+        val innerContext = ClsStubBuilderContext(
+                classData.getNameResolver(),
+                MemberFqNameProvider(nestedClassID.asSingleFqName()),
+                contextWithTypeParameters.typeParameters,
+                c.classDataFinder
+        )
+        ClassStubBuilder(nestedClassID, classData.getClassProto(), classBody, innerContext).createStub()
     }
 
     fun createDelegationSpecifierList() {

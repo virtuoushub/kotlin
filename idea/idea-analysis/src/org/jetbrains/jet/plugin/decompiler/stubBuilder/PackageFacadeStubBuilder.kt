@@ -36,7 +36,7 @@ public class PackageFacadeStubBuilder(
 
     private val c = ClsStubBuilderContext(
             packageData.getNameResolver(),
-            MemberFqNameProvider(packageFqName),
+            MemberFqNameProvider(packageFqName.toUnsafe()),
             TypeParameterContext.EMPTY,
             throwingClassDataFinder
     )
