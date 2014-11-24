@@ -42,6 +42,12 @@ public class ClsStubBuilderTestGenerated extends AbstractClsStubBuilderTest {
         doTest(fileName);
     }
 
+    @TestMetadata("Enum")
+    public void testEnum() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/Enum/");
+        doTest(fileName);
+    }
+
     @TestMetadata("InheritingClasses")
     public void testInheritingClasses() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/decompiler/stubBuilder/InheritingClasses/");
