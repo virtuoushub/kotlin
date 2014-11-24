@@ -671,7 +671,7 @@ public class DescriptorRendererImpl implements DescriptorRenderer {
         if (typeParameter.isReified()) {
             builder.append(renderKeyword("reified")).append(" ");
         }
-        String variance = typeParameter.getVariance().toString();
+        String variance = typeParameter.getVariance().getLabel();
         if (!variance.isEmpty()) {
             builder.append(renderKeyword(variance)).append(" ");
         }
