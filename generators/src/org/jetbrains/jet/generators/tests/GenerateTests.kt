@@ -132,6 +132,7 @@ import org.jetbrains.jet.plugin.decompiler.textBuilder.AbstractDecompiledTextTes
 import org.jetbrains.jet.completion.AbstractMultiFileSmartCompletionTest
 import org.jetbrains.jet.completion.handlers.AbstractCompletionCharFilterTest
 import org.jetbrains.jet.resolve.AbstractPartialBodyResolveTest
+import org.jetbrains.jet.types.AbstractJetTypeBindingTest
 
 fun main(args: Array<String>) {
     System.setProperty("java.awt.headless", "true")
@@ -294,6 +295,10 @@ fun main(args: Array<String>) {
 
         testClass(javaClass<AbstractKotlinLightClassTest>()) {
             model("asJava/lightClasses")
+        }
+
+        testClass(javaClass<AbstractJetTypeBindingTest>()) {
+            model("type/binding")
         }
     }
 
