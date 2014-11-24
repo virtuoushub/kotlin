@@ -29,7 +29,7 @@ import org.jetbrains.jet.plugin.configuration.KotlinProjectConfigurator;
 import org.jetbrains.jet.plugin.configuration.ui.NonConfiguredKotlinProjectComponent;
 
 import javax.swing.event.HyperlinkEvent;
-import java.util.Collection;
+import java.util.*;
 
 import static kotlin.KotlinPackage.first;
 
@@ -66,7 +66,14 @@ public class ConfigureKotlinNotification extends Notification {
         final boolean isOnlyOneModule = modules.size() == 1;
 
         String modulesString = isOnlyOneModule ? String.format("'%s' module", first(modules).getName()) : "modules";
-        String links = StringUtil.join(ConfigureKotlinInProjectUtils.getAbleToRunConfigurators(project), new Function<KotlinProjectConfigurator, String>() {
+        List<KotlinProjectConfigurator> canRunConfigurators = new ArrayList<KotlinProjectConfigurator>(ConfigureKotlinInProjectUtils.getAbleToRunConfigurators(project));
+        Collections.sort(canRunConfigurators, new Comparator<KotlinProjectConfigurator>() {
+            @Override
+            public int compare(@NotNull KotlinProjectConfigurator o1, @NotNull KotlinProjectConfigurator o2) {
+                return o1.getName().compareTo(o2.getName());
+            }
+        });
+        String links = StringUtil.join(canRunConfigurators, new Function<KotlinProjectConfigurator, String>() {
             @Override
             public String fun(KotlinProjectConfigurator configurator) {
                 return getLink(configurator, isOnlyOneModule);

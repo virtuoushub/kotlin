@@ -23,7 +23,7 @@ import org.jetbrains.idea.maven.dom.model.MavenDomPlugin;
 import org.jetbrains.jet.plugin.project.ProjectStructureUtil;
 
 public class KotlinJavascriptMavenConfigurator extends KotlinMavenConfigurator {
-    public static final String NAME = "js maven";
+    public static final String NAME = "maven (js)";
     private static final String STD_LIB_ID = "kotlin-js-library";
 
     @Override
