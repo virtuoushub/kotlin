@@ -34,6 +34,7 @@ public class KotlinPropertyStubImpl(
         private val hasInitializer: Boolean,
         private val hasReceiverTypeRef: Boolean,
         private val hasReturnTypeRef: Boolean,
+        private val isProbablyNothingType: Boolean,
         private val fqName: FqName?
 ) : KotlinStubBaseImpl<JetProperty>(parent, JetStubElementTypes.PROPERTY), KotlinPropertyStub {
 
@@ -55,4 +56,5 @@ public class KotlinPropertyStubImpl(
     override fun hasReceiverTypeRef() = hasReceiverTypeRef
     override fun hasReturnTypeRef() = hasReturnTypeRef
     override fun getName() = StringRef.toString(name)
+    override fun isProbablyNothingType() = isProbablyNothingType
 }
