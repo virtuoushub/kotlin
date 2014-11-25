@@ -1,0 +1,60 @@
+package
+
+kotlin.js.nativeGetter() internal val toplevelVal: kotlin.Int = 0
+kotlin.js.nativeGetter() internal fun toplevelFun(): kotlin.Any
+kotlin.js.nativeGetter() internal fun kotlin.Int.get(/*0*/ a: A): kotlin.Int?
+kotlin.js.nativeGetter() internal fun kotlin.Int.get(/*0*/ a: kotlin.String): kotlin.Int?
+kotlin.js.nativeGetter() internal fun kotlin.Int.get2(): kotlin.String?
+kotlin.js.nativeGetter() internal fun kotlin.Int.get2(/*0*/ a: kotlin.Number): kotlin.String?
+kotlin.js.nativeGetter() internal fun kotlin.Int.get3(/*0*/ a: A, /*1*/ b: kotlin.Int, /*2*/ c: kotlin.Any?): kotlin.String?
+kotlin.js.nativeGetter() internal fun kotlin.Int.get3(/*0*/ a: kotlin.Int): kotlin.String?
+
+kotlin.js.native() internal final class A {
+    public constructor A()
+    public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+    kotlin.js.nativeGetter() internal final fun foo(/*0*/ a: kotlin.Double): kotlin.String?
+    kotlin.js.nativeGetter() internal final fun get(/*0*/ a: kotlin.String): kotlin.Any?
+    public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+    kotlin.js.nativeGetter() internal final fun take(/*0*/ a: kotlin.Number): kotlin.String?
+    public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+}
+
+kotlin.js.native() internal final class B {
+    public constructor B()
+    kotlin.js.nativeGetter() internal final val foo: kotlin.Int = 0
+    public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+    public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+    public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+
+    kotlin.js.nativeGetter() internal object Obj {
+        private constructor Obj()
+        public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+        public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+        public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+
+        public class object <class-object-for-Obj> : B.Obj {
+            private constructor <class-object-for-Obj>()
+            public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+            public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+            public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+        }
+    }
+}
+
+internal final class C {
+    public constructor C()
+    kotlin.js.nativeGetter() internal final fun bar(/*0*/ a: kotlin.String): kotlin.Int
+    public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+    kotlin.js.nativeGetter() internal final fun foo(/*0*/ a: kotlin.Int): kotlin.Unit
+    kotlin.js.nativeGetter() internal final fun get(): kotlin.Any?
+    kotlin.js.nativeGetter() internal final fun get(/*0*/ a: A): kotlin.Any?
+    public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+    public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+}
+
+kotlin.js.nativeGetter() internal final class Foo {
+    public constructor Foo()
+    public open override /*1*/ /*fake_override*/ fun equals(/*0*/ other: kotlin.Any?): kotlin.Boolean
+    public open override /*1*/ /*fake_override*/ fun hashCode(): kotlin.Int
+    public open override /*1*/ /*fake_override*/ fun toString(): kotlin.String
+}
