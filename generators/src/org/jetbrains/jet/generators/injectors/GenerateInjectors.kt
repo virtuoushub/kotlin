@@ -48,6 +48,7 @@ import org.jetbrains.jet.context.LazyResolveToken
 import org.jetbrains.jet.lang.resolve.java.JavaLazyAnalyzerPostConstruct
 import org.jetbrains.jet.lang.resolve.java.JavaDescriptorResolverPostConstruct
 import org.jetbrains.jet.lang.resolve.lazy.ScopeProvider
+import org.jetbrains.jet.lang.types.DynamicTypesAllowed
 
 // NOTE: After making changes, you need to re-generate the injectors.
 //       To do that, you can run main in this file.
@@ -133,6 +134,7 @@ private fun generatorForTopDownAnalyzerForJs() =
             field(javaClass<MutablePackageFragmentProvider>())
             field(javaClass<AdditionalCheckerProvider>(),
                   init = GivenExpression(javaClass<AdditionalCheckerProvider.Empty>().getCanonicalName() + ".INSTANCE$"))
+            field(javaClass<DynamicTypesAllowed>())
         }
 
 private fun generatorForTopDownAnalyzerForJvm() =
