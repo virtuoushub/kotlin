@@ -6,4 +6,6 @@ enum class Enum {
     }
 
     open fun f() = 3
+
+    class object {}
 }
