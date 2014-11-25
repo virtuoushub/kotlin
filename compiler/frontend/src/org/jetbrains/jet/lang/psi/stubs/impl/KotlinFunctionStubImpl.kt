@@ -32,19 +32,21 @@ public class KotlinFunctionStubImpl(
         private val isExtension: Boolean,
         private val hasBlockBody: Boolean,
         private val hasBody: Boolean,
-        private val hasTypeParameterListBeforeFunctionName: Boolean
+        private val hasTypeParameterListBeforeFunctionName: Boolean,
+        private val isProbablyNothingType: Boolean
 ) : KotlinStubBaseImpl<JetNamedFunction>(parent, JetStubElementTypes.FUNCTION), KotlinFunctionStub {
     {
         if (isTopLevel && fqName == null) {
             throw IllegalArgumentException("fqName shouldn't be null for top level functions")
         }
     }
-
     override fun getFqName() = fqName
+
     override fun getName() = StringRef.toString(nameRef)
     override fun isTopLevel() = isTopLevel
     override fun isExtension() = isExtension
     override fun hasBlockBody() = hasBlockBody
     override fun hasBody() = hasBody
     override fun hasTypeParameterListBeforeFunctionName() = hasTypeParameterListBeforeFunctionName
+    override fun isProbablyNothingType() = isProbablyNothingType
 }
