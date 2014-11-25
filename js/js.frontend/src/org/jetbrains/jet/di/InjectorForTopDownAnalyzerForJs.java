@@ -127,7 +127,7 @@ public class InjectorForTopDownAnalyzerForJs {
         this.topDownAnalyzer = new TopDownAnalyzer();
         this.lazyTopDownAnalyzer = new LazyTopDownAnalyzer();
         this.mutablePackageFragmentProvider = new MutablePackageFragmentProvider(getModuleDescriptor());
-        this.additionalCheckerProvider = org.jetbrains.jet.lang.resolve.AdditionalCheckerProvider.Empty.INSTANCE$;
+        this.additionalCheckerProvider = org.jetbrains.k2js.resolve.KotlinJsDeclarationCheckerProvider.INSTANCE$;
         this.bodyResolver = new BodyResolver();
         this.annotationResolver = new AnnotationResolver();
         this.callResolver = new CallResolver();

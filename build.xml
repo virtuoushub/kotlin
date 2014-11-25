@@ -367,6 +367,7 @@
 
                 <fileset dir="idea/src">
                     <include name="META-INF/extensionPoints/common.xml"/>
+                    <include name="META-INF/extensionPoints/kotlin2jvm.xml"/>
                     <include name="META-INF/extensionPoints/kotlin2js.xml"/>
                 </fileset>
 

@@ -42,6 +42,7 @@ import org.jetbrains.jet.lang.resolve.kotlin.VirtualFileFinderFactory
 import org.jetbrains.jet.lang.resolve.kotlin.JavaDeclarationCheckerProvider
 import org.jetbrains.jet.lang.resolve.lazy.KotlinCodeAnalyzer
 import org.jetbrains.jet.context.LazyResolveToken
+import org.jetbrains.k2js.resolve.KotlinJsDeclarationCheckerProvider
 
 // NOTE: After making changes, you need to re-generate the injectors.
 //       To do that, you can run main in this file.
@@ -111,7 +112,7 @@ private fun generatorForTopDownAnalyzerForJs() =
             commonForTopDownAnalyzer()
 
             field(javaClass<AdditionalCheckerProvider>(),
-                  init = GivenExpression(javaClass<AdditionalCheckerProvider.Empty>().getCanonicalName() + ".INSTANCE$"))
+                  init = GivenExpression(javaClass<KotlinJsDeclarationCheckerProvider>().getName() + ".INSTANCE$"))
         }
 
 private fun generatorForTopDownAnalyzerForJvm() =
