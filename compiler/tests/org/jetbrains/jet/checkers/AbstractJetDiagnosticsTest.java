@@ -261,8 +261,8 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
         for (TestModule testModule : groupedByModule.keySet()) {
             ModuleDescriptorImpl module =
                     testModule == null ?
-                    TopDownAnalyzerFacadeForJVM.createSealedJavaModule() :
-                    createModule(testModule);
+                    createSealedModule() :
+                    createModule("<" + testModule.getName() + ">");
 
             modules.put(testModule, module);
         }
@@ -283,9 +283,13 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
         return modules;
     }
 
-    protected ModuleDescriptorImpl createModule(TestModule testModule) {
-        String name = "<" + testModule.getName() + ">";
-        return TopDownAnalyzerFacadeForJVM.createJavaModule(name);
+    protected ModuleDescriptorImpl createModule(String moduleName) {
+        return TopDownAnalyzerFacadeForJVM.createJavaModule(moduleName);
+    }
+
+    @NotNull
+    protected ModuleDescriptorImpl createSealedModule() {
+        return TopDownAnalyzerFacadeForJVM.createSealedJavaModule();
     }
 
     private static void checkAllResolvedCallsAreCompleted(@NotNull List<JetFile> jetFiles, @NotNull BindingContext bindingContext) {
