@@ -62,6 +62,7 @@ public trait KotlinFunctionStub : KotlinStubWithFqName<JetNamedFunction> {
     public fun hasBlockBody(): Boolean
     public fun hasBody(): Boolean
     public fun hasTypeParameterListBeforeFunctionName(): Boolean
+    public fun isProbablyNothingType(): Boolean
 }
 
 public trait KotlinImportDirectiveStub : StubElement<JetImportDirective> {
@@ -99,6 +100,7 @@ public trait KotlinPropertyStub : KotlinStubWithFqName<JetProperty> {
     public fun hasInitializer(): Boolean
     public fun hasReceiverTypeRef(): Boolean
     public fun hasReturnTypeRef(): Boolean
+    public fun isProbablyNothingType(): Boolean
 }
 
 public trait KotlinTypeConstraintStub : StubElement<JetTypeConstraint> {
