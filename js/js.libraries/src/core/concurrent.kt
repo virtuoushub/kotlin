@@ -18,8 +18,10 @@ package kotlin
 
 import kotlin.InlineOption.ONLY_LOCAL_RETURN
 
+native
 public annotation class volatile
 
+native
 public annotation class synchronized
 
 public inline fun <R> synchronized(lock: Any, [inlineOptions(ONLY_LOCAL_RETURN)] block: () -> R): R = block()
