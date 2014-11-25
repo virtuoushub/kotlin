@@ -268,7 +268,7 @@ public class JetChangeInfo implements ChangeInfo {
     }
 
     public boolean isConstructor() {
-        return oldDescriptor.isConstructor();
+        return oldDescriptor.getIsConstructor();
     }
 
     public String getNewReturnTypeText() {

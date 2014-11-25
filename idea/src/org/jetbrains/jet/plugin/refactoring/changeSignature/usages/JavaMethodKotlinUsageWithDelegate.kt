@@ -35,7 +35,7 @@ public abstract class JavaMethodKotlinUsageWithDelegate<T: JetElement>(
 public class JavaMethodKotlinCallUsage(
         callElement: JetCallElement,
         javaMethodChangeInfo: JetChangeInfo): JavaMethodKotlinUsageWithDelegate<JetCallElement>(callElement, javaMethodChangeInfo) {
-    override protected val delegateUsage = JetFunctionCallUsage(jetElement, javaMethodChangeInfo.getFunctionDescriptor().getDescriptor(), false)
+    override protected val delegateUsage = JetFunctionCallUsage(jetElement, javaMethodChangeInfo.getFunctionDescriptor().descriptor, false)
 }
 
 public class JavaMethodKotlinDerivedDefinitionUsage(

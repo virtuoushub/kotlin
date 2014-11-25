@@ -92,7 +92,7 @@ public class JetChangeSignatureDialog extends ChangeSignatureDialogBase<
 
     @Override
     protected JetFunctionParameterTableModel createParametersInfoModel(JetMethodDescriptor descriptor) {
-        if (descriptor.isConstructor())
+        if (descriptor.getIsConstructor())
             return new JetConstructorParameterTableModel(myDefaultValueContext);
         else
             return new JetFunctionParameterTableModel(myDefaultValueContext);
@@ -117,7 +117,7 @@ public class JetChangeSignatureDialog extends ChangeSignatureDialogBase<
         JPanel panel = new JPanel(new BorderLayout());
         String valOrVar = "";
 
-        if (myMethod.isConstructor()) {
+        if (myMethod.getIsConstructor()) {
             switch (item.parameter.getValOrVar()) {
                 case None:
                     valOrVar = "    ";
@@ -314,7 +314,7 @@ public class JetChangeSignatureDialog extends ChangeSignatureDialogBase<
                                       new int[] { 4, getParamNamesMaxLength(), getTypesMaxLength() };
                 int columnIndex = 0;
 
-                for (int i = myMethod.isConstructor() ? 0 : 1; i < columnLetters.length; i ++) {
+                for (int i = myMethod.getIsConstructor() ? 0 : 1; i < columnLetters.length; i ++) {
                     int width = getColumnWidth(columnLetters[i]);
 
                     if (x <= width)
@@ -330,7 +330,7 @@ public class JetChangeSignatureDialog extends ChangeSignatureDialogBase<
             @Override
             public JComponent getPreferredFocusedComponent() {
                 MouseEvent me = getMouseEvent();
-                int index = me != null ? getEditorIndex((int) me.getPoint().getX()) : myMethod.isConstructor() ? 1 : 0;
+                int index = me != null ? getEditorIndex((int) me.getPoint().getX()) : myMethod.getIsConstructor() ? 1 : 0;
                 JComponent component = components.get(index);
                 return component instanceof EditorTextField ? ((EditorTextField) component).getFocusTarget() : component;
             }

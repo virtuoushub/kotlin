@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2013 JetBrains s.r.o.
+ * Copyright 2010-2014 JetBrains s.r.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,19 @@
  * limitations under the License.
  */
 
-package org.jetbrains.jet.plugin.refactoring.changeSignature;
+package org.jetbrains.jet.plugin.refactoring.changeSignature
 
-import com.intellij.psi.PsiElement;
-import com.intellij.refactoring.changeSignature.MethodDescriptor;
-import com.intellij.usageView.UsageInfo;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.lang.descriptors.FunctionDescriptor;
-import org.jetbrains.jet.lang.descriptors.Visibility;
+import com.intellij.psi.PsiElement
+import com.intellij.refactoring.changeSignature.MethodDescriptor
+import com.intellij.usageView.UsageInfo
+import org.jetbrains.jet.lang.descriptors.FunctionDescriptor
+import org.jetbrains.jet.lang.descriptors.Visibility
 
-import java.util.Collection;
+public trait JetMethodDescriptor : MethodDescriptor<JetParameterInfo, Visibility> {
+    val affectedFunctions: Collection<UsageInfo>
+    val isConstructor: Boolean
+    val context: PsiElement
+    val descriptor: FunctionDescriptor?
 
-public interface JetMethodDescriptor extends MethodDescriptor<JetParameterInfo, Visibility> {
-    @NotNull
-    Collection<UsageInfo> getAffectedFunctions();
-
-    boolean isConstructor();
-
-    @Nullable
-    String getReturnTypeText();
-
-    @NotNull
-    PsiElement getContext();
-
-    @Nullable
-    FunctionDescriptor getDescriptor();
+    fun getReturnTypeText(): String?
 }
