@@ -184,7 +184,7 @@ public class MemberDeserializer(private val c: DeserializationContext) {
                     if (proto.hasVarargElementType()) c.typeDeserializer.type(proto.getVarargElementType()) else null,
                     SourceElement.NO_SOURCE
             )
-        }
+        }.toList()
     }
 
     private fun getParameterAnnotations(

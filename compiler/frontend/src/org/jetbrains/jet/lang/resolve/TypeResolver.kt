@@ -239,12 +239,12 @@ public class TypeResolver(
     }
 
     private fun resolveTypeProjections(c: TypeResolutionContext, constructor: TypeConstructor, argumentElements: List<JetTypeProjection>): List<TypeProjection> {
+        val parameters = constructor.getParameters()
         return argumentElements.withIndices().map {
             val (i, argumentElement) = it
 
             val projectionKind = argumentElement.getProjectionKind()
             if (projectionKind == JetProjectionKind.STAR) {
-                val parameters = constructor.getParameters()
                 if (parameters.size() > i) {
                     val parameterDescriptor = parameters[i]
                     TypeUtils.makeStarProjection(parameterDescriptor)
@@ -257,8 +257,8 @@ public class TypeResolver(
                 // TODO : handle the Foo<in *> case
                 val type = resolveType(c.noBareTypes(), argumentElement.getTypeReference())
                 val kind = resolveProjectionKind(projectionKind)
-                if (constructor.getParameters().size() > i) {
-                    val parameterDescriptor = constructor.getParameters()[i]
+                if (parameters.size() > i) {
+                    val parameterDescriptor = parameters[i]
                     if (kind != INVARIANT && parameterDescriptor.getVariance() != INVARIANT) {
                         if (kind == parameterDescriptor.getVariance()) {
                             c.trace.report(REDUNDANT_PROJECTION.on(argumentElement, constructor.getDeclarationDescriptor()))
@@ -270,8 +270,7 @@ public class TypeResolver(
                 }
                 TypeProjectionImpl(kind, type)
             }
-
-        }
+        }.toList()
     }
 
     public fun resolveClass(scope: JetScope, userType: JetUserType, trace: BindingTrace): ClassifierDescriptor? {
