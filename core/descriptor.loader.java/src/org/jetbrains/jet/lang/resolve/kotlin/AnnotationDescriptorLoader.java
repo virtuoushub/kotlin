@@ -58,15 +58,15 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
     @NotNull
     @Override
     public List<AnnotationDescriptor> loadClassAnnotations(
-            @NotNull ClassDescriptor descriptor,
             @NotNull ProtoBuf.Class classProto,
             @NotNull NameResolver nameResolver
     ) {
-        KotlinJvmBinaryClass kotlinClass = findKotlinClassByProto(descriptor);
+        KotlinJvmBinaryClass kotlinClass = findKotlinClassByProto(classProto, nameResolver);
         if (kotlinClass == null) {
             // This means that the resource we're constructing the descriptor from is no longer present: KotlinClassFinder had found the
             // class earlier, but it can't now
-            getErrorReporter().reportLoadingError("Kotlin class for loading class annotations is not found: " + descriptor, null);
+            //TODO: message
+            getErrorReporter().reportLoadingError("Kotlin class for loading class annotations is not found: " + classProto, null);
             return Collections.emptyList();
         }
 

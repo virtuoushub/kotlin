@@ -19,7 +19,6 @@ package org.jetbrains.jet.descriptors.serialization.descriptors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 
 import java.util.List;
@@ -29,7 +28,6 @@ public interface AnnotationLoader {
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadClassAnnotations(
-                @NotNull ClassDescriptor descriptor,
                 @NotNull ProtoBuf.Class classProto,
                 @NotNull NameResolver nameResolver
         ) {
@@ -67,7 +65,6 @@ public interface AnnotationLoader {
 
     @NotNull
     List<AnnotationDescriptor> loadClassAnnotations(
-            @NotNull ClassDescriptor descriptor,
             @NotNull ProtoBuf.Class classProto,
             @NotNull NameResolver nameResolver
     );

@@ -46,22 +46,21 @@ public abstract class BaseDescriptorLoader protected(
             container: ProtoContainer,
             proto: ProtoBuf.Callable,
             nameResolver: NameResolver,
-            kind: AnnotatedCallableKind
+            annotatedCallableKind: AnnotatedCallableKind
     ): KotlinJvmBinaryClass? {
         if (container is PackageProtoContainer) {
             return findPackagePartClass(container, proto, nameResolver)
         }
         val classProto = (container as ClassProtoContainer).classProto
         val classKind = Flags.CLASS_KIND[classProto.getFlags()]
-        val isClassObject = classKind == ProtoBuf.Class.Kind.CLASS_OBJECT
-        if (isClassObject && isStaticFieldInOuter(proto)) {
+        val classId = nameResolver.getClassId(classProto.getFqName())
+        if (classKind == ProtoBuf.Class.Kind.CLASS_OBJECT && isStaticFieldInOuter(proto)) {
             // Backing fields of properties of a class object are generated in the outer class
-            val classId = nameResolver.getClassId(classProto.getFqName())
             return kotlinClassFinder.findKotlinClass(kotlinClassIdToJavaClassId(classId.getOuterClassId()))
         }
-        else if (classKind == ProtoBuf.Class.Kind.TRAIT && kind == AnnotatedCallableKind.PROPERTY) {
+        else if (classKind == ProtoBuf.Class.Kind.TRAIT && annotatedCallableKind == AnnotatedCallableKind.PROPERTY) {
             if (proto.hasExtension(implClassName)) {
-                val packageFqName = getClassId(container as ClassDescriptor).getPackageFqName()
+                val packageFqName = classId.getPackageFqName()
                 val tImplName = nameResolver.getName(proto.getExtension(implClassName))
                 // TODO: store accurate name for nested traits
                 return kotlinClassFinder.findKotlinClass(ClassId(packageFqName, tImplName))
@@ -69,7 +68,7 @@ public abstract class BaseDescriptorLoader protected(
             return null
         }
 
-        return findKotlinClassByProto(container, nameResolver)
+        return findKotlinClassByProto(classProto, nameResolver)
     }
 
     private fun findPackagePartClass(

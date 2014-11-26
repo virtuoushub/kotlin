@@ -22,7 +22,7 @@ import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotatedCallableKind;
 import org.jetbrains.jet.descriptors.serialization.descriptors.ConstantLoader;
-import org.jetbrains.jet.lang.descriptors.ClassOrPackageFragmentDescriptor;
+import org.jetbrains.jet.descriptors.serialization.descriptors.ProtoContainer;
 import org.jetbrains.jet.lang.resolve.constants.CompileTimeConstant;
 import org.jetbrains.jet.lang.resolve.java.resolver.ErrorReporter;
 
@@ -40,7 +40,7 @@ public class ConstantDescriptorLoader extends BaseDescriptorLoader implements Co
     @Nullable
     @Override
     public CompileTimeConstant<?> loadPropertyConstant(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind
