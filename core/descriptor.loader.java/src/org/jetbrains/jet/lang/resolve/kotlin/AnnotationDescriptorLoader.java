@@ -18,13 +18,7 @@ package org.jetbrains.jet.lang.resolve.kotlin;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.jet.descriptors.serialization.JavaProtoBuf;
-import org.jetbrains.jet.descriptors.serialization.NameResolver;
-import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.descriptors.serialization.SerializationPackage;
-import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotatedCallableKind;
-import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotationLoader;
-import org.jetbrains.jet.descriptors.serialization.descriptors.ProtoContainer;
 import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptorImpl;
@@ -37,12 +31,14 @@ import org.jetbrains.jet.lang.resolve.name.ClassId;
 import org.jetbrains.jet.lang.resolve.name.Name;
 import org.jetbrains.jet.lang.types.ErrorUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.jetbrains.jet.lang.resolve.kotlin.DescriptorLoadersStorage.MemberSignature;
 import static org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils.javaClassIdToKotlinClassId;
 
-public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements AnnotationLoader {
+public class AnnotationDescriptorLoader extends AbstractAnnotationLoader<AnnotationDescriptor> {
     private final ModuleDescriptor module;
 
     public AnnotationDescriptorLoader(
@@ -51,40 +47,15 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
             @NotNull KotlinClassFinder kotlinClassFinder,
             @NotNull ErrorReporter errorReporter
     ) {
-        super(kotlinClassFinder, errorReporter, storage);
+        super(storage, kotlinClassFinder, errorReporter);
         this.module = module;
     }
 
-    @NotNull
     @Override
-    public List<AnnotationDescriptor> loadClassAnnotations(
-            @NotNull ProtoBuf.Class classProto,
-            @NotNull NameResolver nameResolver
+    protected KotlinJvmBinaryClass.AnnotationArgumentVisitor loadAnnotation(
+            @NotNull ClassId classId, @NotNull List<AnnotationDescriptor> result
     ) {
-        KotlinJvmBinaryClass kotlinClass = findKotlinClassByProto(classProto, nameResolver);
-        if (kotlinClass == null) {
-            // This means that the resource we're constructing the descriptor from is no longer present: KotlinClassFinder had found the
-            // class earlier, but it can't now
-            //TODO: message
-            getErrorReporter().reportLoadingError("Kotlin class for loading class annotations is not found: " + classProto, null);
-            return Collections.emptyList();
-        }
-
-        final List<AnnotationDescriptor> result = new ArrayList<AnnotationDescriptor>(1);
-
-        kotlinClass.loadClassAnnotations(new KotlinJvmBinaryClass.AnnotationVisitor() {
-            @Nullable
-            @Override
-            public KotlinJvmBinaryClass.AnnotationArgumentVisitor visitAnnotation(@NotNull ClassId classId) {
-                return resolveAnnotation(classId, result, module);
-            }
-
-            @Override
-            public void visitEnd() {
-            }
-        });
-
-        return result;
+        return resolveAnnotation(classId, result, module);
     }
 
     @Nullable
@@ -98,7 +69,8 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
         final ClassDescriptor annotationClass = resolveClass(classId, moduleDescriptor);
 
         return new KotlinJvmBinaryClass.AnnotationArgumentVisitor() {
-            private final Map<ValueParameterDescriptor, CompileTimeConstant<?>> arguments = new HashMap<ValueParameterDescriptor, CompileTimeConstant<?>>();
+            private final Map<ValueParameterDescriptor, CompileTimeConstant<?>> arguments =
+                    new HashMap<ValueParameterDescriptor, CompileTimeConstant<?>>();
 
             @Override
             public void visit(@Nullable Name name, @Nullable Object value) {
@@ -179,58 +151,5 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
         ClassId classId = javaClassIdToKotlinClassId(javaClassId);
         ClassDescriptor classDescriptor = SerializationPackage.findClassAcrossModuleDependencies(moduleDescriptor, classId);
         return classDescriptor != null ? classDescriptor : ErrorUtils.createErrorClass(classId.asSingleFqName().asString());
-    }
-
-    @NotNull
-    @Override
-    public List<AnnotationDescriptor> loadCallableAnnotations(
-            @NotNull ProtoContainer container,
-            @NotNull ProtoBuf.Callable proto,
-            @NotNull NameResolver nameResolver,
-            @NotNull AnnotatedCallableKind kind
-    ) {
-        MemberSignature signature = getCallableSignature(proto, nameResolver, kind);
-        if (signature == null) return Collections.emptyList();
-
-        return findClassAndLoadMemberAnnotations(container, proto, nameResolver, kind, signature);
-    }
-
-    @NotNull
-    private List<AnnotationDescriptor> findClassAndLoadMemberAnnotations(
-            @NotNull ProtoContainer container,
-            @NotNull ProtoBuf.Callable proto,
-            @NotNull NameResolver nameResolver,
-            @NotNull AnnotatedCallableKind kind,
-            @NotNull MemberSignature signature
-    ) {
-        KotlinJvmBinaryClass kotlinClass = findClassWithAnnotationsAndInitializers(container, proto, nameResolver, kind);
-        if (kotlinClass == null) {
-            getErrorReporter().reportLoadingError("Kotlin class for loading member annotations is not found: " + container, null);
-            return Collections.emptyList();
-        }
-
-        List<AnnotationDescriptor> descriptors = getStorage().getStorageForClass(kotlinClass).getMemberAnnotations().get(signature);
-        return descriptors == null ? Collections.<AnnotationDescriptor>emptyList() : descriptors;
-    }
-
-    @NotNull
-    @Override
-    public List<AnnotationDescriptor> loadValueParameterAnnotations(
-            @NotNull ProtoContainer container,
-            @NotNull ProtoBuf.Callable callable,
-            @NotNull NameResolver nameResolver,
-            @NotNull AnnotatedCallableKind kind,
-            @NotNull ProtoBuf.Callable.ValueParameter proto
-    ) {
-        MemberSignature methodSignature = getCallableSignature(callable, nameResolver, kind);
-        if (methodSignature != null) {
-            if (proto.hasExtension(JavaProtoBuf.index)) {
-                MemberSignature paramSignature =
-                        MemberSignature.fromMethodSignatureAndParameterIndex(methodSignature, proto.getExtension(JavaProtoBuf.index));
-                return findClassAndLoadMemberAnnotations(container, callable, nameResolver, kind, paramSignature);
-            }
-        }
-
-        return Collections.emptyList();
     }
 }

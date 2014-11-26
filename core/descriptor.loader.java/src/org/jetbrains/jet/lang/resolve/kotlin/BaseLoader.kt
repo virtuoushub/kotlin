@@ -20,26 +20,20 @@ import org.jetbrains.jet.descriptors.serialization.JavaProtoBuf.*;
 import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotatedCallableKind;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassOrPackageFragmentDescriptor;
 import org.jetbrains.jet.lang.resolve.java.resolver.ErrorReporter;
 import org.jetbrains.jet.lang.resolve.name.ClassId;
 
-import org.jetbrains.jet.lang.resolve.DescriptorUtils.isClassObject
-import org.jetbrains.jet.lang.resolve.DescriptorUtils.isTrait
-import org.jetbrains.jet.lang.resolve.kotlin.DescriptorLoadersStorage.MemberSignature
-import org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils.getClassId
 import org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils.kotlinClassIdToJavaClassId
 import kotlin.platform.platformStatic
 import org.jetbrains.jet.descriptors.serialization.descriptors.PackageProtoContainer
 import org.jetbrains.jet.descriptors.serialization.descriptors.ProtoContainer
 import org.jetbrains.jet.descriptors.serialization.descriptors.ClassProtoContainer
 import org.jetbrains.jet.descriptors.serialization.Flags
+import org.jetbrains.jet.lang.resolve.kotlin.AbstractLoadersStorage.MemberSignature
 
-public abstract class BaseDescriptorLoader protected(
+public abstract class BaseLoader protected(
         private val kotlinClassFinder: KotlinClassFinder,
-        protected val errorReporter: ErrorReporter,
-        protected val storage: DescriptorLoadersStorage
+        protected val errorReporter: ErrorReporter
 ) {
 
     protected fun findClassWithAnnotationsAndInitializers(

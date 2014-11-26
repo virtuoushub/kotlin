@@ -23,8 +23,9 @@ import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 
 import java.util.List;
 
-public interface AnnotationLoader {
-    AnnotationLoader UNSUPPORTED = new AnnotationLoader() {
+public interface AnnotationLoader<A> {
+    //TODO
+    AnnotationLoader<AnnotationDescriptor> UNSUPPORTED = new AnnotationLoader<AnnotationDescriptor>() {
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadClassAnnotations(
@@ -64,13 +65,13 @@ public interface AnnotationLoader {
     };
 
     @NotNull
-    List<AnnotationDescriptor> loadClassAnnotations(
+    List<A> loadClassAnnotations(
             @NotNull ProtoBuf.Class classProto,
             @NotNull NameResolver nameResolver
     );
 
     @NotNull
-    List<AnnotationDescriptor> loadCallableAnnotations(
+    List<A> loadCallableAnnotations(
             @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
@@ -78,7 +79,7 @@ public interface AnnotationLoader {
     );
 
     @NotNull
-    List<AnnotationDescriptor> loadValueParameterAnnotations(
+    List<A> loadValueParameterAnnotations(
             @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable callable,
             @NotNull NameResolver nameResolver,

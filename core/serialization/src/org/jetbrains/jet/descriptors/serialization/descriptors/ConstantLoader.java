@@ -22,8 +22,9 @@ import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.lang.resolve.constants.CompileTimeConstant;
 
-public interface ConstantLoader {
-    ConstantLoader UNSUPPORTED = new ConstantLoader() {
+public interface ConstantLoader<C> {
+    //TODO:
+    ConstantLoader<CompileTimeConstant<?>> UNSUPPORTED = new ConstantLoader<CompileTimeConstant<?>>() {
         @Nullable
         @Override
         public CompileTimeConstant<?> loadPropertyConstant(
@@ -37,7 +38,7 @@ public interface ConstantLoader {
     };
 
     @Nullable
-    CompileTimeConstant<?> loadPropertyConstant(
+    C loadPropertyConstant(
             @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
