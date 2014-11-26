@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassOrPackageFragmentDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public interface AnnotationLoader {
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadCallableAnnotations(
-                @NotNull ClassOrPackageFragmentDescriptor container,
+                @NotNull ProtoContainer container,
                 @NotNull ProtoBuf.Callable proto,
                 @NotNull NameResolver nameResolver,
                 @NotNull AnnotatedCallableKind kind
@@ -51,7 +50,7 @@ public interface AnnotationLoader {
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadValueParameterAnnotations(
-                @NotNull ClassOrPackageFragmentDescriptor container,
+                @NotNull ProtoContainer container,
                 @NotNull ProtoBuf.Callable callable,
                 @NotNull NameResolver nameResolver,
                 @NotNull AnnotatedCallableKind kind,
@@ -75,7 +74,7 @@ public interface AnnotationLoader {
 
     @NotNull
     List<AnnotationDescriptor> loadCallableAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind
@@ -83,7 +82,7 @@ public interface AnnotationLoader {
 
     @NotNull
     List<AnnotationDescriptor> loadValueParameterAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable callable,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind,

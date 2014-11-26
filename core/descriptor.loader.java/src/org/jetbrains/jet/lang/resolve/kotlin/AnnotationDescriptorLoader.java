@@ -24,6 +24,7 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.descriptors.serialization.SerializationPackage;
 import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotatedCallableKind;
 import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotationLoader;
+import org.jetbrains.jet.descriptors.serialization.descriptors.ProtoContainer;
 import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptorImpl;
@@ -61,7 +62,7 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
             @NotNull ProtoBuf.Class classProto,
             @NotNull NameResolver nameResolver
     ) {
-        KotlinJvmBinaryClass kotlinClass = findKotlinClassByDescriptor(descriptor);
+        KotlinJvmBinaryClass kotlinClass = findKotlinClassByProto(descriptor);
         if (kotlinClass == null) {
             // This means that the resource we're constructing the descriptor from is no longer present: KotlinClassFinder had found the
             // class earlier, but it can't now
@@ -183,7 +184,7 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
     @NotNull
     @Override
     public List<AnnotationDescriptor> loadCallableAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind
@@ -196,7 +197,7 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
 
     @NotNull
     private List<AnnotationDescriptor> findClassAndLoadMemberAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind,
@@ -215,7 +216,7 @@ public class AnnotationDescriptorLoader extends BaseDescriptorLoader implements 
     @NotNull
     @Override
     public List<AnnotationDescriptor> loadValueParameterAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable callable,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind,

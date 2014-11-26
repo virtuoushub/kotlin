@@ -22,19 +22,19 @@ import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
 import org.jetbrains.jet.descriptors.serialization.descriptors.AnnotatedCallableKind;
 import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
 import org.jetbrains.jet.lang.descriptors.ClassOrPackageFragmentDescriptor;
-import org.jetbrains.jet.lang.descriptors.PackageFragmentDescriptor;
-import org.jetbrains.jet.lang.resolve.DescriptorUtils;
 import org.jetbrains.jet.lang.resolve.java.resolver.ErrorReporter;
 import org.jetbrains.jet.lang.resolve.name.ClassId;
 
 import org.jetbrains.jet.lang.resolve.DescriptorUtils.isClassObject
 import org.jetbrains.jet.lang.resolve.DescriptorUtils.isTrait
-import org.jetbrains.jet.lang.resolve.java.PackageClassUtils.getPackageClassId
 import org.jetbrains.jet.lang.resolve.kotlin.DescriptorLoadersStorage.MemberSignature
 import org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils.getClassId
 import org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils.kotlinClassIdToJavaClassId
 import kotlin.platform.platformStatic
-import org.jetbrains.kotlin.util.sure
+import org.jetbrains.jet.descriptors.serialization.descriptors.PackageProtoContainer
+import org.jetbrains.jet.descriptors.serialization.descriptors.ProtoContainer
+import org.jetbrains.jet.descriptors.serialization.descriptors.ClassProtoContainer
+import org.jetbrains.jet.descriptors.serialization.Flags
 
 public abstract class BaseDescriptorLoader protected(
         private val kotlinClassFinder: KotlinClassFinder,
@@ -43,19 +43,23 @@ public abstract class BaseDescriptorLoader protected(
 ) {
 
     protected fun findClassWithAnnotationsAndInitializers(
-            container: ClassOrPackageFragmentDescriptor,
+            container: ProtoContainer,
             proto: ProtoBuf.Callable,
             nameResolver: NameResolver,
             kind: AnnotatedCallableKind
     ): KotlinJvmBinaryClass? {
-        if (container is PackageFragmentDescriptor) {
+        if (container is PackageProtoContainer) {
             return findPackagePartClass(container, proto, nameResolver)
         }
-        else if (isClassObject(container) && isStaticFieldInOuter(proto)) {
+        val classProto = (container as ClassProtoContainer).classProto
+        val classKind = Flags.CLASS_KIND[classProto.getFlags()]
+        val isClassObject = classKind == ProtoBuf.Class.Kind.CLASS_OBJECT
+        if (isClassObject && isStaticFieldInOuter(proto)) {
             // Backing fields of properties of a class object are generated in the outer class
-            return findKotlinClassByDescriptor(container.getContainingDeclaration() as ClassOrPackageFragmentDescriptor)
+            val classId = nameResolver.getClassId(classProto.getFqName())
+            return kotlinClassFinder.findKotlinClass(kotlinClassIdToJavaClassId(classId.getOuterClassId()))
         }
-        else if (isTrait(container) && kind == AnnotatedCallableKind.PROPERTY) {
+        else if (classKind == ProtoBuf.Class.Kind.TRAIT && kind == AnnotatedCallableKind.PROPERTY) {
             if (proto.hasExtension(implClassName)) {
                 val packageFqName = getClassId(container as ClassDescriptor).getPackageFqName()
                 val tImplName = nameResolver.getName(proto.getExtension(implClassName))
@@ -65,11 +69,11 @@ public abstract class BaseDescriptorLoader protected(
             return null
         }
 
-        return findKotlinClassByDescriptor(container)
+        return findKotlinClassByProto(container, nameResolver)
     }
 
     private fun findPackagePartClass(
-            container: PackageFragmentDescriptor,
+            container: PackageProtoContainer,
             proto: ProtoBuf.Callable,
             nameResolver: NameResolver
     ): KotlinJvmBinaryClass? {
@@ -79,12 +83,9 @@ public abstract class BaseDescriptorLoader protected(
         return null
     }
 
-    protected fun findKotlinClassByDescriptor(descriptor: ClassOrPackageFragmentDescriptor): KotlinJvmBinaryClass? {
-        return when (descriptor) {
-            is ClassDescriptor -> kotlinClassFinder.findKotlinClass(kotlinClassIdToJavaClassId(getClassId(descriptor)))
-            is PackageFragmentDescriptor -> kotlinClassFinder.findKotlinClass(getPackageClassId((descriptor).fqName))
-            else -> throw IllegalStateException("Unrecognized descriptor: " + descriptor)
-        }
+    protected fun findKotlinClassByProto(classProto: ProtoBuf.Class, nameResolver: NameResolver): KotlinJvmBinaryClass? {
+        val classId = nameResolver.getClassId(classProto.getFqName())
+        return kotlinClassFinder.findKotlinClass(kotlinClassIdToJavaClassId(classId))
     }
 
     class object {
