@@ -289,7 +289,7 @@ public final class StaticContext {
                         return declarePropertyOrPropertyAccessorName(descriptor, propertyName, false);
                     } else {
                         if (descriptor instanceof PropertyDescriptor) {
-                            return declarePropertyOrPropertyAccessorName(descriptor, propertyName, false);
+                            return declarePropertyName(descriptor, propertyName);
                         } else {
                             String propertyJsName = getNameForDescriptor(propertyDescriptor).getIdent();
                             boolean isGetter = descriptor instanceof PropertyGetterDescriptor;
@@ -346,6 +346,12 @@ public final class StaticContext {
     public JsName declarePropertyOrPropertyAccessorName(@NotNull DeclarationDescriptor descriptor, @NotNull String name, boolean fresh) {
         JsScope scope = getEnclosingScope(descriptor);
         return fresh ? scope.declareFreshName(name) : scope.declareName(name);
+    }
+
+    @NotNull
+    public JsName declarePropertyName(@NotNull DeclarationDescriptor descriptor, @NotNull String name) {
+        JsScope scope = getEnclosingScope(descriptor);
+        return scope.createNameWithoutAddingToScope(name);
     }
 
     @NotNull

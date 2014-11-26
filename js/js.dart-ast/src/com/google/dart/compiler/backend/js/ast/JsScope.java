@@ -173,6 +173,11 @@ public abstract class JsScope {
         return name;
     }
 
+    @NotNull
+    public JsName createNameWithoutAddingToScope(@NotNull String ident) {
+        return new JsName(this, ident);
+    }
+
     /**
      * Attempts to find the name object for the specified ident, searching in this
      * scope only.
