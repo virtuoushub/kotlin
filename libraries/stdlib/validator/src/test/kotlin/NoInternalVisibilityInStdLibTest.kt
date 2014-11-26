@@ -112,7 +112,7 @@ class NoInternalVisibilityInStdLibTest {
             configuration.add(CommonConfigurationKeys.SOURCE_ROOTS_KEY, "../src/generated")
             configuration.addAll(JVMConfigurationKeys.CLASSPATH_KEY, PathUtil.getJdkClassesRoots())
 
-            val environment = JetCoreEnvironment.createForProduction(it, configuration)
+            val environment = JetCoreEnvironment.createForJvmProduction(it, configuration)
 
             val module = TopDownAnalyzerFacadeForJVM.createJavaModule("<module for validating std lib>")
             module.addDependencyOnModule(module)

@@ -99,7 +99,7 @@ public class CompileKotlinAgainstCustomBinariesTest extends TestCaseWithTmpdir {
 
         CompilerConfiguration configuration = JetTestUtils.compilerConfigurationForTests(
                 ConfigurationKind.ALL, TestJdkKind.MOCK_JDK, extras.toArray(new File[extras.size()]));
-        return JetCoreEnvironment.createForTests(getTestRootDisposable(), configuration);
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configuration);
     }
 
     @NotNull

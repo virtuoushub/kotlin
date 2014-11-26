@@ -89,7 +89,7 @@ public final class LoadDescriptorUtil {
                 javaRoot,
                 new File("compiler/tests") // for @ExpectLoadError annotation
         );
-        JetCoreEnvironment jetCoreEnvironment = JetCoreEnvironment.createForTests(disposable, configuration);
+        JetCoreEnvironment jetCoreEnvironment = JetCoreEnvironment.createForJvmTests(disposable, configuration);
         BindingTrace trace = new CliLightClassGenerationSupport.NoScopeRecordCliBindingTrace();
         InjectorForJavaDescriptorResolver injector =
                 InjectorForJavaDescriptorResolverUtil.create(jetCoreEnvironment.getProject(), trace, true);

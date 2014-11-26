@@ -73,7 +73,7 @@ public class BuiltInsSerializer(private val dependOnOldBuiltIns: Boolean) {
         val sourceRoots = srcDirs map { it.path }
         configuration.put(CommonConfigurationKeys.SOURCE_ROOTS_KEY, sourceRoots)
 
-        val environment = JetCoreEnvironment.createForTests(disposable, configuration)
+        val environment = JetCoreEnvironment.createForJvmTests(disposable, configuration)
 
         val files = environment.getSourceFiles()
 

@@ -38,7 +38,7 @@ public abstract class KotlinAsJavaTestBase extends KotlinTestWithEnvironment {
 
         extraConfiguration(configuration);
 
-        return JetCoreEnvironment.createForTests(getTestRootDisposable(), configuration);
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configuration);
     }
 
     protected void extraConfiguration(@NotNull CompilerConfiguration configuration) {

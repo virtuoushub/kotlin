@@ -30,7 +30,7 @@ import org.jetbrains.jet.lang.resolve.MutableDiagnosticsWithSuppression
 
 class MutableDiagnosticsTest : KotlinTestWithEnvironment() {
     override fun createEnvironment(): JetCoreEnvironment? {
-        return JetCoreEnvironment.createForTests(getTestRootDisposable()!!, CompilerConfiguration())
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable()!!, CompilerConfiguration())
     }
 
     private val BindingTrace.diagnostics: Diagnostics

@@ -73,7 +73,7 @@ public abstract class KotlinMultiFileTestWithWithJava<M, F> extends JetLiteFixtu
         if (kotlinSourceRoot != null) {
             configuration.add(CommonConfigurationKeys.SOURCE_ROOTS_KEY, kotlinSourceRoot.getPath());
         }
-        return JetCoreEnvironment.createForTests(getTestRootDisposable(), configuration);
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configuration);
     }
 
     @Nullable

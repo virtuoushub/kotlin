@@ -28,7 +28,7 @@ public abstract class AbstractJetDiagnosticsTestWithStdLib extends AbstractJetDi
     @Override
     protected JetCoreEnvironment createEnvironment() {
         File javaFilesDir = createJavaFilesDir();
-        return JetCoreEnvironment.createForTests(getTestRootDisposable(), JetTestUtils.compilerConfigurationForTests(
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), JetTestUtils.compilerConfigurationForTests(
                 ConfigurationKind.ALL,
                 TestJdkKind.MOCK_JDK,
                 Arrays.asList(JetTestUtils.getAnnotationsJar()),

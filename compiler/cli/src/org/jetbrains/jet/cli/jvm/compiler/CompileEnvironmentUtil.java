@@ -116,7 +116,7 @@ public class CompileEnvironmentUtil {
 
         Disposable disposable = Disposer.newDisposable();
         try {
-            JetCoreEnvironment scriptEnvironment = JetCoreEnvironment.createForProduction(disposable, configuration);
+            JetCoreEnvironment scriptEnvironment = JetCoreEnvironment.createForJvmProduction(disposable, configuration);
             GenerationState generationState = KotlinToJVMBytecodeCompiler.analyzeAndGenerate(scriptEnvironment);
             if (generationState == null) {
                 throw new CompileEnvironmentException("Module script " + moduleScriptFile + " analyze failed:\n" +

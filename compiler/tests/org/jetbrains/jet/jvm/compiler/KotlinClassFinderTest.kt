@@ -36,7 +36,7 @@ public class KotlinClassFinderTest : KotlinTestWithEnvironmentManagement() {
                 listOf(), listOf(File("compiler/testData/kotlinClassFinder/nestedClass.kt")), tmpdir, getTestRootDisposable()!!
         )
 
-        val environment = JetCoreEnvironment.createForTests(getTestRootDisposable()!!,
+        val environment = JetCoreEnvironment.createForJvmTests(getTestRootDisposable()!!,
                                                             JetTestUtils.compilerConfigurationForTests(
                                                                     ConfigurationKind.ALL, TestJdkKind.MOCK_JDK, tmpdir))
 
