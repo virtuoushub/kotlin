@@ -98,7 +98,7 @@ public class JetPsiUtilTest extends JetLiteFixture {
 
     @Override
     protected JetCoreEnvironment createEnvironment() {
-        return JetCoreEnvironment.createForTests(getTestRootDisposable(), new CompilerConfiguration());
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), new CompilerConfiguration());
     }
 
     private ImportPath getImportPathFromParsed(String text) {

@@ -96,7 +96,7 @@ public class ReplInterpreter {
     private final TopDownAnalyzer topDownAnalyzer;
 
     public ReplInterpreter(@NotNull Disposable disposable, @NotNull CompilerConfiguration configuration) {
-        JetCoreEnvironment environment = JetCoreEnvironment.createForProduction(disposable, configuration);
+        JetCoreEnvironment environment = JetCoreEnvironment.createForJvmProduction(disposable, configuration);
         Project project = environment.getProject();
         this.psiFileFactory = (PsiFileFactoryImpl) PsiFileFactory.getInstance(project);
         this.trace = new BindingTraceContext();

@@ -48,7 +48,7 @@ public class GenerateNotNullAssertionsTest extends CodegenTestCase {
         configuration.put(JVMConfigurationKeys.DISABLE_CALL_ASSERTIONS, disableCallAssertions);
         configuration.put(JVMConfigurationKeys.DISABLE_PARAM_ASSERTIONS, disableParamAssertions);
 
-        myEnvironment = JetCoreEnvironment.createForTests(getTestRootDisposable(), configuration);
+        myEnvironment = JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configuration);
     }
 
     private void doTestCallAssertions(boolean disableCallAssertions) throws Exception {

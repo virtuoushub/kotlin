@@ -109,7 +109,7 @@ public abstract class AbstractBlackBoxCodegenTest extends CodegenTestCase {
         String ktFile = relativePath(new File(ktFileFullPath));
         File javaClassesTempDirectory = compileJava(ktFile.replaceFirst("\\.kt$", ".java"));
 
-        myEnvironment = JetCoreEnvironment.createForTests(getTestRootDisposable(), JetTestUtils.compilerConfigurationForTests(
+        myEnvironment = JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), JetTestUtils.compilerConfigurationForTests(
                 ConfigurationKind.ALL, TestJdkKind.FULL_JDK, JetTestUtils.getAnnotationsJar(), javaClassesTempDirectory
         ));
 
@@ -140,7 +140,7 @@ public abstract class AbstractBlackBoxCodegenTest extends CodegenTestCase {
                 ConfigurationKind.ALL, TestJdkKind.FULL_JDK, JetTestUtils.getAnnotationsJar()
         );
         configuration.add(JVMConfigurationKeys.CLASSPATH_KEY, dirFile);
-        myEnvironment = JetCoreEnvironment.createForTests(getTestRootDisposable(), configuration);
+        myEnvironment = JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configuration);
         loadFiles(ArrayUtil.toStringArray(ktFilePaths));
         classFileFactory =
                 GenerationUtils.compileManyFilesGetGenerationStateForTest(myEnvironment.getProject(), myFiles.getPsiFiles()).getFactory();

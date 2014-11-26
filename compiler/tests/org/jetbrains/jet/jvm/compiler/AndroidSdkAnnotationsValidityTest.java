@@ -39,7 +39,7 @@ public class AndroidSdkAnnotationsValidityTest extends AbstractSdkAnnotationsVal
     protected JetCoreEnvironment createEnvironment(Disposable parentDisposable) {
         CompilerConfiguration configuration = JetTestUtils.compilerConfigurationForTests(
                 ConfigurationKind.JDK_AND_ANNOTATIONS, TestJdkKind.ANDROID_API, JetTestUtils.getAnnotationsJar());
-        return JetCoreEnvironment.createForTests(parentDisposable, configuration);
+        return JetCoreEnvironment.createForJvmTests(parentDisposable, configuration);
     }
 
     @Override

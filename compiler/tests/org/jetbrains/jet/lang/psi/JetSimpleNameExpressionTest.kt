@@ -35,6 +35,6 @@ public class JetSimpleNameExpressionTest() : JetLiteFixture() {
         Assert.assertEquals(expected, expression.getOperationReference().getReceiverExpression()!!.getText())
     }
     override fun createEnvironment(): JetCoreEnvironment {
-        return JetCoreEnvironment.createForTests(getTestRootDisposable()!!, CompilerConfiguration())
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable()!!, CompilerConfiguration())
     }
 }

@@ -33,7 +33,7 @@ class PsiUtilsTest {
 
         val configuration = CompilerConfiguration()
         configuration.addAll(JVMConfigurationKeys.CLASSPATH_KEY, PathUtil.getJdkClassesRoots())
-        environment = JetCoreEnvironment.createForTests(rootDisposable, configuration)
+        environment = JetCoreEnvironment.createForJvmTests(rootDisposable, configuration)
     }
 
     [After]

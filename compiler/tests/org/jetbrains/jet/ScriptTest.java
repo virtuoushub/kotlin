@@ -82,7 +82,7 @@ public class ScriptTest {
             configuration.addAll(CommonConfigurationKeys.SCRIPT_DEFINITIONS_KEY, scriptDefinitions);
             configuration.put(JVMConfigurationKeys.SCRIPT_PARAMETERS, scriptParameters);
 
-            JetCoreEnvironment environment = JetCoreEnvironment.createForProduction(rootDisposable, configuration);
+            JetCoreEnvironment environment = JetCoreEnvironment.createForJvmProduction(rootDisposable, configuration);
 
             try {
                 JetScriptDefinitionProvider.getInstance(environment.getProject()).markFileAsScript(environment.getSourceFiles().get(0));

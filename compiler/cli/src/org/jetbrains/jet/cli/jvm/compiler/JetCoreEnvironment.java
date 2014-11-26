@@ -78,7 +78,7 @@ public class JetCoreEnvironment {
     private static int ourProjectCount = 0;
 
     @NotNull
-    public static JetCoreEnvironment createForProduction(
+    public static JetCoreEnvironment createForJvmProduction(
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration
     ) {
@@ -114,7 +114,7 @@ public class JetCoreEnvironment {
 
     @TestOnly
     @NotNull
-    public static JetCoreEnvironment createForTests(
+    public static JetCoreEnvironment createForJvmTests(
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration
     ) {

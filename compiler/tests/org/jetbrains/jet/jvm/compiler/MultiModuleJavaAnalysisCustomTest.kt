@@ -71,7 +71,7 @@ public class MultiModuleJavaAnalysisCustomTest : UsefulTestCase() {
     private fun createEnvironment(moduleDirs: Array<File>): JetCoreEnvironment {
         val configuration = CompilerConfiguration()
         configuration.addAll(JVMConfigurationKeys.CLASSPATH_KEY, moduleDirs.toList())
-        return JetCoreEnvironment.createForTests(getTestRootDisposable()!!, configuration)
+        return JetCoreEnvironment.createForJvmTests(getTestRootDisposable()!!, configuration)
     }
 
     private fun setupModules(environment: JetCoreEnvironment, moduleDirs: Array<File>): List<TestModule> {

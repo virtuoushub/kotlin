@@ -277,7 +277,7 @@ public class JetTestUtils {
             @NotNull ConfigurationKind configurationKind,
             @NotNull TestJdkKind jdkKind
     ) {
-        return JetCoreEnvironment.createForTests(disposable, compilerConfigurationForTests(
+        return JetCoreEnvironment.createForJvmTests(disposable, compilerConfigurationForTests(
                 configurationKind, jdkKind, getAnnotationsJar()));
     }
 

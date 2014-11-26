@@ -53,7 +53,7 @@ public class LineNumberTest extends TestCaseWithTmpdir {
 
     @NotNull
     private JetCoreEnvironment createEnvironment() {
-        return JetCoreEnvironment.createForTests(myTestRootDisposable, JetTestUtils
+        return JetCoreEnvironment.createForJvmTests(myTestRootDisposable, JetTestUtils
                 .compilerConfigurationForTests(ConfigurationKind.JDK_ONLY, TestJdkKind.MOCK_JDK, JetTestUtils.getAnnotationsJar(), tmpdir));
     }
 

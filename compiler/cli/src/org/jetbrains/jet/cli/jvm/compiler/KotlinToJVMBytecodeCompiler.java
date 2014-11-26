@@ -114,7 +114,7 @@ public class KotlinToJVMBytecodeCompiler {
         Disposable parentDisposable = Disposer.newDisposable();
         JetCoreEnvironment environment = null;
         try {
-            environment = JetCoreEnvironment.createForProduction(parentDisposable, compilerConfiguration);
+            environment = JetCoreEnvironment.createForJvmProduction(parentDisposable, compilerConfiguration);
 
             AnalysisResult result = analyze(environment);
             if (result == null) {
