@@ -65,7 +65,7 @@ public class NativeInvokeChecker : AbstractNativeAnnotationsChecker(PredefinedAn
 
 private abstract class AbstractNativeIndexerChecker(
         requiredAnnotation: PredefinedAnnotation,
-        private val indexerType: String,
+        private val indexerKind: String,
         private val requiredParametersCount: Int
 ) : AbstractNativeAnnotationsChecker(requiredAnnotation) {
 
@@ -76,12 +76,12 @@ private abstract class AbstractNativeIndexerChecker(
             if (firstParamClassDescriptor != KotlinBuiltIns.getInstance().getString() &&
                 !DescriptorUtils.isSubclass(firstParamClassDescriptor, KotlinBuiltIns.getInstance().getNumber())
             ) {
-                diagnosticHolder.report(ErrorsJs.NATIVE_INDEXER_KEY_SHOULD_BE_STRING_OR_NUMBER.on(declaration.getValueParameters().first, indexerType))
+                diagnosticHolder.report(ErrorsJs.NATIVE_INDEXER_KEY_SHOULD_BE_STRING_OR_NUMBER.on(declaration.getValueParameters().first, indexerKind))
             }
         }
 
         if(parameters.size()!= requiredParametersCount) {
-            diagnosticHolder.report(ErrorsJs.NATIVE_INDEXER_WRONG_PARAMETER_COUNT.on(declaration, requiredParametersCount, indexerType))
+            diagnosticHolder.report(ErrorsJs.NATIVE_INDEXER_WRONG_PARAMETER_COUNT.on(declaration, requiredParametersCount, indexerKind))
         }
     }
 }
