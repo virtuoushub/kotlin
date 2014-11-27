@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.JetTestUtils;
 import org.jetbrains.jet.cli.jvm.compiler.CliLightClassGenerationSupport;
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
 import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
 import org.jetbrains.jet.config.CompilerConfiguration;
 import org.jetbrains.jet.context.GlobalContext;
@@ -186,10 +187,10 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
     protected JetCoreEnvironment createEnvironment(@NotNull Disposable disposable, @NotNull CompilerConfiguration configuration) {
         String platform = getDefaultPlatform();
         if ("jvm".equals(platform)) {
-            return JetCoreEnvironment.createForJvmTests(disposable, configuration);
+            return JetCoreEnvironment.createForTests(disposable, configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES);
         }
         else if ("js".equals(platform)) {
-            return JetCoreEnvironment.createForJsTests(disposable, configuration);
+            return JetCoreEnvironment.createForTests(disposable, configuration, EnvironmentConfigFiles.JS_CONFIG_FILES);
         }
         else {
             throw new IllegalStateException("Unknown platform: " + platform);
