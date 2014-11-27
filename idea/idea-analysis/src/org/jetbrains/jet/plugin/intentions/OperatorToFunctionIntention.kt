@@ -31,6 +31,7 @@ import org.jetbrains.jet.lang.resolve.BindingContext
 import org.jetbrains.jet.lang.descriptors.FunctionDescriptor
 import org.jetbrains.jet.lang.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.jet.plugin.caches.resolve.analyze
+import org.jetbrains.jet.lang.psi.psiUtil.hasElementType
 
 public class OperatorToFunctionIntention : JetSelfTargetingIntention<JetExpression>("operator.to.function", javaClass()) {
     class object {
@@ -156,7 +157,7 @@ public class OperatorToFunctionIntention : JetSelfTargetingIntention<JetExpressi
 
             val transformation : String
             val replaced : JetElement
-            if (parent is JetBinaryExpression && parent.getOperationReference().getReferencedNameElementType() == JetTokens.EQ) {
+            if (parent is JetBinaryExpression && parent.hasElementType(JetTokens.EQ)) {
                 // part of an assignment
                 val right = parent.getRight()!!.getText()
                 transformation = "$array.set($indicesText, $right)"

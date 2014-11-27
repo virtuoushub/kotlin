@@ -42,19 +42,20 @@ import org.jetbrains.jet.lang.resolve.calls.model.ArgumentMatch
 import org.jetbrains.jet.lang.resolve.BindingContext
 import org.jetbrains.jet.lang.resolve.calls.context.ResolutionContext
 import org.jetbrains.jet.lang.resolve.calls.callUtil.*
-import org.jetbrains.jet.lang.resolve.BindingContextUtils
 import org.jetbrains.jet.lang.resolve.calls.context.CallResolutionContext
 import org.jetbrains.jet.lang.types.expressions.DataFlowUtils
 import org.jetbrains.jet.lang.psi.JetExpression
-import org.jetbrains.jet.lang.psi.Call
 import org.jetbrains.jet.lang.types.expressions.ExpressionTypingUtils
-import org.jetbrains.jet.lang.psi.JetBlockExpression
 import org.jetbrains.jet.lang.psi.JetPsiUtil
 import org.jetbrains.jet.lang.psi.JetSafeQualifiedExpression
 import org.jetbrains.jet.lang.resolve.calls.CallResolverUtil.ResolveArgumentsMode.RESOLVE_FUNCTION_ARGUMENTS
 import org.jetbrains.jet.lang.resolve.TemporaryBindingTrace
 import org.jetbrains.jet.lang.psi.JetQualifiedExpression
 import java.util.ArrayList
+import org.jetbrains.jet.lang.resolve.bindingContextUtil.updateRecordedType
+import org.jetbrains.jet.lexer.JetTokens
+import org.jetbrains.jet.lang.psi.JetOperationExpression
+import org.jetbrains.jet.lang.psi.psiUtil.hasElementType
 
 public class CallCompleter(
         val argumentTypeResolver: ArgumentTypeResolver,
@@ -304,8 +305,10 @@ public class CallCompleter(
             expression = deparenthesizeOrGetSelector(expression)
         }
         expressions.forEach { expression ->
-            BindingContextUtils.updateRecordedType(
-                    updatedType, expression, trace, /* shouldBeMadeNullable = */ hasNecessarySafeCall(expression, trace))
+            updateRecordedType(
+                    updatedType, expression, trace,
+                    makeNullable = hasNecessarySafeCall(expression, trace),
+                    makeNotNullable = expression is JetOperationExpression && expression.hasElementType(JetTokens.EXCLEXCL))
         }
         return trace[BindingContext.EXPRESSION_TYPE, argumentExpression]
     }
@@ -320,5 +323,5 @@ public class CallCompleter(
         //If a receiver type is not null, then this safe expression is useless, and we don't need to make the result type nullable.
         val expressionType = trace[BindingContext.EXPRESSION_TYPE, expression.getReceiverExpression()]
         return expressionType != null && TypeUtils.isNullableType(expressionType)
-    }    
+    }
 }

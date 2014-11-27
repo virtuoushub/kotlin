@@ -38,6 +38,7 @@ import org.jetbrains.jet.lang.diagnostics.DiagnosticUtils
 import com.intellij.psi.PsiWhiteSpace
 import com.intellij.psi.PsiComment
 import org.jetbrains.jet.lang.resolve.calls.CallTransformer.CallForImplicitInvoke
+import org.jetbrains.jet.lexer.JetToken
 
 public fun JetCallElement.getCallNameExpression(): JetSimpleNameExpression? {
     val calleeExpression = getCalleeExpression()
@@ -399,3 +400,6 @@ public fun JetTypeReference?.isProbablyNothing(): Boolean {
 
 public fun JetUserType?.isProbablyNothing(): Boolean
         = this?.getReferencedName() == "Nothing"
+
+public fun JetOperationExpression.hasElementType(token: JetToken): Boolean =
+        this.getOperationReference().getReferencedNameElementType() == token

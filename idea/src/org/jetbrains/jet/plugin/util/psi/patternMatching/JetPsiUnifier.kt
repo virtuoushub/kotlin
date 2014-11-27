@@ -90,6 +90,7 @@ import org.jetbrains.jet.lang.psi.JetDelegationSpecifier
 import org.jetbrains.jet.plugin.refactoring.getContextForContainingDeclarationBody
 import org.jetbrains.jet.plugin.util.IdeDescriptorRenderers
 import org.jetbrains.jet.lang.psi.JetOperationReferenceExpression
+import org.jetbrains.jet.lang.psi.psiUtil.hasElementType
 
 public trait UnificationResult {
     public enum class Status {
@@ -373,7 +374,7 @@ public class JetPsiUnifier(
                     JetTokens.EXCLEXCL, JetTokens.PLUSPLUS, JetTokens.MINUSMINUS -> true
                     else -> false
                 }
-                this is JetBinaryExpression -> getOperationReference().getReferencedNameElementType() == JetTokens.ELVIS
+                this is JetBinaryExpression -> hasElementType(JetTokens.ELVIS)
                 else -> false
             }
         }

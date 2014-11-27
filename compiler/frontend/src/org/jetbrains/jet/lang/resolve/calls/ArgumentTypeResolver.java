@@ -25,6 +25,7 @@ import org.jetbrains.jet.lang.diagnostics.Errors;
 import org.jetbrains.jet.lang.evaluate.ConstantExpressionEvaluator;
 import org.jetbrains.jet.lang.psi.*;
 import org.jetbrains.jet.lang.resolve.*;
+import org.jetbrains.jet.lang.resolve.bindingContextUtil.BindingContextUtilPackage;
 import org.jetbrains.jet.lang.resolve.calls.context.CallResolutionContext;
 import org.jetbrains.jet.lang.resolve.calls.context.CheckValueArgumentsMode;
 import org.jetbrains.jet.lang.resolve.calls.context.ResolutionContext;
@@ -275,7 +276,7 @@ public class ArgumentTypeResolver {
             @NotNull BindingTrace trace
     ) {
         if (expression == null) return;
-        BindingContextUtils.updateRecordedType(numberType, expression, trace, false);
+        BindingContextUtilPackage.updateRecordedType(numberType, expression, trace, false, false);
 
         if (!(expression instanceof JetConstantExpression)) {
             JetExpression deparenthesized = deparenthesizeArgument(expression);

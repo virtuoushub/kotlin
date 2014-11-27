@@ -129,21 +129,6 @@ public class BindingContextUtils {
     }
 
     @Nullable
-    public static JetType updateRecordedType(
-            @Nullable JetType type,
-            @NotNull JetExpression expression,
-            @NotNull BindingTrace trace,
-            boolean shouldBeMadeNullable
-    ) {
-        if (type == null) return null;
-        if (shouldBeMadeNullable) {
-            type = TypeUtils.makeNullable(type);
-        }
-        trace.record(BindingContext.EXPRESSION_TYPE, expression, type);
-        return type;
-    }
-
-    @Nullable
     public static JetTypeInfo getRecordedTypeInfo(@NotNull JetExpression expression, @NotNull BindingContext context) {
         if (!context.get(BindingContext.PROCESSED, expression)) return null;
         DataFlowInfo dataFlowInfo = BindingContextUtilPackage.getDataFlowInfo(context, expression);

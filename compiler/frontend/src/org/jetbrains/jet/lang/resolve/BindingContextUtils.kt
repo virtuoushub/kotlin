@@ -29,6 +29,9 @@ import org.jetbrains.jet.lang.descriptors.impl.AnonymousFunctionDescriptor
 import org.jetbrains.jet.lang.psi.JetExpression
 import org.jetbrains.jet.lang.resolve.calls.smartcasts.DataFlowInfo
 import org.jetbrains.jet.lang.resolve.calls.context.ResolutionContext
+import org.jetbrains.jet.lang.types.JetType
+import org.jetbrains.jet.lang.resolve.BindingTrace
+import org.jetbrains.jet.lang.types.TypeUtils
 
 public fun JetReturnExpression.getTargetFunctionDescriptor(context: BindingContext): FunctionDescriptor? {
     val targetLabel = getTargetLabel()
@@ -61,3 +64,20 @@ public fun BindingContext.getDataFlowInfo(expression: JetExpression?): DataFlowI
 
 public fun JetExpression.isUnreachableCode(context: BindingContext): Boolean = context[BindingContext.UNREACHABLE_CODE, this]!!
 
+public fun updateRecordedType(
+        type: JetType?,
+        expression: JetExpression,
+        trace: BindingTrace,
+        makeNullable: Boolean = false,
+        makeNotNullable: Boolean = false
+): JetType? {
+    if (type == null) return null
+
+    val result = when {
+        makeNullable -> TypeUtils.makeNullable(type)
+        makeNotNullable -> TypeUtils.makeNotNullable(type)
+        else -> type
+    }
+    trace.record(BindingContext.EXPRESSION_TYPE, expression, result)
+    return result
+}
