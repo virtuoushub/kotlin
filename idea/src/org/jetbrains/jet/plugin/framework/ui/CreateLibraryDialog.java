@@ -20,8 +20,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class CreateLibraryDialog extends CreateLibraryDialogBase {
 
-    public CreateLibraryDialog(@NotNull String defaultPath, @NotNull String title, @NotNull String caption) {
-        super(null, defaultPath, title, caption);
+    public CreateLibraryDialog(@NotNull String defaultPath, @NotNull String title, @NotNull String modulesSeparatorCaption) {
+        super(null, defaultPath, title, modulesSeparatorCaption);
         updateComponents();
     }
 }

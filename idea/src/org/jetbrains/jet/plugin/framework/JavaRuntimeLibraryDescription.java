@@ -30,7 +30,7 @@ public class JavaRuntimeLibraryDescription extends CustomLibraryDescriptorWithDe
 
     public static final String JAVA_RUNTIME_LIBRARY_CREATION = "Java Runtime Library Creation";
     public static final String DIALOG_TITLE = "Create Kotlin Java Runtime Library";
-    public static final String DIALOG_CAPTION = "Kotlin Java Runtime Library";
+    public static final String MODULES_SEPARATOR_CAPTION = "Kotlin Java Runtime Library";
     public static final Set<LibraryKind> SUITABLE_LIBRARY_KINDS = Sets.newHashSet(KOTLIN_JAVA_RUNTIME_KIND);
 
     /**
@@ -55,7 +55,7 @@ public class JavaRuntimeLibraryDescription extends CustomLibraryDescriptorWithDe
     @NotNull
     @Override
     protected String getDialogCaption() {
-        return DIALOG_CAPTION;
+        return MODULES_SEPARATOR_CAPTION;
     }
 
     @NotNull

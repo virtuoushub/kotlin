@@ -33,9 +33,9 @@ public class CreateLibraryDialogWithModules extends CreateLibraryDialogBase {
             @NotNull String defaultPath,
             boolean showPathPanel,
             @NotNull String title,
-            @NotNull String caption
+            @NotNull String modulesSeparatorCaption
     ) {
-        super(project, defaultPath, title, caption);
+        super(project, defaultPath, title, modulesSeparatorCaption);
 
         chooseModulePanel = new ChooseModulePanel(project, modules);
         chooseModulesPanelPlace.add(chooseModulePanel.getContentPane(), BorderLayout.CENTER);

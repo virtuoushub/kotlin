@@ -36,7 +36,7 @@ public class JSLibraryStdDescription extends CustomLibraryDescriptorWithDefferCo
 
     public static final String JAVA_SCRIPT_LIBRARY_CREATION = "JavaScript Library Creation";
     public static final String DIALOG_TITLE = "Create Kotlin JavaScript Library";
-    public static final String DIALOG_CAPTION = "Kotlin JavaScript Library";
+    public static final String MODULES_SEPARATOR_CAPTION = "Kotlin JavaScript Library";
     public static final Set<LibraryKind> SUITABLE_LIBRARY_KINDS = Sets.newHashSet(KOTLIN_JAVASCRIPT_KIND);
 
     /**
@@ -61,7 +61,7 @@ public class JSLibraryStdDescription extends CustomLibraryDescriptorWithDefferCo
     @NotNull
     @Override
     protected String getDialogCaption() {
-        return DIALOG_CAPTION;
+        return MODULES_SEPARATOR_CAPTION;
     }
 
     @NotNull
