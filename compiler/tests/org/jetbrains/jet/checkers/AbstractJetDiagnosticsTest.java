@@ -20,7 +20,6 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
-import com.intellij.openapi.Disposable;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -30,9 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.JetTestUtils;
 import org.jetbrains.jet.cli.jvm.compiler.CliLightClassGenerationSupport;
-import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
-import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
-import org.jetbrains.jet.config.CompilerConfiguration;
 import org.jetbrains.jet.context.GlobalContext;
 import org.jetbrains.jet.context.SimpleGlobalContext;
 import org.jetbrains.jet.lang.descriptors.DeclarationDescriptor;
@@ -56,9 +52,6 @@ import org.jetbrains.jet.storage.LockBasedStorageManager;
 import org.jetbrains.jet.test.util.DescriptorValidator;
 import org.jetbrains.jet.test.util.RecursiveDescriptorComparator;
 import org.jetbrains.jet.utils.UtilsPackage;
-import org.jetbrains.k2js.analyze.TopDownAnalyzerFacadeForJS;
-import org.jetbrains.k2js.config.EcmaVersion;
-import org.jetbrains.k2js.config.LibrarySourcesConfig;
 
 import java.io.File;
 import java.util.*;
@@ -165,21 +158,6 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
         }
     }
 
-    @Override
-    @NotNull
-    protected JetCoreEnvironment createEnvironment(@NotNull Disposable disposable, @NotNull CompilerConfiguration configuration) {
-        String platform = getDefaultPlatform();
-        if ("jvm".equals(platform)) {
-            return JetCoreEnvironment.createForTests(disposable, configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES);
-        }
-        else if ("js".equals(platform)) {
-            return JetCoreEnvironment.createForTests(disposable, configuration, EnvironmentConfigFiles.JS_CONFIG_FILES);
-        }
-        else {
-            throw new IllegalStateException("Unknown platform: " + platform);
-        }
-    }
-
     @Nullable
     private static Throwable checkLazyResolveLog(LazyOperationsLog lazyOperationsLog, File testDataFile) {
         Throwable exceptionFromLazyResolveLogValidation = null;
@@ -209,38 +187,18 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
             BindingTrace moduleTrace,
             TestModule testModule
     ) {
-
-        String platform = getPlatform(testModule);
-        if ("jvm".equals(platform)) {
-            // New JavaDescriptorResolver is created for each module, which is good because it emulates different Java libraries for each module,
-            // albeit with same class names
-            TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegrationWithCustomContext(
-                    getProject(),
-                    context,
-                    jetFiles,
-                    moduleTrace,
-                    Predicates.<PsiFile>alwaysTrue(),
-                    module,
-                    null,
-                    null
-            );
-        }
-        else if ("js".equals(platform)) {
-            TopDownAnalyzerFacadeForJS.analyzeFilesWithGivenTrace(
-                    jetFiles,
-                    moduleTrace,
-                    module,
-                    Predicates.<PsiFile>alwaysTrue(),
-                    getConfigForJsAnalyzer()
-            );
-        }
-        else {
-            throw new IllegalStateException("Unknown platform in module " + testModule.getName() + ": " + platform);
-        }
-    }
-
-    protected LibrarySourcesConfig getConfigForJsAnalyzer() {
-        return new LibrarySourcesConfig(getProject(), "module", Collections.<String>emptyList(), EcmaVersion.defaultVersion(), false, true);
+        // New JavaDescriptorResolver is created for each module, which is good because it emulates different Java libraries for each module,
+        // albeit with same class names
+        TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegrationWithCustomContext(
+                getProject(),
+                context,
+                jetFiles,
+                moduleTrace,
+                Predicates.<PsiFile>alwaysTrue(),
+                module,
+                null,
+                null
+        );
     }
 
     private void validateAndCompareDescriptorWithFile(
@@ -302,7 +260,7 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
             ModuleDescriptorImpl module =
                     testModule == null ?
                     createSealedModule() :
-                    createModule(testModule);
+                    createModule("<" + testModule.getName() + ">");
 
             modules.put(testModule, module);
         }
@@ -323,35 +281,13 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
         return modules;
     }
 
-    protected ModuleDescriptorImpl createModule(TestModule testModule) {
-        String name = "<" + testModule.getName() + ">";
-        String platform = getPlatform(testModule);
-        if ("jvm".equals(platform)) {
-            return TopDownAnalyzerFacadeForJVM.createJavaModule(name);
-        }
-        else if ("js".equals(platform)) {
-            return TopDownAnalyzerFacadeForJS.createJsModule(name);
-        }
-
-        throw new IllegalStateException("Unknown platform in module " + testModule.getName() + ": " + platform);
+    protected ModuleDescriptorImpl createModule(String moduleName) {
+        return TopDownAnalyzerFacadeForJVM.createJavaModule(moduleName);
     }
 
     @NotNull
     protected ModuleDescriptorImpl createSealedModule() {
         return TopDownAnalyzerFacadeForJVM.createSealedJavaModule();
-    }
-
-    protected String getDefaultPlatform() {
-        return "jvm";
-    }
-
-    @NotNull
-    private String getPlatform(@Nullable TestModule testModule) {
-        if (testModule == null) return getDefaultPlatform();
-
-        String platform = testModule.getPlatform();
-        if (platform == null) return getDefaultPlatform();
-        return platform;
     }
 
     private static void checkAllResolvedCallsAreCompleted(@NotNull List<JetFile> jetFiles, @NotNull BindingContext bindingContext) {

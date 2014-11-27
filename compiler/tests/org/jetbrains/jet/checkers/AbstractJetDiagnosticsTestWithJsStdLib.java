@@ -16,7 +16,13 @@
 
 package org.jetbrains.jet.checkers;
 
+import com.google.common.base.Predicates;
+import com.intellij.openapi.Disposable;
+import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
+import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
+import org.jetbrains.jet.config.CompilerConfiguration;
 import org.jetbrains.jet.context.GlobalContext;
 import org.jetbrains.jet.lang.descriptors.ModuleDescriptor;
 import org.jetbrains.jet.lang.descriptors.impl.ModuleDescriptorImpl;
@@ -27,7 +33,6 @@ import org.jetbrains.jet.lang.resolve.DelegatingBindingTrace;
 import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns;
 import org.jetbrains.k2js.analyze.TopDownAnalyzerFacadeForJS;
 import org.jetbrains.k2js.config.EcmaVersion;
-import org.jetbrains.k2js.config.LibrarySourcesConfig;
 import org.jetbrains.k2js.config.LibrarySourcesConfigWithCaching;
 
 import java.util.List;
@@ -49,6 +54,12 @@ public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJet
     }
 
     @Override
+    @NotNull
+    protected JetCoreEnvironment createEnvironment(@NotNull Disposable disposable, @NotNull CompilerConfiguration configuration) {
+        return JetCoreEnvironment.createForTests(disposable, configuration, EnvironmentConfigFiles.JS_CONFIG_FILES);
+    }
+
+    @Override
     protected void analyzeModuleContents(
             GlobalContext context,
             List<JetFile> jetFiles,
@@ -58,13 +69,15 @@ public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJet
     ) {
         BindingContext libraryContext = config.getLibraryContext();
         DelegatingBindingTrace trace = new DelegatingBindingTrace(libraryContext, "trace with preanalyzed library");
-        super.analyzeModuleContents(context, jetFiles, module, trace, testModule);
+
+        TopDownAnalyzerFacadeForJS.analyzeFilesWithGivenTrace(jetFiles, moduleTrace, module, Predicates.<PsiFile>alwaysTrue(), config);
+
         trace.addAllMyDataTo(moduleTrace);
     }
 
     @Override
-    protected LibrarySourcesConfig getConfigForJsAnalyzer() {
-        return config;
+    protected ModuleDescriptorImpl createModule(String moduleName) {
+        return TopDownAnalyzerFacadeForJS.createJsModule(moduleName);
     }
 
     @NotNull
@@ -72,7 +85,7 @@ public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJet
     protected ModuleDescriptorImpl createSealedModule() {
         //It's JVM specific thing, so for JS we just create and setup module.
 
-        ModuleDescriptorImpl module = TopDownAnalyzerFacadeForJS.createJsModule("<kotlin-js-test-module>");
+        ModuleDescriptorImpl module = createModule("<kotlin-js-test-module>");
 
         module.addDependencyOnModule(module);
         module.addDependencyOnModule(KotlinBuiltIns.getInstance().getBuiltInsModule());
@@ -84,10 +97,5 @@ public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJet
         module.seal();
 
         return module;
-    }
-
-    @Override
-    protected String getDefaultPlatform() {
-        return "js";
     }
 }
