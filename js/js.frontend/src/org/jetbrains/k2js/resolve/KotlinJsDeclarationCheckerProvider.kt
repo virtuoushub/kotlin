@@ -35,7 +35,7 @@ public object KotlinJsDeclarationCheckerProvider : AdditionalCheckerProvider {
     override val annotationCheckers: List<AnnotationChecker> = listOf(NativeInvokeChecker(), NativeGetterChecker(), NativeSetterChecker())
 }
 
-abstract class NativeXAnnotationBaseChecker(requiredAnnotation: PredefinedAnnotation) : AnnotationChecker {
+private abstract class AbstractNativeAnnotationsChecker(requiredAnnotation: PredefinedAnnotation) : AnnotationChecker {
     private val requiredAnnotationFqName = FqName(requiredAnnotation.fqName)
 
     open fun additionalCheck(declaration: JetNamedFunction, descriptor: FunctionDescriptor, diagnosticHolder: DiagnosticSink) {}
@@ -62,13 +62,13 @@ abstract class NativeXAnnotationBaseChecker(requiredAnnotation: PredefinedAnnota
     }
 }
 
-public class NativeInvokeChecker : NativeXAnnotationBaseChecker(PredefinedAnnotation.NATIVE_INVOKE)
+public class NativeInvokeChecker : AbstractNativeAnnotationsChecker(PredefinedAnnotation.NATIVE_INVOKE)
 
-public open class NativeIndexerBaseChecker(
+private abstract class AbstractNativeIndexerChecker(
         requiredAnnotation: PredefinedAnnotation,
         private val indexerType: String,
         private val requiredParametersCount: Int
-) : NativeXAnnotationBaseChecker(requiredAnnotation) {
+) : AbstractNativeAnnotationsChecker(requiredAnnotation) {
 
     override fun additionalCheck(declaration: JetNamedFunction, descriptor: FunctionDescriptor, diagnosticHolder: DiagnosticSink) {
         val parameters = descriptor.getValueParameters()
@@ -87,7 +87,7 @@ public open class NativeIndexerBaseChecker(
     }
 }
 
-public class NativeGetterChecker : NativeIndexerBaseChecker(PredefinedAnnotation.NATIVE_GETTER, "Getter", requiredParametersCount = 1) {
+public class NativeGetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_GETTER, "Getter", requiredParametersCount = 1) {
     override fun additionalCheck(declaration: JetNamedFunction, descriptor: FunctionDescriptor, diagnosticHolder: DiagnosticSink) {
         super.additionalCheck(declaration, descriptor, diagnosticHolder)
 
@@ -97,4 +97,4 @@ public class NativeGetterChecker : NativeIndexerBaseChecker(PredefinedAnnotation
     }
 }
 
-public class NativeSetterChecker : NativeIndexerBaseChecker(PredefinedAnnotation.NATIVE_SETTER, "Setter", requiredParametersCount = 2)
+public class NativeSetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_SETTER, "Setter", requiredParametersCount = 2)
