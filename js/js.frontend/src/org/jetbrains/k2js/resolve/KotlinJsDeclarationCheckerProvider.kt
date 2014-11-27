@@ -35,13 +35,12 @@ public object KotlinJsDeclarationCheckerProvider : AdditionalCheckerProvider {
     override val annotationCheckers: List<AnnotationChecker> = listOf(NativeInvokeChecker(), NativeGetterChecker(), NativeSetterChecker())
 }
 
-private abstract class AbstractNativeAnnotationsChecker(requiredAnnotation: PredefinedAnnotation) : AnnotationChecker {
-    private val requiredAnnotationFqName = FqName(requiredAnnotation.fqName)
+private abstract class AbstractNativeAnnotationsChecker(private val requiredAnnotation: PredefinedAnnotation) : AnnotationChecker {
 
     open fun additionalCheck(declaration: JetNamedFunction, descriptor: FunctionDescriptor, diagnosticHolder: DiagnosticSink) {}
 
     override fun check(declaration: JetDeclaration, descriptor: DeclarationDescriptor, diagnosticHolder: DiagnosticSink) {
-        val annotationDescriptor = descriptor.getAnnotations().findAnnotation(requiredAnnotationFqName)
+        val annotationDescriptor = descriptor.getAnnotations().findAnnotation(requiredAnnotation.fqName)
         if (annotationDescriptor == null) return
 
         if (declaration !is JetNamedFunction || descriptor !is FunctionDescriptor) {
