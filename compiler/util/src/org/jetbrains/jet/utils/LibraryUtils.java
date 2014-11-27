@@ -99,8 +99,11 @@ public class LibraryUtils {
     public static Manifest getManifestFromDirectory(@NotNull File library) {
         if (!library.canRead() || !library.isDirectory()) return null;
 
+        File manifestFile = new File(library, MANIFEST_PATH);
+        if (!manifestFile.exists()) return null;
+
         try {
-            InputStream inputStream = new FileInputStream(new File(library, MANIFEST_PATH));
+            InputStream inputStream = new FileInputStream(manifestFile);
             try {
                 return new Manifest(inputStream);
             }
