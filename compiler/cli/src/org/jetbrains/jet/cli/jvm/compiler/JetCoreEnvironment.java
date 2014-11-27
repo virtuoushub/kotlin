@@ -83,22 +83,14 @@ public class JetCoreEnvironment {
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration
     ) {
-        return createForProduction(parentDisposable, configuration, ExtensionsConfig.JVM);
+        return createForProduction(parentDisposable, configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES);
     }
 
     @NotNull
-    public static JetCoreEnvironment createForJsProduction(
-            @NotNull Disposable parentDisposable,
-            @NotNull CompilerConfiguration configuration
-    ) {
-        return createForProduction(parentDisposable, configuration, ExtensionsConfig.JS);
-    }
-
-    @NotNull
-    private static JetCoreEnvironment createForProduction(
+    public static JetCoreEnvironment createForProduction(
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration,
-            @NotNull ExtensionsConfig extensionsConfig
+            @NotNull List<String> configFilePaths
     ) {
         // JPS may run many instances of the compiler in parallel (there's an option for compiling independent modules in parallel in IntelliJ)
         // All projects share the same ApplicationEnvironment, and when the last project is disposed, the ApplicationEnvironment is disposed as well
@@ -113,7 +105,7 @@ public class JetCoreEnvironment {
             }
         });
         JetCoreEnvironment environment =
-                new JetCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(extensionsConfig), configuration);
+                new JetCoreEnvironment(parentDisposable, getOrCreateApplicationEnvironmentForProduction(configFilePaths), configuration);
 
         synchronized (APPLICATION_LOCK) {
             ourProjectCount++;
@@ -127,38 +119,27 @@ public class JetCoreEnvironment {
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration
     ) {
-        return createForTests(parentDisposable, configuration, ExtensionsConfig.JVM);
+        return createForTests(parentDisposable, configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES);
     }
 
     @TestOnly
     @NotNull
-    public static JetCoreEnvironment createForJsTests(
-            @NotNull Disposable parentDisposable,
-            @NotNull CompilerConfiguration configuration
-    ) {
-        return createForTests(parentDisposable, configuration, ExtensionsConfig.JS);
-    }
-
-    @TestOnly
-    @NotNull
-    private static JetCoreEnvironment createForTests(
+    public static JetCoreEnvironment createForTests(
             @NotNull Disposable parentDisposable,
             @NotNull CompilerConfiguration configuration,
-            @NotNull ExtensionsConfig extensionsConfig
+            @NotNull List<String> extensionConfigs
     ) {
         // Tests are supposed to create a single project and dispose it right after use
-        return new JetCoreEnvironment(parentDisposable, createApplicationEnvironment(parentDisposable, extensionsConfig), configuration);
+        return new JetCoreEnvironment(parentDisposable, createApplicationEnvironment(parentDisposable, extensionConfigs), configuration);
     }
 
     @NotNull
-    private static JavaCoreApplicationEnvironment getOrCreateApplicationEnvironmentForProduction(
-            @NotNull ExtensionsConfig additionalExtensionsConfig
-    ) {
+    private static JavaCoreApplicationEnvironment getOrCreateApplicationEnvironmentForProduction(@NotNull List<String> configFilePaths) {
         synchronized (APPLICATION_LOCK) {
             if (ourApplicationEnvironment != null) return ourApplicationEnvironment;
 
             Disposable parentDisposable = Disposer.newDisposable();
-            ourApplicationEnvironment = createApplicationEnvironment(parentDisposable, additionalExtensionsConfig);
+            ourApplicationEnvironment = createApplicationEnvironment(parentDisposable, configFilePaths);
             ourProjectCount = 0;
             Disposer.register(parentDisposable, new Disposable() {
                 @Override
@@ -184,12 +165,13 @@ public class JetCoreEnvironment {
     @NotNull
     private static JavaCoreApplicationEnvironment createApplicationEnvironment(
             @NotNull Disposable parentDisposable,
-            @NotNull ExtensionsConfig additionalExtensionsConfig
+            @NotNull List<String> configFilePaths
     ) {
         JavaCoreApplicationEnvironment applicationEnvironment = new JavaCoreApplicationEnvironment(parentDisposable);
 
-        registerApplicationExtensionPointsAndExtensionsFrom(ExtensionsConfig.COMMON);
-        registerApplicationExtensionPointsAndExtensionsFrom(additionalExtensionsConfig);
+        for (String config : configFilePaths) {
+            registerApplicationExtensionPointsAndExtensionsFrom(config);
+        }
 
         registerApplicationServicesForCLI(applicationEnvironment);
         registerApplicationServices(applicationEnvironment);
@@ -197,9 +179,7 @@ public class JetCoreEnvironment {
         return applicationEnvironment;
     }
 
-    private static void registerApplicationExtensionPointsAndExtensionsFrom(ExtensionsConfig config) {
-        String configFilePath = "extensionPoints/" + config.fileName;
-
+    private static void registerApplicationExtensionPointsAndExtensionsFrom(String configFilePath) {
         IdeaPluginDescriptorImpl descriptor;
         File jar = PathUtil.getPathUtilJar();
         if (jar.isFile()) {
@@ -360,18 +340,6 @@ public class JetCoreEnvironment {
         }
         else {
             throw new CompileEnvironmentException(message);
-        }
-    }
-
-    private static enum ExtensionsConfig {
-        COMMON("common.xml"),
-        JVM("kotlin2jvm.xml"),
-        JS("kotlin2js.xml");
-
-        String fileName;
-
-        ExtensionsConfig(String fileName) {
-            this.fileName = fileName;
         }
     }
 }

@@ -43,6 +43,7 @@ import org.jetbrains.jet.cli.common.messages.CompilerMessageSeverity;
 import org.jetbrains.jet.cli.common.messages.MessageCollector;
 import org.jetbrains.jet.cli.common.output.outputUtils.OutputUtilsPackage;
 import org.jetbrains.jet.cli.jvm.compiler.CompileEnvironmentUtil;
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
 import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
 import org.jetbrains.jet.config.CompilerConfiguration;
 import org.jetbrains.jet.config.Services;
@@ -90,7 +91,8 @@ public class K2JSCompiler extends CLICompiler<K2JSCompilerArguments> {
         configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, messageCollector);
 
         CompileEnvironmentUtil.addSourceFilesCheckingForDuplicates(configuration, arguments.freeArgs);
-        JetCoreEnvironment environmentForJS = JetCoreEnvironment.createForJsProduction(rootDisposable, configuration);
+        JetCoreEnvironment environmentForJS =
+                JetCoreEnvironment.createForProduction(rootDisposable, configuration, EnvironmentConfigFiles.JS_CONFIG_FILES);
 
         Project project = environmentForJS.getProject();
         List<JetFile> sourcesFiles = environmentForJS.getSourceFiles();
