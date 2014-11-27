@@ -19,7 +19,6 @@ package org.jetbrains.jet.plugin.framework;
 import com.google.common.collect.Sets;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.libraries.LibraryKind;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -37,42 +36,6 @@ public class JavaRuntimeLibraryDescription extends CustomLibraryDescriptorWithDe
      * @param project null when project doesn't exist yet (called from project wizard)
      */
     public JavaRuntimeLibraryDescription(@Nullable Project project) {
-        super(project);
-    }
-
-    @NotNull
-    @Override
-    protected String getLibraryName() {
-        return LIBRARY_NAME;
-    }
-
-    @NotNull
-    @Override
-    protected String getDialogTitle() {
-        return DIALOG_TITLE;
-    }
-
-    @NotNull
-    @Override
-    protected String getDialogCaption() {
-        return MODULES_SEPARATOR_CAPTION;
-    }
-
-    @NotNull
-    @Override
-    public Set<? extends LibraryKind> getSuitableLibraryKinds() {
-        return SUITABLE_LIBRARY_KINDS;
-    }
-
-    @NotNull
-    @Override
-    public LibraryKind getLibraryKind() {
-        return KOTLIN_JAVA_RUNTIME_KIND;
-    }
-
-    @Nullable
-    @Override
-    public DeferredCopyFileRequests getCopyFileRequests() {
-        return deferredCopyFileRequests;
+        super(project, LIBRARY_NAME, DIALOG_TITLE, MODULES_SEPARATOR_CAPTION, KOTLIN_JAVA_RUNTIME_KIND, SUITABLE_LIBRARY_KINDS);
     }
 }

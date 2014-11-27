@@ -20,7 +20,6 @@ import com.google.common.collect.Sets;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.libraries.LibraryKind;
 import com.intellij.openapi.roots.libraries.NewLibraryConfiguration;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 import org.jetbrains.jet.plugin.configuration.KotlinJsModuleConfigurator;
@@ -43,43 +42,7 @@ public class JSLibraryStdDescription extends CustomLibraryDescriptorWithDefferCo
      * @param project null when project doesn't exist yet (called from project wizard)
      */
     public JSLibraryStdDescription(@Nullable Project project) {
-        super(project);
-    }
-
-    @NotNull
-    @Override
-    protected String getLibraryName() {
-        return LIBRARY_NAME;
-    }
-
-    @NotNull
-    @Override
-    protected String getDialogTitle() {
-        return DIALOG_TITLE;
-    }
-
-    @NotNull
-    @Override
-    protected String getDialogCaption() {
-        return MODULES_SEPARATOR_CAPTION;
-    }
-
-    @NotNull
-    @Override
-    public Set<? extends LibraryKind> getSuitableLibraryKinds() {
-        return SUITABLE_LIBRARY_KINDS;
-    }
-
-    @NotNull
-    @Override
-    public LibraryKind getLibraryKind() {
-        return KOTLIN_JAVASCRIPT_KIND;
-    }
-
-    @Nullable
-    @Override
-    public DeferredCopyFileRequests getCopyFileRequests() {
-        return deferredCopyFileRequests;
+        super(project, LIBRARY_NAME, DIALOG_TITLE, MODULES_SEPARATOR_CAPTION, KOTLIN_JAVASCRIPT_KIND, SUITABLE_LIBRARY_KINDS);
     }
 
     @TestOnly
