@@ -40,13 +40,14 @@ import java.util.zip.ZipFile;
 public class LibraryUtils {
     private static final Logger LOG = Logger.getInstance(LibraryUtils.class);
 
+    public static final String KOTLIN_JS_MODULE_NAME = "Kotlin-JS-Module-Name";
     public static final String TITLE_KOTLIN_JVM_RUNTIME_AND_STDLIB;
     public static final String TITLE_KOTLIN_JAVASCRIPT_STDLIB;
     public static final String TITLE_KOTLIN_JAVASCRIPT_LIB;
     private static final String METAINF = "META-INF/";
     private static final String MANIFEST_PATH = METAINF + "MANIFEST.MF";
     private static final String METAINF_RESOURCES = METAINF + "resources/";
-    private static final Attributes.Name KOTLIN_JS_MODULE_NAME = new Attributes.Name("Kotlin-JS-Module-Name");
+    private static final Attributes.Name KOTLIN_JS_MODULE_ATTRIBUTE_NAME = new Attributes.Name(KOTLIN_JS_MODULE_NAME);
 
     static {
         String jsStdLib = "";
@@ -138,7 +139,7 @@ public class LibraryUtils {
     @Nullable
     public static String getKotlinJsModuleName(@NotNull File library) {
         Attributes attributes = getManifestMainAttributesFromJarOrDirectory(library);
-        return attributes != null ? attributes.getValue(KOTLIN_JS_MODULE_NAME) : null;
+        return attributes != null ? attributes.getValue(KOTLIN_JS_MODULE_ATTRIBUTE_NAME) : null;
     }
 
     public static boolean isKotlinJavascriptLibrary(@NotNull File library) {
