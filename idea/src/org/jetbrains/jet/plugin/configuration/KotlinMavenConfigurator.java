@@ -58,11 +58,32 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
     private static final String KOTLIN_VERSION_PROPERTY = "kotlin.version";
     private static final String SNAPSHOT_REPOSITORY_ID = "sonatype.oss.snapshots";
 
-    protected abstract String getLibraryId();
+    private final String libraryId;
+    private final String name;
+    private final String presentableText;
+
+    protected KotlinMavenConfigurator(@NotNull String libraryId, @NotNull String name, @NotNull String presentableText) {
+        this.libraryId = libraryId;
+        this.name = name;
+        this.presentableText = presentableText;
+    }
+
 
     @Override
     public boolean isApplicable(@NotNull Module module) {
         return JetPluginUtil.isMavenModule(module);
+    }
+
+    @NotNull
+    @Override
+    public String getPresentableText() {
+        return presentableText;
+    }
+
+    @NotNull
+    @Override
+    public String getName() {
+        return name;
     }
 
     protected abstract boolean isKotlinModule(@NotNull Module module);
@@ -90,13 +111,17 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
         return domModel;
     }
 
-    private static boolean hasGivenCoordinates(@NotNull MavenDomShortArtifactCoordinates mavenDomElement, @NotNull String groupId, @NotNull String artifactId) {
+    private static boolean checkCoordinates(
+            @NotNull MavenDomShortArtifactCoordinates mavenDomElement,
+            @NotNull String groupId,
+            @NotNull String artifactId
+    ) {
         return groupId.equals(mavenDomElement.getGroupId().getRawText()) && artifactId.equals(mavenDomElement.getArtifactId().getRawText());
     }
 
     private static boolean hasKotlinMavenPlugin(@NotNull MavenDomProjectModel domModel) {
         for(MavenDomPlugin mavenDomPlugin : domModel.getBuild().getPlugins().getPlugins()) {
-            if (hasGivenCoordinates(mavenDomPlugin, GROUP_ID, MAVEN_PLUGIN_ID)) return true;
+            if (checkCoordinates(mavenDomPlugin, GROUP_ID, MAVEN_PLUGIN_ID)) return true;
         }
 
         return false;
@@ -104,7 +129,7 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
 
     private boolean hasDependencyOnLibrary(@NotNull MavenDomProjectModel domModel) {
         for(MavenDomDependency mavenDomDependency : domModel.getDependencies().getDependencies()) {
-            if (hasGivenCoordinates(mavenDomDependency, GROUP_ID, getLibraryId())) return true;
+            if (checkCoordinates(mavenDomDependency, GROUP_ID, libraryId)) return true;
         }
 
         return false;
@@ -182,14 +207,14 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
 
     private void addLibraryDependencyIfNeeded(MavenDomProjectModel domModel) {
         for (MavenDomDependency dependency : domModel.getDependencies().getDependencies()) {
-            if (getLibraryId().equals(dependency.getArtifactId().getStringValue())) {
+            if (libraryId.equals(dependency.getArtifactId().getStringValue())) {
                 return;
             }
         }
 
         MavenDomDependency dependency = MavenDomUtil.createDomDependency(domModel, null);
         dependency.getGroupId().setStringValue("org.jetbrains.kotlin");
-        dependency.getArtifactId().setStringValue(getLibraryId());
+        dependency.getArtifactId().setStringValue(libraryId);
         dependency.getVersion().setStringValue("${" + KOTLIN_VERSION_PROPERTY + "}");
     }
 
@@ -303,14 +328,6 @@ public abstract class KotlinMavenConfigurator implements KotlinProjectConfigurat
         XmlTag newTag = parentTag.createChildTag(tagName, parentTag.getNamespace(), value, false);
         return parentTag.addSubTag(newTag, true);
     }
-
-    @NotNull
-    @Override
-    public abstract String getPresentableText();
-
-    @NotNull
-    @Override
-    public abstract String getName();
 
     protected static boolean canConfigureFile(@NotNull PsiFile file) {
         return WritingAccessProvider.isPotentiallyWritable(file.getVirtualFile(), null);

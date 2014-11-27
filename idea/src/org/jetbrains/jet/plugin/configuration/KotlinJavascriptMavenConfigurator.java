@@ -26,9 +26,8 @@ public class KotlinJavascriptMavenConfigurator extends KotlinMavenConfigurator {
     public static final String NAME = "maven (js)";
     private static final String STD_LIB_ID = "kotlin-js-library";
 
-    @Override
-    protected String getLibraryId() {
-        return STD_LIB_ID;
+    public KotlinJavascriptMavenConfigurator() {
+        super(STD_LIB_ID, NAME, "JavaScript Maven");
     }
 
     @Override
@@ -45,17 +44,5 @@ public class KotlinJavascriptMavenConfigurator extends KotlinMavenConfigurator {
     @Override
     protected String getGoal(boolean isTest) {
         return "js";
-    }
-
-    @NotNull
-    @Override
-    public String getPresentableText() {
-        return "JavaScript Maven";
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return NAME;
     }
 }
