@@ -3,7 +3,7 @@ Buildfile: [TestData]/build.xml
 
 build:
 [kotlin2js] Compiling [[TestData]/root1] => [[Temp]/out.js]
-    [unzip] Expanding: [KotlinProjectHome]/dist/jslib-example.jar into [Temp]
+    [unzip] Expanding: [TestData]/jslib-example.jar into [Temp]
 
 BUILD SUCCESSFUL
 Total time: [time]
