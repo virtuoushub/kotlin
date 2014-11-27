@@ -28,6 +28,7 @@ import com.intellij.psi.search.GlobalSearchScope
 import org.jetbrains.jet.lang.resolve.java.structure.impl.JavaClassImpl
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles
 
 public class KotlinClassFinderTest : KotlinTestWithEnvironmentManagement() {
     fun testNestedClass() {
@@ -36,9 +37,10 @@ public class KotlinClassFinderTest : KotlinTestWithEnvironmentManagement() {
                 listOf(), listOf(File("compiler/testData/kotlinClassFinder/nestedClass.kt")), tmpdir, getTestRootDisposable()!!
         )
 
-        val environment = JetCoreEnvironment.createForJvmTests(getTestRootDisposable()!!,
+        val environment = JetCoreEnvironment.createForTests(getTestRootDisposable()!!,
                                                             JetTestUtils.compilerConfigurationForTests(
-                                                                    ConfigurationKind.ALL, TestJdkKind.MOCK_JDK, tmpdir))
+                                                                    ConfigurationKind.ALL, TestJdkKind.MOCK_JDK, tmpdir),
+                                                            EnvironmentConfigFiles.JVM_CONFIG_FILES)
 
         val project = environment.getProject()
         val className = "test.A.B.C"

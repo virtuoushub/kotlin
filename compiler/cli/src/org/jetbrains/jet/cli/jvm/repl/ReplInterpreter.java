@@ -35,6 +35,7 @@ import org.jetbrains.jet.cli.common.messages.AnalyzerWithCompilerReport;
 import org.jetbrains.jet.cli.common.messages.MessageCollector;
 import org.jetbrains.jet.cli.common.messages.MessageCollectorToString;
 import org.jetbrains.jet.cli.jvm.JVMConfigurationKeys;
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
 import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
 import org.jetbrains.jet.codegen.ClassBuilderFactories;
 import org.jetbrains.jet.codegen.CompilationErrorHandler;
@@ -96,7 +97,8 @@ public class ReplInterpreter {
     private final TopDownAnalyzer topDownAnalyzer;
 
     public ReplInterpreter(@NotNull Disposable disposable, @NotNull CompilerConfiguration configuration) {
-        JetCoreEnvironment environment = JetCoreEnvironment.createForJvmProduction(disposable, configuration);
+        JetCoreEnvironment environment =
+                JetCoreEnvironment.createForProduction(disposable, configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES);
         Project project = environment.getProject();
         this.psiFileFactory = (PsiFileFactoryImpl) PsiFileFactory.getInstance(project);
         this.trace = new BindingTraceContext();

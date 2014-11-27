@@ -23,6 +23,7 @@ import com.intellij.util.ArrayUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.*;
 import org.jetbrains.jet.cli.common.output.outputUtils.OutputUtilsPackage;
+import org.jetbrains.jet.cli.jvm.compiler.EnvironmentConfigFiles;
 import org.jetbrains.jet.cli.jvm.compiler.JetCoreEnvironment;
 import org.jetbrains.jet.codegen.ClassFileFactory;
 import org.jetbrains.jet.codegen.GenerationUtils;
@@ -130,8 +131,10 @@ public abstract class AbstractCompileKotlinAgainstKotlinTest extends TestCaseWit
         CompilerConfiguration configurationWithADirInClasspath = JetTestUtils
                 .compilerConfigurationForTests(ConfigurationKind.ALL, TestJdkKind.MOCK_JDK, JetTestUtils.getAnnotationsJar(), aDir);
 
-        return compileKotlin(ktBFile, bDir, JetCoreEnvironment.createForJvmTests(getTestRootDisposable(), configurationWithADirInClasspath),
-                      getTestRootDisposable());
+        JetCoreEnvironment environment =
+                JetCoreEnvironment.createForTests(getTestRootDisposable(), configurationWithADirInClasspath, EnvironmentConfigFiles.JVM_CONFIG_FILES);
+
+        return compileKotlin(ktBFile, bDir, environment, getTestRootDisposable());
     }
 
     private static OutputFileCollection compileKotlin(
