@@ -127,6 +127,7 @@ public class PathUtil {
         return NO_PATH;
     }
 
+    @NotNull
     public static File getPathUtilJar() {
         return getJarPathForClass(PathUtil.class);
     }
