@@ -124,20 +124,12 @@ public class LibraryUtils {
         return manifest != null ? manifest.getMainAttributes() : null;
     }
 
-    private static boolean checkImplTitle(@NotNull File library, String expected) {
+    private static boolean checkAttributeValue(@NotNull File library, String expected, @NotNull Attributes.Name attributeName) {
         Attributes attributes = getManifestMainAttributesFromJarOrDirectory(library);
         if (attributes == null) return false;
 
-        String title = attributes.getValue(Attributes.Name.IMPLEMENTATION_TITLE);
-        return title != null && title.equals(expected);
-    }
-
-    private static boolean checkSpecTitle(@NotNull File library, String expected) {
-        Attributes attributes = getManifestMainAttributesFromJarOrDirectory(library);
-        if (attributes == null) return false;
-
-        String title = attributes.getValue(Attributes.Name.SPECIFICATION_TITLE);
-        return title != null && title.equals(expected);
+        String value = attributes.getValue(attributeName);
+        return value != null && value.equals(expected);
     }
 
     @Nullable
@@ -147,15 +139,15 @@ public class LibraryUtils {
     }
 
     public static boolean isKotlinJavascriptLibrary(@NotNull File library) {
-        return checkSpecTitle(library, TITLE_KOTLIN_JAVASCRIPT_LIB);
+        return checkAttributeValue(library, TITLE_KOTLIN_JAVASCRIPT_LIB, Attributes.Name.SPECIFICATION_TITLE);
     }
 
     public static boolean isKotlinJavascriptStdLibrary(@NotNull File library) {
-        return checkImplTitle(library, TITLE_KOTLIN_JAVASCRIPT_STDLIB);
+        return checkAttributeValue(library, TITLE_KOTLIN_JAVASCRIPT_STDLIB, Attributes.Name.IMPLEMENTATION_TITLE);
     }
 
     public static boolean isJvmRuntimeLibrary(@NotNull File library) {
-        return checkImplTitle(library, TITLE_KOTLIN_JVM_RUNTIME_AND_STDLIB);
+        return checkAttributeValue(library, TITLE_KOTLIN_JVM_RUNTIME_AND_STDLIB, Attributes.Name.IMPLEMENTATION_TITLE);
     }
 
 
