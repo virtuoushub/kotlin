@@ -17,76 +17,94 @@
 package org.jetbrains.jet.descriptors.serialization.descriptors;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.descriptors.serialization.NameResolver;
 import org.jetbrains.jet.descriptors.serialization.ProtoBuf;
-import org.jetbrains.jet.lang.descriptors.ClassDescriptor;
-import org.jetbrains.jet.lang.descriptors.ClassOrPackageFragmentDescriptor;
 import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
+import org.jetbrains.jet.lang.resolve.constants.CompileTimeConstant;
 
 import java.util.List;
 
-public interface AnnotationLoader {
-    AnnotationLoader UNSUPPORTED = new AnnotationLoader() {
+public interface AnnotationAndConstantLoader<A, C> {
+    AnnotationAndConstantLoader<AnnotationDescriptor, CompileTimeConstant<?>> UNSUPPORTED =
+            new AnnotationAndConstantLoader<AnnotationDescriptor, CompileTimeConstant<?>>() {
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadClassAnnotations(
-                @NotNull ClassDescriptor descriptor,
                 @NotNull ProtoBuf.Class classProto,
                 @NotNull NameResolver nameResolver
         ) {
-            return notSupported();
+            return annotationsNotSupported();
         }
 
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadCallableAnnotations(
-                @NotNull ClassOrPackageFragmentDescriptor container,
+                @NotNull ProtoContainer container,
                 @NotNull ProtoBuf.Callable proto,
                 @NotNull NameResolver nameResolver,
                 @NotNull AnnotatedCallableKind kind
         ) {
-            return notSupported();
+            return annotationsNotSupported();
         }
 
         @NotNull
         @Override
         public List<AnnotationDescriptor> loadValueParameterAnnotations(
-                @NotNull ClassOrPackageFragmentDescriptor container,
+                @NotNull ProtoContainer container,
                 @NotNull ProtoBuf.Callable callable,
                 @NotNull NameResolver nameResolver,
                 @NotNull AnnotatedCallableKind kind,
                 @NotNull ProtoBuf.Callable.ValueParameter proto
         ) {
-            return notSupported();
+            return annotationsNotSupported();
+        }
+
+        @Nullable
+        @Override
+        public CompileTimeConstant<?> loadPropertyConstant(
+                @NotNull ProtoContainer container,
+                @NotNull ProtoBuf.Callable proto,
+                @NotNull NameResolver nameResolver,
+                @NotNull AnnotatedCallableKind kind
+        ) {
+            throw new UnsupportedOperationException("Constants are not supported");
         }
 
         @NotNull
-        private List<AnnotationDescriptor> notSupported() {
+        private List<AnnotationDescriptor> annotationsNotSupported() {
             throw new UnsupportedOperationException("Annotations are not supported");
         }
     };
 
     @NotNull
-    List<AnnotationDescriptor> loadClassAnnotations(
-            @NotNull ClassDescriptor descriptor,
+    List<A> loadClassAnnotations(
             @NotNull ProtoBuf.Class classProto,
             @NotNull NameResolver nameResolver
     );
 
     @NotNull
-    List<AnnotationDescriptor> loadCallableAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+    List<A> loadCallableAnnotations(
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable proto,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind
     );
 
     @NotNull
-    List<AnnotationDescriptor> loadValueParameterAnnotations(
-            @NotNull ClassOrPackageFragmentDescriptor container,
+    List<A> loadValueParameterAnnotations(
+            @NotNull ProtoContainer container,
             @NotNull ProtoBuf.Callable callable,
             @NotNull NameResolver nameResolver,
             @NotNull AnnotatedCallableKind kind,
             @NotNull ProtoBuf.Callable.ValueParameter proto
+    );
+
+    @Nullable
+    C loadPropertyConstant(
+            @NotNull ProtoContainer container,
+            @NotNull ProtoBuf.Callable proto,
+            @NotNull NameResolver nameResolver,
+            @NotNull AnnotatedCallableKind kind
     );
 }
