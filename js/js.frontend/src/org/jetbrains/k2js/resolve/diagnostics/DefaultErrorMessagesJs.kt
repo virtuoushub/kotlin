@@ -24,11 +24,11 @@ import kotlin.properties.Delegates
 private val DIAGNOSTIC_FACTORY_TO_RENDERER by Delegates.lazy {
     with(DiagnosticFactoryToRendererMap()) {
 
-        put(ErrorsJs.NATIVE_X_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN,
-            "Annotation ''{0}'' is allowed only on member function of declaration annotated as ''kotlin.js.native'' or on toplevel extension function", Renderers.RENDER_TYPE)
-        put(ErrorsJs.NATIVE_INDEXER_KEY_SHOULD_BE_STRING_OR_NUMBER, "Native {0}''s first parameter type should be ''kotlin.String'' or ''kotlin.Number''", Renderers.STRING)
-        put(ErrorsJs.NATIVE_GETTER_RETURN_TYPE_SHOULD_BE_NULLABLE, "Native Getter''s return type should be nullable")
-        put(ErrorsJs.NATIVE_INDEXER_WRONG_PARAMETER_COUNT, "Expected {0} parameters for Native {1}", Renderers.TO_STRING, Renderers.STRING)
+        put(ErrorsJs.NATIVE_ANNOTATIONS_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN,
+            "Annotation ''{0}'' is allowed only on member functions of declaration annotated as ''kotlin.js.native'' or on toplevel extension functions", Renderers.RENDER_TYPE)
+        put(ErrorsJs.NATIVE_INDEXER_KEY_SHOULD_BE_STRING_OR_NUMBER, "Native {0}''s first parameter type should be ''kotlin.String'' or subtype of ''kotlin.Number''", Renderers.STRING)
+        put(ErrorsJs.NATIVE_GETTER_RETURN_TYPE_SHOULD_BE_NULLABLE, "Native getter''s return type should be nullable")
+        put(ErrorsJs.NATIVE_INDEXER_WRONG_PARAMETER_COUNT, "Expected {0} parameters for native {1}", Renderers.TO_STRING, Renderers.STRING)
 
         this
     }

@@ -45,7 +45,7 @@ abstract class NativeXAnnotationBaseChecker(requiredAnnotation: PredefinedAnnota
         if (annotationDescriptor == null) return
 
         if (declaration !is JetNamedFunction || descriptor !is FunctionDescriptor) {
-            diagnosticHolder.report(ErrorsJs.NATIVE_X_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN.on(declaration, annotationDescriptor.getType()))
+            diagnosticHolder.report(ErrorsJs.NATIVE_ANNOTATIONS_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN.on(declaration, annotationDescriptor.getType()))
             return
         }
 
@@ -55,7 +55,7 @@ abstract class NativeXAnnotationBaseChecker(requiredAnnotation: PredefinedAnnota
             isTopLevel && !isExtension ||
             !(isTopLevel && isExtension) && !AnnotationsUtils.isNativeObject(descriptor)
         ) {
-            diagnosticHolder.report(ErrorsJs.NATIVE_X_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN.on(declaration, annotationDescriptor.getType()))
+            diagnosticHolder.report(ErrorsJs.NATIVE_ANNOTATIONS_ALLOWED_ONLY_ON_MEMBER_OR_EXTENSION_FUN.on(declaration, annotationDescriptor.getType()))
         }
 
         additionalCheck(declaration, descriptor, diagnosticHolder)
