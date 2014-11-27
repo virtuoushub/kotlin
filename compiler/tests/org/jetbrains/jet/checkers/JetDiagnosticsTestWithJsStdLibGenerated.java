@@ -39,28 +39,56 @@ public class JetDiagnosticsTestWithJsStdLibGenerated extends AbstractJetDiagnost
 
     @TestMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native")
     @TestDataPath("$PROJECT_ROOT")
+    @InnerTestClasses({Native.NativeGetter.class, Native.NativeInvoke.class, Native.NativeSetter.class})
     @RunWith(JUnit3RunnerWithInners.class)
     public static class Native extends AbstractJetDiagnosticsTestWithJsStdLib {
         public void testAllFilesPresentInNative() throws Exception {
             JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/testsWithJsStdLib/native"), Pattern.compile("^(.+)\\.kt$"), true);
         }
 
-        @TestMetadata("nativeGetter.kt")
-        public void testNativeGetter() throws Exception {
-            String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeGetter.kt");
-            doTest(fileName);
+        @TestMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeGetter")
+        @TestDataPath("$PROJECT_ROOT")
+        @RunWith(JUnit3RunnerWithInners.class)
+        public static class NativeGetter extends AbstractJetDiagnosticsTestWithJsStdLib {
+            public void testAllFilesPresentInNativeGetter() throws Exception {
+                JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeGetter"), Pattern.compile("^(.+)\\.kt$"), true);
+            }
+
+            @TestMetadata("nativeGetter.kt")
+            public void testNativeGetter() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeGetter/nativeGetter.kt");
+                doTest(fileName);
+            }
         }
 
-        @TestMetadata("nativeInvoke.kt")
-        public void testNativeInvoke() throws Exception {
-            String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeInvoke.kt");
-            doTest(fileName);
+        @TestMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeInvoke")
+        @TestDataPath("$PROJECT_ROOT")
+        @RunWith(JUnit3RunnerWithInners.class)
+        public static class NativeInvoke extends AbstractJetDiagnosticsTestWithJsStdLib {
+            public void testAllFilesPresentInNativeInvoke() throws Exception {
+                JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeInvoke"), Pattern.compile("^(.+)\\.kt$"), true);
+            }
+
+            @TestMetadata("nativeInvoke.kt")
+            public void testNativeInvoke() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeInvoke/nativeInvoke.kt");
+                doTest(fileName);
+            }
         }
 
-        @TestMetadata("nativeSetter.kt")
-        public void testNativeSetter() throws Exception {
-            String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter.kt");
-            doTest(fileName);
+        @TestMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter")
+        @TestDataPath("$PROJECT_ROOT")
+        @RunWith(JUnit3RunnerWithInners.class)
+        public static class NativeSetter extends AbstractJetDiagnosticsTestWithJsStdLib {
+            public void testAllFilesPresentInNativeSetter() throws Exception {
+                JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter"), Pattern.compile("^(.+)\\.kt$"), true);
+            }
+
+            @TestMetadata("nativeSetter.kt")
+            public void testNativeSetter() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/nativeSetter.kt");
+                doTest(fileName);
+            }
         }
     }
 }
