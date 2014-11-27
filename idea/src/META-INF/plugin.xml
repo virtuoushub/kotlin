@@ -820,11 +820,11 @@
 
   </extensions>
 
-  <xi:include href="extensionPoints/kotlinPlugin.xml" xpointer="xpointer(/idea-plugin/*)"/>
-  <xi:include href="extensionPoints/common.xml" xpointer="xpointer(/idea-plugin/*)"/>
+  <xi:include href="extensions/ide.xml" xpointer="xpointer(/idea-plugin/*)"/>
+  <xi:include href="extensions/common.xml" xpointer="xpointer(/idea-plugin/*)"/>
 
   <extensions defaultExtensionNs="org.jetbrains.kotlin">
-      <xi:include href="extensionPoints/kotlin2js.xml" xpointer="xpointer(/idea-plugin/extensions/*)"/>
+      <xi:include href="extensions/kotlin2js.xml" xpointer="xpointer(/idea-plugin/extensions/*)"/>
   </extensions>
 
 </idea-plugin>
