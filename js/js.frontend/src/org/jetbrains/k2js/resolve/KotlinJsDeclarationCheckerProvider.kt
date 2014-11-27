@@ -80,13 +80,13 @@ private abstract class AbstractNativeIndexerChecker(
             }
         }
 
-        if(parameters.size()!= requiredParametersCount) {
+        if (parameters.size() != requiredParametersCount) {
             diagnosticHolder.report(ErrorsJs.NATIVE_INDEXER_WRONG_PARAMETER_COUNT.on(declaration, requiredParametersCount, indexerKind))
         }
     }
 }
 
-public class NativeGetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_GETTER, "Getter", requiredParametersCount = 1) {
+public class NativeGetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_GETTER, "getter", requiredParametersCount = 1) {
     override fun additionalCheck(declaration: JetNamedFunction, descriptor: FunctionDescriptor, diagnosticHolder: DiagnosticSink) {
         super.additionalCheck(declaration, descriptor, diagnosticHolder)
 
@@ -96,4 +96,4 @@ public class NativeGetterChecker : AbstractNativeIndexerChecker(PredefinedAnnota
     }
 }
 
-public class NativeSetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_SETTER, "Setter", requiredParametersCount = 2)
+public class NativeSetterChecker : AbstractNativeIndexerChecker(PredefinedAnnotation.NATIVE_SETTER, "setter", requiredParametersCount = 2)
