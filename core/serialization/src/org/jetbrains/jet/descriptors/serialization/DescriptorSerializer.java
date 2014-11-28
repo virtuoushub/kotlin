@@ -19,6 +19,7 @@ package org.jetbrains.jet.descriptors.serialization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.jet.lang.descriptors.*;
 import org.jetbrains.jet.lang.descriptors.annotations.Annotated;
+import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 import org.jetbrains.jet.lang.resolve.DescriptorFactory;
 import org.jetbrains.jet.lang.resolve.MemberComparator;
 import org.jetbrains.jet.lang.types.*;
@@ -133,6 +134,13 @@ public class DescriptorSerializer {
         ClassDescriptor classObject = classDescriptor.getClassObjectDescriptor();
         if (classObject != null) {
             builder.setClassObject(classObjectProto(classObject));
+        }
+
+        for (AnnotationDescriptor descriptor : classDescriptor.getAnnotations()) {
+            ProtoBuf.Annotation annotation = extension.serializeAnnotation(descriptor, nameTable);
+            if (annotation != null) {
+                builder.addAnnotation(annotation);
+            }
         }
 
         return builder;

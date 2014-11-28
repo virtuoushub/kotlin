@@ -17,12 +17,12 @@
 package org.jetbrains.jet.descriptors.serialization;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.jet.lang.descriptors.CallableMemberDescriptor;
 import org.jetbrains.jet.lang.descriptors.ValueParameterDescriptor;
+import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor;
 
 public abstract class SerializerExtension {
-    public static final SerializerExtension DEFAULT = new SerializerExtension() {};
-
     public void serializeCallable(
             @NotNull CallableMemberDescriptor callable,
             @NotNull ProtoBuf.Callable.Builder proto,
@@ -35,5 +35,10 @@ public abstract class SerializerExtension {
             @NotNull ProtoBuf.Callable.ValueParameter.Builder proto,
             @NotNull NameTable nameTable
     ) {
+    }
+
+    @Nullable
+    public ProtoBuf.Annotation serializeAnnotation(@NotNull AnnotationDescriptor annotation, @NotNull NameTable nameTable) {
+        return null;
     }
 }

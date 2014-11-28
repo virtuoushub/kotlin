@@ -43,15 +43,22 @@ import org.jetbrains.jet.lang.resolve.java.JvmPlatformParameters
 import org.jetbrains.jet.analyzer.ModuleContent
 import org.jetbrains.jet.lang.resolve.kotlin.DeserializedResolverUtils
 import org.jetbrains.jet.lang.resolve.scopes.DescriptorKindFilter
+import org.jetbrains.jet.lang.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.jet.cli.jvm.JVMConfigurationKeys
 
 public class BuiltInsSerializer(private val dependOnOldBuiltIns: Boolean) {
     private var totalSize = 0
     private var totalFiles = 0
 
-    public fun serialize(destDir: File, srcDirs: Collection<File>, onComplete: (totalSize: Int, totalFiles: Int) -> Unit) {
+    public fun serialize(
+            destDir: File,
+            srcDirs: Collection<File>,
+            extraClassPath: Collection<File>,
+            onComplete: (totalSize: Int, totalFiles: Int) -> Unit
+    ) {
         val rootDisposable = Disposer.newDisposable()
         try {
-            serialize(rootDisposable, destDir, srcDirs)
+            serialize(rootDisposable, destDir, srcDirs, extraClassPath)
             onComplete(totalSize, totalFiles)
         }
         finally {
@@ -66,12 +73,16 @@ public class BuiltInsSerializer(private val dependOnOldBuiltIns: Boolean) {
                 if (dependOnOldBuiltIns) ModuleInfo.DependenciesOnBuiltins.LAST else ModuleInfo.DependenciesOnBuiltins.NONE
     }
 
-    fun serialize(disposable: Disposable, destDir: File, srcDirs: Collection<File>) {
+    fun serialize(disposable: Disposable, destDir: File, srcDirs: Collection<File>, extraClassPath: Collection<File>) {
         val configuration = CompilerConfiguration()
         configuration.put(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
 
         val sourceRoots = srcDirs map { it.path }
         configuration.put(CommonConfigurationKeys.SOURCE_ROOTS_KEY, sourceRoots)
+
+        for (path in extraClassPath) {
+            configuration.add(JVMConfigurationKeys.CLASSPATH_KEY, path)
+        }
 
         val environment = JetCoreEnvironment.createForTests(disposable, configuration)
 
@@ -106,7 +117,10 @@ public class BuiltInsSerializer(private val dependOnOldBuiltIns: Boolean) {
         // TODO: perform some kind of validation? At the moment not possible because DescriptorValidator is in compiler-tests
         // DescriptorValidator.validate(packageView)
 
-        val serializer = DescriptorSerializer.createTopLevel(SerializerExtension.DEFAULT)
+        val serializer = DescriptorSerializer.createTopLevel(object : SerializerExtension() {
+            override fun serializeAnnotation(annotation: AnnotationDescriptor, nameTable: NameTable): ProtoBuf.Annotation =
+                    AnnotationSerializer.serializeAnnotation(annotation, nameTable)
+        })
 
         val classNames = ArrayList<Name>()
         val classifierDescriptors = DescriptorSerializer.sort(packageView.getMemberScope().getDescriptors(DescriptorKindFilter.CLASSIFIERS))

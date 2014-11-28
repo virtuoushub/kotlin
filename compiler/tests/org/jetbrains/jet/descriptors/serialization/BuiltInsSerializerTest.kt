@@ -26,14 +26,16 @@ import org.jetbrains.jet.JetTestUtils
 import java.io.FileInputStream
 import org.jetbrains.jet.test.util.RecursiveDescriptorComparator
 import org.jetbrains.jet.lang.types.lang.KotlinBuiltIns
+import org.jetbrains.jet.codegen.forTestCompile.ForTestCompileRuntime
 
 public class BuiltInsSerializerTest : TestCaseWithTmpdir() {
     private fun doTest(fileName: String) {
         val source = "compiler/testData/serialization/$fileName"
         BuiltInsSerializer(dependOnOldBuiltIns = true).serialize(
                 tmpdir,
-                listOf(File(source)),
-                { totalSize, totalFiles -> }
+                srcDirs = listOf(File(source)),
+                extraClassPath = listOf(ForTestCompileRuntime.runtimeJarForTests()),
+                onComplete = { totalSize, totalFiles -> }
         )
 
         val module = JetTestUtils.createEmptyModule("<module>")
@@ -56,5 +58,25 @@ public class BuiltInsSerializerTest : TestCaseWithTmpdir() {
 
     fun testSimple() {
         doTest("simple.kt")
+    }
+
+    fun testPrimitives() {
+        doTest("annotationArguments/primitives.kt")
+    }
+
+    fun testPrimitiveArrays() {
+        doTest("annotationArguments/primitiveArrays.kt")
+    }
+
+    fun testString() {
+        doTest("annotationArguments/string.kt")
+    }
+
+    fun testAnnotation() {
+        doTest("annotationArguments/annotation.kt")
+    }
+
+    fun testEnum() {
+        doTest("annotationArguments/enum.kt")
     }
 }

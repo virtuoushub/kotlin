@@ -2104,6 +2104,3335 @@ public final class DebugProtoBuf {
     // @@protoc_insertion_point(class_scope:org.jetbrains.jet.descriptors.serialization.QualifiedNameTable)
   }
 
+  public interface AnnotationOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required int32 id = 1;
+    /**
+     * <code>required int32 id = 1;</code>
+     *
+     * <pre>
+     * Class FQ name id
+     * </pre>
+     */
+    boolean hasId();
+    /**
+     * <code>required int32 id = 1;</code>
+     *
+     * <pre>
+     * Class FQ name id
+     * </pre>
+     */
+    int getId();
+
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> 
+        getArgumentList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument getArgument(int index);
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    int getArgumentCount();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder> 
+        getArgumentOrBuilderList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder getArgumentOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation}
+   */
+  public static final class Annotation extends
+      com.google.protobuf.GeneratedMessage
+      implements AnnotationOrBuilder {
+    // Use Annotation.newBuilder() to construct.
+    private Annotation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Annotation(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Annotation defaultInstance;
+    public static Annotation getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Annotation getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Annotation(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              id_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                argument_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              argument_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.PARSER, extensionRegistry));
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          argument_ = java.util.Collections.unmodifiableList(argument_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Annotation> PARSER =
+        new com.google.protobuf.AbstractParser<Annotation>() {
+      public Annotation parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Annotation(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Annotation> getParserForType() {
+      return PARSER;
+    }
+
+    public interface ArgumentOrBuilder
+        extends com.google.protobuf.MessageOrBuilder {
+
+      // required int32 name_id = 1;
+      /**
+       * <code>required int32 name_id = 1;</code>
+       */
+      boolean hasNameId();
+      /**
+       * <code>required int32 name_id = 1;</code>
+       */
+      int getNameId();
+
+      // required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      boolean hasValue();
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getValue();
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getValueOrBuilder();
+    }
+    /**
+     * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation.Argument}
+     */
+    public static final class Argument extends
+        com.google.protobuf.GeneratedMessage
+        implements ArgumentOrBuilder {
+      // Use Argument.newBuilder() to construct.
+      private Argument(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+        super(builder);
+        this.unknownFields = builder.getUnknownFields();
+      }
+      private Argument(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+      private static final Argument defaultInstance;
+      public static Argument getDefaultInstance() {
+        return defaultInstance;
+      }
+
+      public Argument getDefaultInstanceForType() {
+        return defaultInstance;
+      }
+
+      private final com.google.protobuf.UnknownFieldSet unknownFields;
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+          getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Argument(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        initFields();
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownField(input, unknownFields,
+                                       extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 8: {
+                bitField0_ |= 0x00000001;
+                nameId_ = input.readInt32();
+                break;
+              }
+              case 18: {
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder subBuilder = null;
+                if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                  subBuilder = value_.toBuilder();
+                }
+                value_ = input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.PARSER, extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(value_);
+                  value_ = subBuilder.buildPartial();
+                }
+                bitField0_ |= 0x00000002;
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e.getMessage()).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder.class);
+      }
+
+      public static com.google.protobuf.Parser<Argument> PARSER =
+          new com.google.protobuf.AbstractParser<Argument>() {
+        public Argument parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Argument(input, extensionRegistry);
+        }
+      };
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Argument> getParserForType() {
+        return PARSER;
+      }
+
+      public interface ValueOrBuilder
+          extends com.google.protobuf.MessageOrBuilder {
+
+        // optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+         *
+         * <pre>
+         * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+         * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+         * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+         * </pre>
+         */
+        boolean hasType();
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+         *
+         * <pre>
+         * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+         * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+         * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+         * </pre>
+         */
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type getType();
+
+        // optional sint64 int_value = 2;
+        /**
+         * <code>optional sint64 int_value = 2;</code>
+         */
+        boolean hasIntValue();
+        /**
+         * <code>optional sint64 int_value = 2;</code>
+         */
+        long getIntValue();
+
+        // optional float float_value = 3;
+        /**
+         * <code>optional float float_value = 3;</code>
+         */
+        boolean hasFloatValue();
+        /**
+         * <code>optional float float_value = 3;</code>
+         */
+        float getFloatValue();
+
+        // optional double double_value = 4;
+        /**
+         * <code>optional double double_value = 4;</code>
+         */
+        boolean hasDoubleValue();
+        /**
+         * <code>optional double double_value = 4;</code>
+         */
+        double getDoubleValue();
+
+        // optional int32 string_value = 5;
+        /**
+         * <code>optional int32 string_value = 5;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        boolean hasStringValue();
+        /**
+         * <code>optional int32 string_value = 5;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        int getStringValue();
+
+        // optional int32 class_id = 6;
+        /**
+         * <code>optional int32 class_id = 6;</code>
+         *
+         * <pre>
+         * Class literal FQ name id
+         * </pre>
+         */
+        boolean hasClassId();
+        /**
+         * <code>optional int32 class_id = 6;</code>
+         *
+         * <pre>
+         * Class literal FQ name id
+         * </pre>
+         */
+        int getClassId();
+
+        // optional int32 enum_class_id = 7;
+        /**
+         * <code>optional int32 enum_class_id = 7;</code>
+         *
+         * <pre>
+         * Enum class FQ name id
+         * </pre>
+         */
+        boolean hasEnumClassId();
+        /**
+         * <code>optional int32 enum_class_id = 7;</code>
+         *
+         * <pre>
+         * Enum class FQ name id
+         * </pre>
+         */
+        int getEnumClassId();
+
+        // optional int32 enum_value_id = 8;
+        /**
+         * <code>optional int32 enum_value_id = 8;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        boolean hasEnumValueId();
+        /**
+         * <code>optional int32 enum_value_id = 8;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        int getEnumValueId();
+
+        // optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        boolean hasAnnotation();
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation();
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder();
+
+        // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> 
+            getArrayElementList();
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getArrayElement(int index);
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        int getArrayElementCount();
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> 
+            getArrayElementOrBuilderList();
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getArrayElementOrBuilder(
+            int index);
+      }
+      /**
+       * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value}
+       */
+      public static final class Value extends
+          com.google.protobuf.GeneratedMessage
+          implements ValueOrBuilder {
+        // Use Value.newBuilder() to construct.
+        private Value(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+          super(builder);
+          this.unknownFields = builder.getUnknownFields();
+        }
+        private Value(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+        private static final Value defaultInstance;
+        public static Value getDefaultInstance() {
+          return defaultInstance;
+        }
+
+        public Value getDefaultInstanceForType() {
+          return defaultInstance;
+        }
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+            getUnknownFields() {
+          return this.unknownFields;
+        }
+        private Value(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          initFields();
+          int mutable_bitField0_ = 0;
+          com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+              com.google.protobuf.UnknownFieldSet.newBuilder();
+          try {
+            boolean done = false;
+            while (!done) {
+              int tag = input.readTag();
+              switch (tag) {
+                case 0:
+                  done = true;
+                  break;
+                default: {
+                  if (!parseUnknownField(input, unknownFields,
+                                         extensionRegistry, tag)) {
+                    done = true;
+                  }
+                  break;
+                }
+                case 8: {
+                  int rawValue = input.readEnum();
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type value = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type.valueOf(rawValue);
+                  if (value == null) {
+                    unknownFields.mergeVarintField(1, rawValue);
+                  } else {
+                    bitField0_ |= 0x00000001;
+                    type_ = value;
+                  }
+                  break;
+                }
+                case 16: {
+                  bitField0_ |= 0x00000002;
+                  intValue_ = input.readSInt64();
+                  break;
+                }
+                case 29: {
+                  bitField0_ |= 0x00000004;
+                  floatValue_ = input.readFloat();
+                  break;
+                }
+                case 33: {
+                  bitField0_ |= 0x00000008;
+                  doubleValue_ = input.readDouble();
+                  break;
+                }
+                case 40: {
+                  bitField0_ |= 0x00000010;
+                  stringValue_ = input.readInt32();
+                  break;
+                }
+                case 48: {
+                  bitField0_ |= 0x00000020;
+                  classId_ = input.readInt32();
+                  break;
+                }
+                case 56: {
+                  bitField0_ |= 0x00000040;
+                  enumClassId_ = input.readInt32();
+                  break;
+                }
+                case 64: {
+                  bitField0_ |= 0x00000080;
+                  enumValueId_ = input.readInt32();
+                  break;
+                }
+                case 74: {
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder subBuilder = null;
+                  if (((bitField0_ & 0x00000100) == 0x00000100)) {
+                    subBuilder = annotation_.toBuilder();
+                  }
+                  annotation_ = input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.PARSER, extensionRegistry);
+                  if (subBuilder != null) {
+                    subBuilder.mergeFrom(annotation_);
+                    annotation_ = subBuilder.buildPartial();
+                  }
+                  bitField0_ |= 0x00000100;
+                  break;
+                }
+                case 82: {
+                  if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+                    arrayElement_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value>();
+                    mutable_bitField0_ |= 0x00000200;
+                  }
+                  arrayElement_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.PARSER, extensionRegistry));
+                  break;
+                }
+              }
+            }
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            throw e.setUnfinishedMessage(this);
+          } catch (java.io.IOException e) {
+            throw new com.google.protobuf.InvalidProtocolBufferException(
+                e.getMessage()).setUnfinishedMessage(this);
+          } finally {
+            if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+              arrayElement_ = java.util.Collections.unmodifiableList(arrayElement_);
+            }
+            this.unknownFields = unknownFields.build();
+            makeExtensionsImmutable();
+          }
+        }
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<Value> PARSER =
+            new com.google.protobuf.AbstractParser<Value>() {
+          public Value parsePartialFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws com.google.protobuf.InvalidProtocolBufferException {
+            return new Value(input, extensionRegistry);
+          }
+        };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<Value> getParserForType() {
+          return PARSER;
+        }
+
+        /**
+         * Protobuf enum {@code org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type}
+         */
+        public enum Type
+            implements com.google.protobuf.ProtocolMessageEnum {
+          /**
+           * <code>BYTE = 0;</code>
+           */
+          BYTE(0, 0),
+          /**
+           * <code>CHAR = 1;</code>
+           */
+          CHAR(1, 1),
+          /**
+           * <code>SHORT = 2;</code>
+           */
+          SHORT(2, 2),
+          /**
+           * <code>INT = 3;</code>
+           */
+          INT(3, 3),
+          /**
+           * <code>LONG = 4;</code>
+           */
+          LONG(4, 4),
+          /**
+           * <code>FLOAT = 5;</code>
+           */
+          FLOAT(5, 5),
+          /**
+           * <code>DOUBLE = 6;</code>
+           */
+          DOUBLE(6, 6),
+          /**
+           * <code>BOOLEAN = 7;</code>
+           */
+          BOOLEAN(7, 7),
+          /**
+           * <code>STRING = 8;</code>
+           */
+          STRING(8, 8),
+          /**
+           * <code>CLASS = 9;</code>
+           */
+          CLASS(9, 9),
+          /**
+           * <code>ENUM = 10;</code>
+           */
+          ENUM(10, 10),
+          /**
+           * <code>ANNOTATION = 11;</code>
+           */
+          ANNOTATION(11, 11),
+          /**
+           * <code>ARRAY = 12;</code>
+           */
+          ARRAY(12, 12),
+          ;
+
+          /**
+           * <code>BYTE = 0;</code>
+           */
+          public static final int BYTE_VALUE = 0;
+          /**
+           * <code>CHAR = 1;</code>
+           */
+          public static final int CHAR_VALUE = 1;
+          /**
+           * <code>SHORT = 2;</code>
+           */
+          public static final int SHORT_VALUE = 2;
+          /**
+           * <code>INT = 3;</code>
+           */
+          public static final int INT_VALUE = 3;
+          /**
+           * <code>LONG = 4;</code>
+           */
+          public static final int LONG_VALUE = 4;
+          /**
+           * <code>FLOAT = 5;</code>
+           */
+          public static final int FLOAT_VALUE = 5;
+          /**
+           * <code>DOUBLE = 6;</code>
+           */
+          public static final int DOUBLE_VALUE = 6;
+          /**
+           * <code>BOOLEAN = 7;</code>
+           */
+          public static final int BOOLEAN_VALUE = 7;
+          /**
+           * <code>STRING = 8;</code>
+           */
+          public static final int STRING_VALUE = 8;
+          /**
+           * <code>CLASS = 9;</code>
+           */
+          public static final int CLASS_VALUE = 9;
+          /**
+           * <code>ENUM = 10;</code>
+           */
+          public static final int ENUM_VALUE = 10;
+          /**
+           * <code>ANNOTATION = 11;</code>
+           */
+          public static final int ANNOTATION_VALUE = 11;
+          /**
+           * <code>ARRAY = 12;</code>
+           */
+          public static final int ARRAY_VALUE = 12;
+
+
+          public final int getNumber() { return value; }
+
+          public static Type valueOf(int value) {
+            switch (value) {
+              case 0: return BYTE;
+              case 1: return CHAR;
+              case 2: return SHORT;
+              case 3: return INT;
+              case 4: return LONG;
+              case 5: return FLOAT;
+              case 6: return DOUBLE;
+              case 7: return BOOLEAN;
+              case 8: return STRING;
+              case 9: return CLASS;
+              case 10: return ENUM;
+              case 11: return ANNOTATION;
+              case 12: return ARRAY;
+              default: return null;
+            }
+          }
+
+          public static com.google.protobuf.Internal.EnumLiteMap<Type>
+              internalGetValueMap() {
+            return internalValueMap;
+          }
+          private static com.google.protobuf.Internal.EnumLiteMap<Type>
+              internalValueMap =
+                new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+                  public Type findValueByNumber(int number) {
+                    return Type.valueOf(number);
+                  }
+                };
+
+          public final com.google.protobuf.Descriptors.EnumValueDescriptor
+              getValueDescriptor() {
+            return getDescriptor().getValues().get(index);
+          }
+          public final com.google.protobuf.Descriptors.EnumDescriptor
+              getDescriptorForType() {
+            return getDescriptor();
+          }
+          public static final com.google.protobuf.Descriptors.EnumDescriptor
+              getDescriptor() {
+            return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDescriptor().getEnumTypes().get(0);
+          }
+
+          private static final Type[] VALUES = values();
+
+          public static Type valueOf(
+              com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+            if (desc.getType() != getDescriptor()) {
+              throw new java.lang.IllegalArgumentException(
+                "EnumValueDescriptor is not for this type.");
+            }
+            return VALUES[desc.getIndex()];
+          }
+
+          private final int index;
+          private final int value;
+
+          private Type(int index, int value) {
+            this.index = index;
+            this.value = value;
+          }
+
+          // @@protoc_insertion_point(enum_scope:org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type)
+        }
+
+        private int bitField0_;
+        // optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;
+        public static final int TYPE_FIELD_NUMBER = 1;
+        private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type type_;
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+         *
+         * <pre>
+         * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+         * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+         * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+         * </pre>
+         */
+        public boolean hasType() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+         *
+         * <pre>
+         * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+         * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+         * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+         * </pre>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type getType() {
+          return type_;
+        }
+
+        // optional sint64 int_value = 2;
+        public static final int INT_VALUE_FIELD_NUMBER = 2;
+        private long intValue_;
+        /**
+         * <code>optional sint64 int_value = 2;</code>
+         */
+        public boolean hasIntValue() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>optional sint64 int_value = 2;</code>
+         */
+        public long getIntValue() {
+          return intValue_;
+        }
+
+        // optional float float_value = 3;
+        public static final int FLOAT_VALUE_FIELD_NUMBER = 3;
+        private float floatValue_;
+        /**
+         * <code>optional float float_value = 3;</code>
+         */
+        public boolean hasFloatValue() {
+          return ((bitField0_ & 0x00000004) == 0x00000004);
+        }
+        /**
+         * <code>optional float float_value = 3;</code>
+         */
+        public float getFloatValue() {
+          return floatValue_;
+        }
+
+        // optional double double_value = 4;
+        public static final int DOUBLE_VALUE_FIELD_NUMBER = 4;
+        private double doubleValue_;
+        /**
+         * <code>optional double double_value = 4;</code>
+         */
+        public boolean hasDoubleValue() {
+          return ((bitField0_ & 0x00000008) == 0x00000008);
+        }
+        /**
+         * <code>optional double double_value = 4;</code>
+         */
+        public double getDoubleValue() {
+          return doubleValue_;
+        }
+
+        // optional int32 string_value = 5;
+        public static final int STRING_VALUE_FIELD_NUMBER = 5;
+        private int stringValue_;
+        /**
+         * <code>optional int32 string_value = 5;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        public boolean hasStringValue() {
+          return ((bitField0_ & 0x00000010) == 0x00000010);
+        }
+        /**
+         * <code>optional int32 string_value = 5;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        public int getStringValue() {
+          return stringValue_;
+        }
+
+        // optional int32 class_id = 6;
+        public static final int CLASS_ID_FIELD_NUMBER = 6;
+        private int classId_;
+        /**
+         * <code>optional int32 class_id = 6;</code>
+         *
+         * <pre>
+         * Class literal FQ name id
+         * </pre>
+         */
+        public boolean hasClassId() {
+          return ((bitField0_ & 0x00000020) == 0x00000020);
+        }
+        /**
+         * <code>optional int32 class_id = 6;</code>
+         *
+         * <pre>
+         * Class literal FQ name id
+         * </pre>
+         */
+        public int getClassId() {
+          return classId_;
+        }
+
+        // optional int32 enum_class_id = 7;
+        public static final int ENUM_CLASS_ID_FIELD_NUMBER = 7;
+        private int enumClassId_;
+        /**
+         * <code>optional int32 enum_class_id = 7;</code>
+         *
+         * <pre>
+         * Enum class FQ name id
+         * </pre>
+         */
+        public boolean hasEnumClassId() {
+          return ((bitField0_ & 0x00000040) == 0x00000040);
+        }
+        /**
+         * <code>optional int32 enum_class_id = 7;</code>
+         *
+         * <pre>
+         * Enum class FQ name id
+         * </pre>
+         */
+        public int getEnumClassId() {
+          return enumClassId_;
+        }
+
+        // optional int32 enum_value_id = 8;
+        public static final int ENUM_VALUE_ID_FIELD_NUMBER = 8;
+        private int enumValueId_;
+        /**
+         * <code>optional int32 enum_value_id = 8;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        public boolean hasEnumValueId() {
+          return ((bitField0_ & 0x00000080) == 0x00000080);
+        }
+        /**
+         * <code>optional int32 enum_value_id = 8;</code>
+         *
+         * <pre>
+         * id in StringTable
+         * </pre>
+         */
+        public int getEnumValueId() {
+          return enumValueId_;
+        }
+
+        // optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;
+        public static final int ANNOTATION_FIELD_NUMBER = 9;
+        private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation annotation_;
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        public boolean hasAnnotation() {
+          return ((bitField0_ & 0x00000100) == 0x00000100);
+        }
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation() {
+          return annotation_;
+        }
+        /**
+         * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder() {
+          return annotation_;
+        }
+
+        // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;
+        public static final int ARRAY_ELEMENT_FIELD_NUMBER = 10;
+        private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> arrayElement_;
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> getArrayElementList() {
+          return arrayElement_;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> 
+            getArrayElementOrBuilderList() {
+          return arrayElement_;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        public int getArrayElementCount() {
+          return arrayElement_.size();
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getArrayElement(int index) {
+          return arrayElement_.get(index);
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getArrayElementOrBuilder(
+            int index) {
+          return arrayElement_.get(index);
+        }
+
+        private void initFields() {
+          type_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type.BYTE;
+          intValue_ = 0L;
+          floatValue_ = 0F;
+          doubleValue_ = 0D;
+          stringValue_ = 0;
+          classId_ = 0;
+          enumClassId_ = 0;
+          enumValueId_ = 0;
+          annotation_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance();
+          arrayElement_ = java.util.Collections.emptyList();
+        }
+        private byte memoizedIsInitialized = -1;
+        public final boolean isInitialized() {
+          byte isInitialized = memoizedIsInitialized;
+          if (isInitialized != -1) return isInitialized == 1;
+
+          if (hasAnnotation()) {
+            if (!getAnnotation().isInitialized()) {
+              memoizedIsInitialized = 0;
+              return false;
+            }
+          }
+          for (int i = 0; i < getArrayElementCount(); i++) {
+            if (!getArrayElement(i).isInitialized()) {
+              memoizedIsInitialized = 0;
+              return false;
+            }
+          }
+          memoizedIsInitialized = 1;
+          return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                            throws java.io.IOException {
+          getSerializedSize();
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            output.writeEnum(1, type_.getNumber());
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            output.writeSInt64(2, intValue_);
+          }
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            output.writeFloat(3, floatValue_);
+          }
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            output.writeDouble(4, doubleValue_);
+          }
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            output.writeInt32(5, stringValue_);
+          }
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            output.writeInt32(6, classId_);
+          }
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+            output.writeInt32(7, enumClassId_);
+          }
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+            output.writeInt32(8, enumValueId_);
+          }
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            output.writeMessage(9, annotation_);
+          }
+          for (int i = 0; i < arrayElement_.size(); i++) {
+            output.writeMessage(10, arrayElement_.get(i));
+          }
+          getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+        public int getSerializedSize() {
+          int size = memoizedSerializedSize;
+          if (size != -1) return size;
+
+          size = 0;
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeEnumSize(1, type_.getNumber());
+          }
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeSInt64Size(2, intValue_);
+          }
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeFloatSize(3, floatValue_);
+          }
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeDoubleSize(4, doubleValue_);
+          }
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(5, stringValue_);
+          }
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(6, classId_);
+          }
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(7, enumClassId_);
+          }
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeInt32Size(8, enumValueId_);
+          }
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeMessageSize(9, annotation_);
+          }
+          for (int i = 0; i < arrayElement_.size(); i++) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeMessageSize(10, arrayElement_.get(i));
+          }
+          size += getUnknownFields().getSerializedSize();
+          memoizedSerializedSize = size;
+          return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+            throws java.io.ObjectStreamException {
+          return super.writeReplace();
+        }
+
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            com.google.protobuf.ByteString data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            com.google.protobuf.ByteString data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(byte[] data)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            byte[] data,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return PARSER.parseFrom(data, extensionRegistry);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseDelimitedFrom(java.io.InputStream input)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseDelimitedFrom(
+            java.io.InputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            com.google.protobuf.CodedInputStream input)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input);
+        }
+        public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parseFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() { return Builder.create(); }
+        public Builder newBuilderForType() { return newBuilder(); }
+        public static Builder newBuilder(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value prototype) {
+          return newBuilder().mergeFrom(prototype);
+        }
+        public Builder toBuilder() { return newBuilder(this); }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          Builder builder = new Builder(parent);
+          return builder;
+        }
+        /**
+         * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value}
+         */
+        public static final class Builder extends
+            com.google.protobuf.GeneratedMessage.Builder<Builder>
+           implements org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder {
+          public static final com.google.protobuf.Descriptors.Descriptor
+              getDescriptor() {
+            return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor;
+          }
+
+          protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+              internalGetFieldAccessorTable() {
+            return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_fieldAccessorTable
+                .ensureFieldAccessorsInitialized(
+                    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder.class);
+          }
+
+          // Construct using org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.newBuilder()
+          private Builder() {
+            maybeForceBuilderInitialization();
+          }
+
+          private Builder(
+              com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            super(parent);
+            maybeForceBuilderInitialization();
+          }
+          private void maybeForceBuilderInitialization() {
+            if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+              getAnnotationFieldBuilder();
+              getArrayElementFieldBuilder();
+            }
+          }
+          private static Builder create() {
+            return new Builder();
+          }
+
+          public Builder clear() {
+            super.clear();
+            type_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type.BYTE;
+            bitField0_ = (bitField0_ & ~0x00000001);
+            intValue_ = 0L;
+            bitField0_ = (bitField0_ & ~0x00000002);
+            floatValue_ = 0F;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            doubleValue_ = 0D;
+            bitField0_ = (bitField0_ & ~0x00000008);
+            stringValue_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000010);
+            classId_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000020);
+            enumClassId_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000040);
+            enumValueId_ = 0;
+            bitField0_ = (bitField0_ & ~0x00000080);
+            if (annotationBuilder_ == null) {
+              annotation_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance();
+            } else {
+              annotationBuilder_.clear();
+            }
+            bitField0_ = (bitField0_ & ~0x00000100);
+            if (arrayElementBuilder_ == null) {
+              arrayElement_ = java.util.Collections.emptyList();
+              bitField0_ = (bitField0_ & ~0x00000200);
+            } else {
+              arrayElementBuilder_.clear();
+            }
+            return this;
+          }
+
+          public Builder clone() {
+            return create().mergeFrom(buildPartial());
+          }
+
+          public com.google.protobuf.Descriptors.Descriptor
+              getDescriptorForType() {
+            return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor;
+          }
+
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getDefaultInstanceForType() {
+            return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance();
+          }
+
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value build() {
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value result = buildPartial();
+            if (!result.isInitialized()) {
+              throw newUninitializedMessageException(result);
+            }
+            return result;
+          }
+
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value buildPartial() {
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value result = new org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value(this);
+            int from_bitField0_ = bitField0_;
+            int to_bitField0_ = 0;
+            if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+              to_bitField0_ |= 0x00000001;
+            }
+            result.type_ = type_;
+            if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+              to_bitField0_ |= 0x00000002;
+            }
+            result.intValue_ = intValue_;
+            if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+              to_bitField0_ |= 0x00000004;
+            }
+            result.floatValue_ = floatValue_;
+            if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+              to_bitField0_ |= 0x00000008;
+            }
+            result.doubleValue_ = doubleValue_;
+            if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+              to_bitField0_ |= 0x00000010;
+            }
+            result.stringValue_ = stringValue_;
+            if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+              to_bitField0_ |= 0x00000020;
+            }
+            result.classId_ = classId_;
+            if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+              to_bitField0_ |= 0x00000040;
+            }
+            result.enumClassId_ = enumClassId_;
+            if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+              to_bitField0_ |= 0x00000080;
+            }
+            result.enumValueId_ = enumValueId_;
+            if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+              to_bitField0_ |= 0x00000100;
+            }
+            if (annotationBuilder_ == null) {
+              result.annotation_ = annotation_;
+            } else {
+              result.annotation_ = annotationBuilder_.build();
+            }
+            if (arrayElementBuilder_ == null) {
+              if (((bitField0_ & 0x00000200) == 0x00000200)) {
+                arrayElement_ = java.util.Collections.unmodifiableList(arrayElement_);
+                bitField0_ = (bitField0_ & ~0x00000200);
+              }
+              result.arrayElement_ = arrayElement_;
+            } else {
+              result.arrayElement_ = arrayElementBuilder_.build();
+            }
+            result.bitField0_ = to_bitField0_;
+            onBuilt();
+            return result;
+          }
+
+          public Builder mergeFrom(com.google.protobuf.Message other) {
+            if (other instanceof org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value) {
+              return mergeFrom((org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value)other);
+            } else {
+              super.mergeFrom(other);
+              return this;
+            }
+          }
+
+          public Builder mergeFrom(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value other) {
+            if (other == org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance()) return this;
+            if (other.hasType()) {
+              setType(other.getType());
+            }
+            if (other.hasIntValue()) {
+              setIntValue(other.getIntValue());
+            }
+            if (other.hasFloatValue()) {
+              setFloatValue(other.getFloatValue());
+            }
+            if (other.hasDoubleValue()) {
+              setDoubleValue(other.getDoubleValue());
+            }
+            if (other.hasStringValue()) {
+              setStringValue(other.getStringValue());
+            }
+            if (other.hasClassId()) {
+              setClassId(other.getClassId());
+            }
+            if (other.hasEnumClassId()) {
+              setEnumClassId(other.getEnumClassId());
+            }
+            if (other.hasEnumValueId()) {
+              setEnumValueId(other.getEnumValueId());
+            }
+            if (other.hasAnnotation()) {
+              mergeAnnotation(other.getAnnotation());
+            }
+            if (arrayElementBuilder_ == null) {
+              if (!other.arrayElement_.isEmpty()) {
+                if (arrayElement_.isEmpty()) {
+                  arrayElement_ = other.arrayElement_;
+                  bitField0_ = (bitField0_ & ~0x00000200);
+                } else {
+                  ensureArrayElementIsMutable();
+                  arrayElement_.addAll(other.arrayElement_);
+                }
+                onChanged();
+              }
+            } else {
+              if (!other.arrayElement_.isEmpty()) {
+                if (arrayElementBuilder_.isEmpty()) {
+                  arrayElementBuilder_.dispose();
+                  arrayElementBuilder_ = null;
+                  arrayElement_ = other.arrayElement_;
+                  bitField0_ = (bitField0_ & ~0x00000200);
+                  arrayElementBuilder_ = 
+                    com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                       getArrayElementFieldBuilder() : null;
+                } else {
+                  arrayElementBuilder_.addAllMessages(other.arrayElement_);
+                }
+              }
+            }
+            this.mergeUnknownFields(other.getUnknownFields());
+            return this;
+          }
+
+          public final boolean isInitialized() {
+            if (hasAnnotation()) {
+              if (!getAnnotation().isInitialized()) {
+                
+                return false;
+              }
+            }
+            for (int i = 0; i < getArrayElementCount(); i++) {
+              if (!getArrayElement(i).isInitialized()) {
+                
+                return false;
+              }
+            }
+            return true;
+          }
+
+          public Builder mergeFrom(
+              com.google.protobuf.CodedInputStream input,
+              com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+              throws java.io.IOException {
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value parsedMessage = null;
+            try {
+              parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+              parsedMessage = (org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value) e.getUnfinishedMessage();
+              throw e;
+            } finally {
+              if (parsedMessage != null) {
+                mergeFrom(parsedMessage);
+              }
+            }
+            return this;
+          }
+          private int bitField0_;
+
+          // optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;
+          private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type type_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type.BYTE;
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+           *
+           * <pre>
+           * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+           * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+           * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+           * </pre>
+           */
+          public boolean hasType() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+           *
+           * <pre>
+           * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+           * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+           * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+           * </pre>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type getType() {
+            return type_;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+           *
+           * <pre>
+           * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+           * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+           * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+           * </pre>
+           */
+          public Builder setType(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type value) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            bitField0_ |= 0x00000001;
+            type_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value.Type type = 1;</code>
+           *
+           * <pre>
+           * Note: a *Value* has a Type, not an Argument! This is done for future language features which may involve using arrays
+           * of elements of different types. Such entries are allowed in the constant pool of JVM class files.
+           * However, to save space, this field is optional: in case of homogeneous arrays, only the type of the first element is required
+           * </pre>
+           */
+          public Builder clearType() {
+            bitField0_ = (bitField0_ & ~0x00000001);
+            type_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Type.BYTE;
+            onChanged();
+            return this;
+          }
+
+          // optional sint64 int_value = 2;
+          private long intValue_ ;
+          /**
+           * <code>optional sint64 int_value = 2;</code>
+           */
+          public boolean hasIntValue() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+          }
+          /**
+           * <code>optional sint64 int_value = 2;</code>
+           */
+          public long getIntValue() {
+            return intValue_;
+          }
+          /**
+           * <code>optional sint64 int_value = 2;</code>
+           */
+          public Builder setIntValue(long value) {
+            bitField0_ |= 0x00000002;
+            intValue_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional sint64 int_value = 2;</code>
+           */
+          public Builder clearIntValue() {
+            bitField0_ = (bitField0_ & ~0x00000002);
+            intValue_ = 0L;
+            onChanged();
+            return this;
+          }
+
+          // optional float float_value = 3;
+          private float floatValue_ ;
+          /**
+           * <code>optional float float_value = 3;</code>
+           */
+          public boolean hasFloatValue() {
+            return ((bitField0_ & 0x00000004) == 0x00000004);
+          }
+          /**
+           * <code>optional float float_value = 3;</code>
+           */
+          public float getFloatValue() {
+            return floatValue_;
+          }
+          /**
+           * <code>optional float float_value = 3;</code>
+           */
+          public Builder setFloatValue(float value) {
+            bitField0_ |= 0x00000004;
+            floatValue_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional float float_value = 3;</code>
+           */
+          public Builder clearFloatValue() {
+            bitField0_ = (bitField0_ & ~0x00000004);
+            floatValue_ = 0F;
+            onChanged();
+            return this;
+          }
+
+          // optional double double_value = 4;
+          private double doubleValue_ ;
+          /**
+           * <code>optional double double_value = 4;</code>
+           */
+          public boolean hasDoubleValue() {
+            return ((bitField0_ & 0x00000008) == 0x00000008);
+          }
+          /**
+           * <code>optional double double_value = 4;</code>
+           */
+          public double getDoubleValue() {
+            return doubleValue_;
+          }
+          /**
+           * <code>optional double double_value = 4;</code>
+           */
+          public Builder setDoubleValue(double value) {
+            bitField0_ |= 0x00000008;
+            doubleValue_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional double double_value = 4;</code>
+           */
+          public Builder clearDoubleValue() {
+            bitField0_ = (bitField0_ & ~0x00000008);
+            doubleValue_ = 0D;
+            onChanged();
+            return this;
+          }
+
+          // optional int32 string_value = 5;
+          private int stringValue_ ;
+          /**
+           * <code>optional int32 string_value = 5;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public boolean hasStringValue() {
+            return ((bitField0_ & 0x00000010) == 0x00000010);
+          }
+          /**
+           * <code>optional int32 string_value = 5;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public int getStringValue() {
+            return stringValue_;
+          }
+          /**
+           * <code>optional int32 string_value = 5;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public Builder setStringValue(int value) {
+            bitField0_ |= 0x00000010;
+            stringValue_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 string_value = 5;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public Builder clearStringValue() {
+            bitField0_ = (bitField0_ & ~0x00000010);
+            stringValue_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // optional int32 class_id = 6;
+          private int classId_ ;
+          /**
+           * <code>optional int32 class_id = 6;</code>
+           *
+           * <pre>
+           * Class literal FQ name id
+           * </pre>
+           */
+          public boolean hasClassId() {
+            return ((bitField0_ & 0x00000020) == 0x00000020);
+          }
+          /**
+           * <code>optional int32 class_id = 6;</code>
+           *
+           * <pre>
+           * Class literal FQ name id
+           * </pre>
+           */
+          public int getClassId() {
+            return classId_;
+          }
+          /**
+           * <code>optional int32 class_id = 6;</code>
+           *
+           * <pre>
+           * Class literal FQ name id
+           * </pre>
+           */
+          public Builder setClassId(int value) {
+            bitField0_ |= 0x00000020;
+            classId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 class_id = 6;</code>
+           *
+           * <pre>
+           * Class literal FQ name id
+           * </pre>
+           */
+          public Builder clearClassId() {
+            bitField0_ = (bitField0_ & ~0x00000020);
+            classId_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // optional int32 enum_class_id = 7;
+          private int enumClassId_ ;
+          /**
+           * <code>optional int32 enum_class_id = 7;</code>
+           *
+           * <pre>
+           * Enum class FQ name id
+           * </pre>
+           */
+          public boolean hasEnumClassId() {
+            return ((bitField0_ & 0x00000040) == 0x00000040);
+          }
+          /**
+           * <code>optional int32 enum_class_id = 7;</code>
+           *
+           * <pre>
+           * Enum class FQ name id
+           * </pre>
+           */
+          public int getEnumClassId() {
+            return enumClassId_;
+          }
+          /**
+           * <code>optional int32 enum_class_id = 7;</code>
+           *
+           * <pre>
+           * Enum class FQ name id
+           * </pre>
+           */
+          public Builder setEnumClassId(int value) {
+            bitField0_ |= 0x00000040;
+            enumClassId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 enum_class_id = 7;</code>
+           *
+           * <pre>
+           * Enum class FQ name id
+           * </pre>
+           */
+          public Builder clearEnumClassId() {
+            bitField0_ = (bitField0_ & ~0x00000040);
+            enumClassId_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // optional int32 enum_value_id = 8;
+          private int enumValueId_ ;
+          /**
+           * <code>optional int32 enum_value_id = 8;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public boolean hasEnumValueId() {
+            return ((bitField0_ & 0x00000080) == 0x00000080);
+          }
+          /**
+           * <code>optional int32 enum_value_id = 8;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public int getEnumValueId() {
+            return enumValueId_;
+          }
+          /**
+           * <code>optional int32 enum_value_id = 8;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public Builder setEnumValueId(int value) {
+            bitField0_ |= 0x00000080;
+            enumValueId_ = value;
+            onChanged();
+            return this;
+          }
+          /**
+           * <code>optional int32 enum_value_id = 8;</code>
+           *
+           * <pre>
+           * id in StringTable
+           * </pre>
+           */
+          public Builder clearEnumValueId() {
+            bitField0_ = (bitField0_ & ~0x00000080);
+            enumValueId_ = 0;
+            onChanged();
+            return this;
+          }
+
+          // optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;
+          private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation annotation_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance();
+          private com.google.protobuf.SingleFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> annotationBuilder_;
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public boolean hasAnnotation() {
+            return ((bitField0_ & 0x00000100) == 0x00000100);
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation() {
+            if (annotationBuilder_ == null) {
+              return annotation_;
+            } else {
+              return annotationBuilder_.getMessage();
+            }
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public Builder setAnnotation(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+            if (annotationBuilder_ == null) {
+              if (value == null) {
+                throw new NullPointerException();
+              }
+              annotation_ = value;
+              onChanged();
+            } else {
+              annotationBuilder_.setMessage(value);
+            }
+            bitField0_ |= 0x00000100;
+            return this;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public Builder setAnnotation(
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+            if (annotationBuilder_ == null) {
+              annotation_ = builderForValue.build();
+              onChanged();
+            } else {
+              annotationBuilder_.setMessage(builderForValue.build());
+            }
+            bitField0_ |= 0x00000100;
+            return this;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public Builder mergeAnnotation(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+            if (annotationBuilder_ == null) {
+              if (((bitField0_ & 0x00000100) == 0x00000100) &&
+                  annotation_ != org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance()) {
+                annotation_ =
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.newBuilder(annotation_).mergeFrom(value).buildPartial();
+              } else {
+                annotation_ = value;
+              }
+              onChanged();
+            } else {
+              annotationBuilder_.mergeFrom(value);
+            }
+            bitField0_ |= 0x00000100;
+            return this;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public Builder clearAnnotation() {
+            if (annotationBuilder_ == null) {
+              annotation_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance();
+              onChanged();
+            } else {
+              annotationBuilder_.clear();
+            }
+            bitField0_ = (bitField0_ & ~0x00000100);
+            return this;
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder getAnnotationBuilder() {
+            bitField0_ |= 0x00000100;
+            onChanged();
+            return getAnnotationFieldBuilder().getBuilder();
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder() {
+            if (annotationBuilder_ != null) {
+              return annotationBuilder_.getMessageOrBuilder();
+            } else {
+              return annotation_;
+            }
+          }
+          /**
+           * <code>optional .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 9;</code>
+           */
+          private com.google.protobuf.SingleFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+              getAnnotationFieldBuilder() {
+            if (annotationBuilder_ == null) {
+              annotationBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder>(
+                      annotation_,
+                      getParentForChildren(),
+                      isClean());
+              annotation_ = null;
+            }
+            return annotationBuilder_;
+          }
+
+          // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;
+          private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> arrayElement_ =
+            java.util.Collections.emptyList();
+          private void ensureArrayElementIsMutable() {
+            if (!((bitField0_ & 0x00000200) == 0x00000200)) {
+              arrayElement_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value>(arrayElement_);
+              bitField0_ |= 0x00000200;
+             }
+          }
+
+          private com.google.protobuf.RepeatedFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> arrayElementBuilder_;
+
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> getArrayElementList() {
+            if (arrayElementBuilder_ == null) {
+              return java.util.Collections.unmodifiableList(arrayElement_);
+            } else {
+              return arrayElementBuilder_.getMessageList();
+            }
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public int getArrayElementCount() {
+            if (arrayElementBuilder_ == null) {
+              return arrayElement_.size();
+            } else {
+              return arrayElementBuilder_.getCount();
+            }
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getArrayElement(int index) {
+            if (arrayElementBuilder_ == null) {
+              return arrayElement_.get(index);
+            } else {
+              return arrayElementBuilder_.getMessage(index);
+            }
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder setArrayElement(
+              int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value) {
+            if (arrayElementBuilder_ == null) {
+              if (value == null) {
+                throw new NullPointerException();
+              }
+              ensureArrayElementIsMutable();
+              arrayElement_.set(index, value);
+              onChanged();
+            } else {
+              arrayElementBuilder_.setMessage(index, value);
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder setArrayElement(
+              int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder builderForValue) {
+            if (arrayElementBuilder_ == null) {
+              ensureArrayElementIsMutable();
+              arrayElement_.set(index, builderForValue.build());
+              onChanged();
+            } else {
+              arrayElementBuilder_.setMessage(index, builderForValue.build());
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder addArrayElement(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value) {
+            if (arrayElementBuilder_ == null) {
+              if (value == null) {
+                throw new NullPointerException();
+              }
+              ensureArrayElementIsMutable();
+              arrayElement_.add(value);
+              onChanged();
+            } else {
+              arrayElementBuilder_.addMessage(value);
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder addArrayElement(
+              int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value) {
+            if (arrayElementBuilder_ == null) {
+              if (value == null) {
+                throw new NullPointerException();
+              }
+              ensureArrayElementIsMutable();
+              arrayElement_.add(index, value);
+              onChanged();
+            } else {
+              arrayElementBuilder_.addMessage(index, value);
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder addArrayElement(
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder builderForValue) {
+            if (arrayElementBuilder_ == null) {
+              ensureArrayElementIsMutable();
+              arrayElement_.add(builderForValue.build());
+              onChanged();
+            } else {
+              arrayElementBuilder_.addMessage(builderForValue.build());
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder addArrayElement(
+              int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder builderForValue) {
+            if (arrayElementBuilder_ == null) {
+              ensureArrayElementIsMutable();
+              arrayElement_.add(index, builderForValue.build());
+              onChanged();
+            } else {
+              arrayElementBuilder_.addMessage(index, builderForValue.build());
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder addAllArrayElement(
+              java.lang.Iterable<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value> values) {
+            if (arrayElementBuilder_ == null) {
+              ensureArrayElementIsMutable();
+              super.addAll(values, arrayElement_);
+              onChanged();
+            } else {
+              arrayElementBuilder_.addAllMessages(values);
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder clearArrayElement() {
+            if (arrayElementBuilder_ == null) {
+              arrayElement_ = java.util.Collections.emptyList();
+              bitField0_ = (bitField0_ & ~0x00000200);
+              onChanged();
+            } else {
+              arrayElementBuilder_.clear();
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public Builder removeArrayElement(int index) {
+            if (arrayElementBuilder_ == null) {
+              ensureArrayElementIsMutable();
+              arrayElement_.remove(index);
+              onChanged();
+            } else {
+              arrayElementBuilder_.remove(index);
+            }
+            return this;
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder getArrayElementBuilder(
+              int index) {
+            return getArrayElementFieldBuilder().getBuilder(index);
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getArrayElementOrBuilder(
+              int index) {
+            if (arrayElementBuilder_ == null) {
+              return arrayElement_.get(index);  } else {
+              return arrayElementBuilder_.getMessageOrBuilder(index);
+            }
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> 
+               getArrayElementOrBuilderList() {
+            if (arrayElementBuilder_ != null) {
+              return arrayElementBuilder_.getMessageOrBuilderList();
+            } else {
+              return java.util.Collections.unmodifiableList(arrayElement_);
+            }
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder addArrayElementBuilder() {
+            return getArrayElementFieldBuilder().addBuilder(
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance());
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder addArrayElementBuilder(
+              int index) {
+            return getArrayElementFieldBuilder().addBuilder(
+                index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance());
+          }
+          /**
+           * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value array_element = 10;</code>
+           */
+          public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder> 
+               getArrayElementBuilderList() {
+            return getArrayElementFieldBuilder().getBuilderList();
+          }
+          private com.google.protobuf.RepeatedFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> 
+              getArrayElementFieldBuilder() {
+            if (arrayElementBuilder_ == null) {
+              arrayElementBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder>(
+                      arrayElement_,
+                      ((bitField0_ & 0x00000200) == 0x00000200),
+                      getParentForChildren(),
+                      isClean());
+              arrayElement_ = null;
+            }
+            return arrayElementBuilder_;
+          }
+
+          // @@protoc_insertion_point(builder_scope:org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value)
+        }
+
+        static {
+          defaultInstance = new Value(true);
+          defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value)
+      }
+
+      private int bitField0_;
+      // required int32 name_id = 1;
+      public static final int NAME_ID_FIELD_NUMBER = 1;
+      private int nameId_;
+      /**
+       * <code>required int32 name_id = 1;</code>
+       */
+      public boolean hasNameId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 name_id = 1;</code>
+       */
+      public int getNameId() {
+        return nameId_;
+      }
+
+      // required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;
+      public static final int VALUE_FIELD_NUMBER = 2;
+      private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value_;
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      public boolean hasValue() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getValue() {
+        return value_;
+      }
+      /**
+       * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getValueOrBuilder() {
+        return value_;
+      }
+
+      private void initFields() {
+        nameId_ = 0;
+        value_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance();
+      }
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized != -1) return isInitialized == 1;
+
+        if (!hasNameId()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!hasValue()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        if (!getValue().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        getSerializedSize();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          output.writeInt32(1, nameId_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          output.writeMessage(2, value_);
+        }
+        getUnknownFields().writeTo(output);
+      }
+
+      private int memoizedSerializedSize = -1;
+      public int getSerializedSize() {
+        int size = memoizedSerializedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, nameId_);
+        }
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(2, value_);
+        }
+        size += getUnknownFields().getSerializedSize();
+        memoizedSerializedSize = size;
+        return size;
+      }
+
+      private static final long serialVersionUID = 0L;
+      @java.lang.Override
+      protected java.lang.Object writeReplace()
+          throws java.io.ObjectStreamException {
+        return super.writeReplace();
+      }
+
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input);
+      }
+      public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return PARSER.parseFrom(input, extensionRegistry);
+      }
+
+      public static Builder newBuilder() { return Builder.create(); }
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument prototype) {
+        return newBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() { return newBuilder(this); }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation.Argument}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessage.Builder<Builder>
+         implements org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder.class);
+        }
+
+        // Construct using org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+            getValueFieldBuilder();
+          }
+        }
+        private static Builder create() {
+          return new Builder();
+        }
+
+        public Builder clear() {
+          super.clear();
+          nameId_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          if (valueBuilder_ == null) {
+            value_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance();
+          } else {
+            valueBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000002);
+          return this;
+        }
+
+        public Builder clone() {
+          return create().mergeFrom(buildPartial());
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor;
+        }
+
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument getDefaultInstanceForType() {
+          return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.getDefaultInstance();
+        }
+
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument build() {
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument buildPartial() {
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument result = new org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+            to_bitField0_ |= 0x00000001;
+          }
+          result.nameId_ = nameId_;
+          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+            to_bitField0_ |= 0x00000002;
+          }
+          if (valueBuilder_ == null) {
+            result.value_ = value_;
+          } else {
+            result.value_ = valueBuilder_.build();
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument) {
+            return mergeFrom((org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument other) {
+          if (other == org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.getDefaultInstance()) return this;
+          if (other.hasNameId()) {
+            setNameId(other.getNameId());
+          }
+          if (other.hasValue()) {
+            mergeValue(other.getValue());
+          }
+          this.mergeUnknownFields(other.getUnknownFields());
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          if (!hasNameId()) {
+            
+            return false;
+          }
+          if (!hasValue()) {
+            
+            return false;
+          }
+          if (!getValue().isInitialized()) {
+            
+            return false;
+          }
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument) e.getUnfinishedMessage();
+            throw e;
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        // required int32 name_id = 1;
+        private int nameId_ ;
+        /**
+         * <code>required int32 name_id = 1;</code>
+         */
+        public boolean hasNameId() {
+          return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+        /**
+         * <code>required int32 name_id = 1;</code>
+         */
+        public int getNameId() {
+          return nameId_;
+        }
+        /**
+         * <code>required int32 name_id = 1;</code>
+         */
+        public Builder setNameId(int value) {
+          bitField0_ |= 0x00000001;
+          nameId_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>required int32 name_id = 1;</code>
+         */
+        public Builder clearNameId() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          nameId_ = 0;
+          onChanged();
+          return this;
+        }
+
+        // required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;
+        private org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance();
+        private com.google.protobuf.SingleFieldBuilder<
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> valueBuilder_;
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public boolean hasValue() {
+          return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value getValue() {
+          if (valueBuilder_ == null) {
+            return value_;
+          } else {
+            return valueBuilder_.getMessage();
+          }
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public Builder setValue(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value) {
+          if (valueBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            value_ = value;
+            onChanged();
+          } else {
+            valueBuilder_.setMessage(value);
+          }
+          bitField0_ |= 0x00000002;
+          return this;
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public Builder setValue(
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder builderForValue) {
+          if (valueBuilder_ == null) {
+            value_ = builderForValue.build();
+            onChanged();
+          } else {
+            valueBuilder_.setMessage(builderForValue.build());
+          }
+          bitField0_ |= 0x00000002;
+          return this;
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public Builder mergeValue(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value value) {
+          if (valueBuilder_ == null) {
+            if (((bitField0_ & 0x00000002) == 0x00000002) &&
+                value_ != org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance()) {
+              value_ =
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.newBuilder(value_).mergeFrom(value).buildPartial();
+            } else {
+              value_ = value;
+            }
+            onChanged();
+          } else {
+            valueBuilder_.mergeFrom(value);
+          }
+          bitField0_ |= 0x00000002;
+          return this;
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public Builder clearValue() {
+          if (valueBuilder_ == null) {
+            value_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.getDefaultInstance();
+            onChanged();
+          } else {
+            valueBuilder_.clear();
+          }
+          bitField0_ = (bitField0_ & ~0x00000002);
+          return this;
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder getValueBuilder() {
+          bitField0_ |= 0x00000002;
+          onChanged();
+          return getValueFieldBuilder().getBuilder();
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder getValueOrBuilder() {
+          if (valueBuilder_ != null) {
+            return valueBuilder_.getMessageOrBuilder();
+          } else {
+            return value_;
+          }
+        }
+        /**
+         * <code>required .org.jetbrains.jet.descriptors.serialization.Annotation.Argument.Value value = 2;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilder<
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder> 
+            getValueFieldBuilder() {
+          if (valueBuilder_ == null) {
+            valueBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Value.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.ValueOrBuilder>(
+                    value_,
+                    getParentForChildren(),
+                    isClean());
+            value_ = null;
+          }
+          return valueBuilder_;
+        }
+
+        // @@protoc_insertion_point(builder_scope:org.jetbrains.jet.descriptors.serialization.Annotation.Argument)
+      }
+
+      static {
+        defaultInstance = new Argument(true);
+        defaultInstance.initFields();
+      }
+
+      // @@protoc_insertion_point(class_scope:org.jetbrains.jet.descriptors.serialization.Annotation.Argument)
+    }
+
+    private int bitField0_;
+    // required int32 id = 1;
+    public static final int ID_FIELD_NUMBER = 1;
+    private int id_;
+    /**
+     * <code>required int32 id = 1;</code>
+     *
+     * <pre>
+     * Class FQ name id
+     * </pre>
+     */
+    public boolean hasId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 id = 1;</code>
+     *
+     * <pre>
+     * Class FQ name id
+     * </pre>
+     */
+    public int getId() {
+      return id_;
+    }
+
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;
+    public static final int ARGUMENT_FIELD_NUMBER = 2;
+    private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> argument_;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> getArgumentList() {
+      return argument_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder> 
+        getArgumentOrBuilderList() {
+      return argument_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    public int getArgumentCount() {
+      return argument_.size();
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument getArgument(int index) {
+      return argument_.get(index);
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder getArgumentOrBuilder(
+        int index) {
+      return argument_.get(index);
+    }
+
+    private void initFields() {
+      id_ = 0;
+      argument_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      for (int i = 0; i < getArgumentCount(); i++) {
+        if (!getArgument(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, id_);
+      }
+      for (int i = 0; i < argument_.size(); i++) {
+        output.writeMessage(2, argument_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, id_);
+      }
+      for (int i = 0; i < argument_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, argument_.get(i));
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Annotation}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.class, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder.class);
+      }
+
+      // Construct using org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getArgumentFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        id_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (argumentBuilder_ == null) {
+          argument_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          argumentBuilder_.clear();
+        }
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor;
+      }
+
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getDefaultInstanceForType() {
+        return org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance();
+      }
+
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation build() {
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation buildPartial() {
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation result = new org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.id_ = id_;
+        if (argumentBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002)) {
+            argument_ = java.util.Collections.unmodifiableList(argument_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.argument_ = argument_;
+        } else {
+          result.argument_ = argumentBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation) {
+          return mergeFrom((org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation other) {
+        if (other == org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance()) return this;
+        if (other.hasId()) {
+          setId(other.getId());
+        }
+        if (argumentBuilder_ == null) {
+          if (!other.argument_.isEmpty()) {
+            if (argument_.isEmpty()) {
+              argument_ = other.argument_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureArgumentIsMutable();
+              argument_.addAll(other.argument_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.argument_.isEmpty()) {
+            if (argumentBuilder_.isEmpty()) {
+              argumentBuilder_.dispose();
+              argumentBuilder_ = null;
+              argument_ = other.argument_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              argumentBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getArgumentFieldBuilder() : null;
+            } else {
+              argumentBuilder_.addAllMessages(other.argument_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasId()) {
+          
+          return false;
+        }
+        for (int i = 0; i < getArgumentCount(); i++) {
+          if (!getArgument(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required int32 id = 1;
+      private int id_ ;
+      /**
+       * <code>required int32 id = 1;</code>
+       *
+       * <pre>
+       * Class FQ name id
+       * </pre>
+       */
+      public boolean hasId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 id = 1;</code>
+       *
+       * <pre>
+       * Class FQ name id
+       * </pre>
+       */
+      public int getId() {
+        return id_;
+      }
+      /**
+       * <code>required int32 id = 1;</code>
+       *
+       * <pre>
+       * Class FQ name id
+       * </pre>
+       */
+      public Builder setId(int value) {
+        bitField0_ |= 0x00000001;
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 id = 1;</code>
+       *
+       * <pre>
+       * Class FQ name id
+       * </pre>
+       */
+      public Builder clearId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        id_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;
+      private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> argument_ =
+        java.util.Collections.emptyList();
+      private void ensureArgumentIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          argument_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument>(argument_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder> argumentBuilder_;
+
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> getArgumentList() {
+        if (argumentBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(argument_);
+        } else {
+          return argumentBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public int getArgumentCount() {
+        if (argumentBuilder_ == null) {
+          return argument_.size();
+        } else {
+          return argumentBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument getArgument(int index) {
+        if (argumentBuilder_ == null) {
+          return argument_.get(index);
+        } else {
+          return argumentBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder setArgument(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument value) {
+        if (argumentBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgumentIsMutable();
+          argument_.set(index, value);
+          onChanged();
+        } else {
+          argumentBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder setArgument(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder builderForValue) {
+        if (argumentBuilder_ == null) {
+          ensureArgumentIsMutable();
+          argument_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          argumentBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder addArgument(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument value) {
+        if (argumentBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgumentIsMutable();
+          argument_.add(value);
+          onChanged();
+        } else {
+          argumentBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder addArgument(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument value) {
+        if (argumentBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArgumentIsMutable();
+          argument_.add(index, value);
+          onChanged();
+        } else {
+          argumentBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder addArgument(
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder builderForValue) {
+        if (argumentBuilder_ == null) {
+          ensureArgumentIsMutable();
+          argument_.add(builderForValue.build());
+          onChanged();
+        } else {
+          argumentBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder addArgument(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder builderForValue) {
+        if (argumentBuilder_ == null) {
+          ensureArgumentIsMutable();
+          argument_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          argumentBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder addAllArgument(
+          java.lang.Iterable<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument> values) {
+        if (argumentBuilder_ == null) {
+          ensureArgumentIsMutable();
+          super.addAll(values, argument_);
+          onChanged();
+        } else {
+          argumentBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder clearArgument() {
+        if (argumentBuilder_ == null) {
+          argument_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          argumentBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public Builder removeArgument(int index) {
+        if (argumentBuilder_ == null) {
+          ensureArgumentIsMutable();
+          argument_.remove(index);
+          onChanged();
+        } else {
+          argumentBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder getArgumentBuilder(
+          int index) {
+        return getArgumentFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder getArgumentOrBuilder(
+          int index) {
+        if (argumentBuilder_ == null) {
+          return argument_.get(index);  } else {
+          return argumentBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder> 
+           getArgumentOrBuilderList() {
+        if (argumentBuilder_ != null) {
+          return argumentBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(argument_);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder addArgumentBuilder() {
+        return getArgumentFieldBuilder().addBuilder(
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder addArgumentBuilder(
+          int index) {
+        return getArgumentFieldBuilder().addBuilder(
+            index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation.Argument argument = 2;</code>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder> 
+           getArgumentBuilderList() {
+        return getArgumentFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder> 
+          getArgumentFieldBuilder() {
+        if (argumentBuilder_ == null) {
+          argumentBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Argument.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.ArgumentOrBuilder>(
+                  argument_,
+                  ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          argument_ = null;
+        }
+        return argumentBuilder_;
+      }
+
+      // @@protoc_insertion_point(builder_scope:org.jetbrains.jet.descriptors.serialization.Annotation)
+    }
+
+    static {
+      defaultInstance = new Annotation(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:org.jetbrains.jet.descriptors.serialization.Annotation)
+  }
+
   public interface TypeOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -6151,6 +9480,51 @@ public final class DebugProtoBuf {
      */
     int getNestedClassName(int index);
 
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> 
+        getAnnotationList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index);
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    int getAnnotationCount();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+        getAnnotationOrBuilderList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+        int index);
+
     // repeated .org.jetbrains.jet.descriptors.serialization.Callable member = 11;
     /**
      * <code>repeated .org.jetbrains.jet.descriptors.serialization.Callable member = 11;</code>
@@ -6332,18 +9706,26 @@ public final class DebugProtoBuf {
               input.popLimit(limit);
               break;
             }
-            case 90: {
+            case 66: {
               if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-                member_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable>();
+                annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>();
                 mutable_bitField0_ |= 0x00000080;
+              }
+              annotation_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.PARSER, extensionRegistry));
+              break;
+            }
+            case 90: {
+              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+                member_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable>();
+                mutable_bitField0_ |= 0x00000100;
               }
               member_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.PARSER, extensionRegistry));
               break;
             }
             case 96: {
-              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
                 enumEntry_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000100;
+                mutable_bitField0_ |= 0x00000200;
               }
               enumEntry_.add(input.readInt32());
               break;
@@ -6351,9 +9733,9 @@ public final class DebugProtoBuf {
             case 98: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00000200) == 0x00000200) && input.getBytesUntilLimit() > 0) {
                 enumEntry_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000100;
+                mutable_bitField0_ |= 0x00000200;
               }
               while (input.getBytesUntilLimit() > 0) {
                 enumEntry_.add(input.readInt32());
@@ -6392,9 +9774,12 @@ public final class DebugProtoBuf {
           nestedClassName_ = java.util.Collections.unmodifiableList(nestedClassName_);
         }
         if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
-          member_ = java.util.Collections.unmodifiableList(member_);
+          annotation_ = java.util.Collections.unmodifiableList(annotation_);
         }
         if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+          member_ = java.util.Collections.unmodifiableList(member_);
+        }
+        if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
           enumEntry_ = java.util.Collections.unmodifiableList(enumEntry_);
         }
         this.unknownFields = unknownFields.build();
@@ -8001,6 +11386,62 @@ public final class DebugProtoBuf {
       return nestedClassName_.get(index);
     }
 
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;
+    public static final int ANNOTATION_FIELD_NUMBER = 8;
+    private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+      return annotation_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+        getAnnotationOrBuilderList() {
+      return annotation_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    public int getAnnotationCount() {
+      return annotation_.size();
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+      return annotation_.get(index);
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+     *
+     * <pre>
+     * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+     * </pre>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+        int index) {
+      return annotation_.get(index);
+    }
+
     // repeated .org.jetbrains.jet.descriptors.serialization.Callable member = 11;
     public static final int MEMBER_FIELD_NUMBER = 11;
     private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable> member_;
@@ -8102,6 +11543,7 @@ public final class DebugProtoBuf {
       typeParameter_ = java.util.Collections.emptyList();
       supertype_ = java.util.Collections.emptyList();
       nestedClassName_ = java.util.Collections.emptyList();
+      annotation_ = java.util.Collections.emptyList();
       member_ = java.util.Collections.emptyList();
       enumEntry_ = java.util.Collections.emptyList();
       primaryConstructor_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor.getDefaultInstance();
@@ -8129,6 +11571,12 @@ public final class DebugProtoBuf {
       }
       for (int i = 0; i < getSupertypeCount(); i++) {
         if (!getSupertype(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getAnnotationCount(); i++) {
+        if (!getAnnotation(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -8172,6 +11620,9 @@ public final class DebugProtoBuf {
       }
       for (int i = 0; i < nestedClassName_.size(); i++) {
         output.writeInt32(7, nestedClassName_.get(i));
+      }
+      for (int i = 0; i < annotation_.size(); i++) {
+        output.writeMessage(8, annotation_.get(i));
       }
       for (int i = 0; i < member_.size(); i++) {
         output.writeMessage(11, member_.get(i));
@@ -8223,6 +11674,10 @@ public final class DebugProtoBuf {
         }
         size += dataSize;
         size += 1 * getNestedClassNameList().size();
+      }
+      for (int i = 0; i < annotation_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, annotation_.get(i));
       }
       for (int i = 0; i < member_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -8352,6 +11807,7 @@ public final class DebugProtoBuf {
           getClassObjectFieldBuilder();
           getTypeParameterFieldBuilder();
           getSupertypeFieldBuilder();
+          getAnnotationFieldBuilder();
           getMemberFieldBuilder();
           getPrimaryConstructorFieldBuilder();
         }
@@ -8388,20 +11844,26 @@ public final class DebugProtoBuf {
         }
         nestedClassName_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000040);
+        if (annotationBuilder_ == null) {
+          annotation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+        } else {
+          annotationBuilder_.clear();
+        }
         if (memberBuilder_ == null) {
           member_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
         } else {
           memberBuilder_.clear();
         }
         enumEntry_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         if (primaryConstructorBuilder_ == null) {
           primaryConstructor_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor.getDefaultInstance();
         } else {
           primaryConstructorBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
 
@@ -8473,21 +11935,30 @@ public final class DebugProtoBuf {
           bitField0_ = (bitField0_ & ~0x00000040);
         }
         result.nestedClassName_ = nestedClassName_;
-        if (memberBuilder_ == null) {
+        if (annotationBuilder_ == null) {
           if (((bitField0_ & 0x00000080) == 0x00000080)) {
-            member_ = java.util.Collections.unmodifiableList(member_);
+            annotation_ = java.util.Collections.unmodifiableList(annotation_);
             bitField0_ = (bitField0_ & ~0x00000080);
+          }
+          result.annotation_ = annotation_;
+        } else {
+          result.annotation_ = annotationBuilder_.build();
+        }
+        if (memberBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            member_ = java.util.Collections.unmodifiableList(member_);
+            bitField0_ = (bitField0_ & ~0x00000100);
           }
           result.member_ = member_;
         } else {
           result.member_ = memberBuilder_.build();
         }
-        if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        if (((bitField0_ & 0x00000200) == 0x00000200)) {
           enumEntry_ = java.util.Collections.unmodifiableList(enumEntry_);
-          bitField0_ = (bitField0_ & ~0x00000100);
+          bitField0_ = (bitField0_ & ~0x00000200);
         }
         result.enumEntry_ = enumEntry_;
-        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
           to_bitField0_ |= 0x00000010;
         }
         if (primaryConstructorBuilder_ == null) {
@@ -8587,11 +12058,37 @@ public final class DebugProtoBuf {
           }
           onChanged();
         }
+        if (annotationBuilder_ == null) {
+          if (!other.annotation_.isEmpty()) {
+            if (annotation_.isEmpty()) {
+              annotation_ = other.annotation_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+            } else {
+              ensureAnnotationIsMutable();
+              annotation_.addAll(other.annotation_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.annotation_.isEmpty()) {
+            if (annotationBuilder_.isEmpty()) {
+              annotationBuilder_.dispose();
+              annotationBuilder_ = null;
+              annotation_ = other.annotation_;
+              bitField0_ = (bitField0_ & ~0x00000080);
+              annotationBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAnnotationFieldBuilder() : null;
+            } else {
+              annotationBuilder_.addAllMessages(other.annotation_);
+            }
+          }
+        }
         if (memberBuilder_ == null) {
           if (!other.member_.isEmpty()) {
             if (member_.isEmpty()) {
               member_ = other.member_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
             } else {
               ensureMemberIsMutable();
               member_.addAll(other.member_);
@@ -8604,7 +12101,7 @@ public final class DebugProtoBuf {
               memberBuilder_.dispose();
               memberBuilder_ = null;
               member_ = other.member_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
               memberBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getMemberFieldBuilder() : null;
@@ -8616,7 +12113,7 @@ public final class DebugProtoBuf {
         if (!other.enumEntry_.isEmpty()) {
           if (enumEntry_.isEmpty()) {
             enumEntry_ = other.enumEntry_;
-            bitField0_ = (bitField0_ & ~0x00000100);
+            bitField0_ = (bitField0_ & ~0x00000200);
           } else {
             ensureEnumEntryIsMutable();
             enumEntry_.addAll(other.enumEntry_);
@@ -8649,6 +12146,12 @@ public final class DebugProtoBuf {
         }
         for (int i = 0; i < getSupertypeCount(); i++) {
           if (!getSupertype(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getAnnotationCount(); i++) {
+          if (!getAnnotation(i).isInitialized()) {
             
             return false;
           }
@@ -9621,13 +13124,325 @@ public final class DebugProtoBuf {
         return this;
       }
 
+      // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;
+      private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_ =
+        java.util.Collections.emptyList();
+      private void ensureAnnotationIsMutable() {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+          annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>(annotation_);
+          bitField0_ |= 0x00000080;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> annotationBuilder_;
+
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+        if (annotationBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(annotation_);
+        } else {
+          return annotationBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public int getAnnotationCount() {
+        if (annotationBuilder_ == null) {
+          return annotation_.size();
+        } else {
+          return annotationBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+        if (annotationBuilder_ == null) {
+          return annotation_.get(index);
+        } else {
+          return annotationBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder setAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.set(index, value);
+          onChanged();
+        } else {
+          annotationBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder setAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder addAnnotation(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.add(value);
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder addAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.add(index, value);
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder addAnnotation(
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.add(builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder addAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder addAllAnnotation(
+          java.lang.Iterable<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> values) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          super.addAll(values, annotation_);
+          onChanged();
+        } else {
+          annotationBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder clearAnnotation() {
+        if (annotationBuilder_ == null) {
+          annotation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000080);
+          onChanged();
+        } else {
+          annotationBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public Builder removeAnnotation(int index) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.remove(index);
+          onChanged();
+        } else {
+          annotationBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder getAnnotationBuilder(
+          int index) {
+        return getAnnotationFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+          int index) {
+        if (annotationBuilder_ == null) {
+          return annotation_.get(index);  } else {
+          return annotationBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+           getAnnotationOrBuilderList() {
+        if (annotationBuilder_ != null) {
+          return annotationBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(annotation_);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder() {
+        return getAnnotationFieldBuilder().addBuilder(
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder(
+          int index) {
+        return getAnnotationFieldBuilder().addBuilder(
+            index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 8;</code>
+       *
+       * <pre>
+       * Absence of this field doesn't necessarily mean there are no annotations: on JVM, they are stored in an attribute on the class
+       * </pre>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder> 
+           getAnnotationBuilderList() {
+        return getAnnotationFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+          getAnnotationFieldBuilder() {
+        if (annotationBuilder_ == null) {
+          annotationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder>(
+                  annotation_,
+                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  getParentForChildren(),
+                  isClean());
+          annotation_ = null;
+        }
+        return annotationBuilder_;
+      }
+
       // repeated .org.jetbrains.jet.descriptors.serialization.Callable member = 11;
       private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable> member_ =
         java.util.Collections.emptyList();
       private void ensureMemberIsMutable() {
-        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
           member_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable>(member_);
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
          }
       }
 
@@ -9776,7 +13591,7 @@ public final class DebugProtoBuf {
       public Builder clearMember() {
         if (memberBuilder_ == null) {
           member_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
           onChanged();
         } else {
           memberBuilder_.clear();
@@ -9853,7 +13668,7 @@ public final class DebugProtoBuf {
           memberBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.CallableOrBuilder>(
                   member_,
-                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  ((bitField0_ & 0x00000100) == 0x00000100),
                   getParentForChildren(),
                   isClean());
           member_ = null;
@@ -9864,9 +13679,9 @@ public final class DebugProtoBuf {
       // repeated int32 enum_entry = 12;
       private java.util.List<java.lang.Integer> enumEntry_ = java.util.Collections.emptyList();
       private void ensureEnumEntryIsMutable() {
-        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
+        if (!((bitField0_ & 0x00000200) == 0x00000200)) {
           enumEntry_ = new java.util.ArrayList<java.lang.Integer>(enumEntry_);
-          bitField0_ |= 0x00000100;
+          bitField0_ |= 0x00000200;
          }
       }
       /**
@@ -9922,7 +13737,7 @@ public final class DebugProtoBuf {
        */
       public Builder clearEnumEntry() {
         enumEntry_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         onChanged();
         return this;
       }
@@ -9939,7 +13754,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public boolean hasPrimaryConstructor() {
-        return ((bitField0_ & 0x00000200) == 0x00000200);
+        return ((bitField0_ & 0x00000400) == 0x00000400);
       }
       /**
        * <code>optional .org.jetbrains.jet.descriptors.serialization.Class.PrimaryConstructor primary_constructor = 13;</code>
@@ -9972,7 +13787,7 @@ public final class DebugProtoBuf {
         } else {
           primaryConstructorBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
@@ -9990,7 +13805,7 @@ public final class DebugProtoBuf {
         } else {
           primaryConstructorBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
@@ -10002,7 +13817,7 @@ public final class DebugProtoBuf {
        */
       public Builder mergePrimaryConstructor(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor value) {
         if (primaryConstructorBuilder_ == null) {
-          if (((bitField0_ & 0x00000200) == 0x00000200) &&
+          if (((bitField0_ & 0x00000400) == 0x00000400) &&
               primaryConstructor_ != org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor.getDefaultInstance()) {
             primaryConstructor_ =
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor.newBuilder(primaryConstructor_).mergeFrom(value).buildPartial();
@@ -10013,7 +13828,7 @@ public final class DebugProtoBuf {
         } else {
           primaryConstructorBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         return this;
       }
       /**
@@ -10030,7 +13845,7 @@ public final class DebugProtoBuf {
         } else {
           primaryConstructorBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000400);
         return this;
       }
       /**
@@ -10041,7 +13856,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Class.PrimaryConstructor.Builder getPrimaryConstructorBuilder() {
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000400;
         onChanged();
         return getPrimaryConstructorFieldBuilder().getBuilder();
       }
@@ -10842,6 +14657,31 @@ public final class DebugProtoBuf {
     com.google.protobuf.ByteString
         getExtraVisibilityBytes();
 
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> 
+        getAnnotationList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index);
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    int getAnnotationCount();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+        getAnnotationOrBuilderList();
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+        int index);
+
     // optional int32 getter_flags = 9;
     /**
      * <code>optional int32 getter_flags = 9;</code>
@@ -11055,10 +14895,18 @@ public final class DebugProtoBuf {
               extraVisibility_ = input.readBytes();
               break;
             }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+                annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>();
+                mutable_bitField0_ |= 0x00000004;
+              }
+              annotation_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.PARSER, extensionRegistry));
+              break;
+            }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
                 typeParameter_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000020;
               }
               typeParameter_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter.PARSER, extensionRegistry));
               break;
@@ -11082,9 +14930,9 @@ public final class DebugProtoBuf {
               break;
             }
             case 58: {
-              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
                 valueParameter_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter>();
-                mutable_bitField0_ |= 0x00000080;
+                mutable_bitField0_ |= 0x00000100;
               }
               valueParameter_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter.PARSER, extensionRegistry));
               break;
@@ -11120,10 +14968,13 @@ public final class DebugProtoBuf {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+          annotation_ = java.util.Collections.unmodifiableList(annotation_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
           typeParameter_ = java.util.Collections.unmodifiableList(typeParameter_);
         }
-        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+        if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
           valueParameter_ = java.util.Collections.unmodifiableList(valueParameter_);
         }
         this.unknownFields = unknownFields.build();
@@ -11444,6 +15295,31 @@ public final class DebugProtoBuf {
        * <code>optional .org.jetbrains.jet.descriptors.serialization.Type vararg_element_type = 4;</code>
        */
       org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeOrBuilder getVarargElementTypeOrBuilder();
+
+      // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> 
+          getAnnotationList();
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index);
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      int getAnnotationCount();
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+          getAnnotationOrBuilderList();
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+          int index);
     }
     /**
      * Protobuf type {@code org.jetbrains.jet.descriptors.serialization.Callable.ValueParameter}
@@ -11532,6 +15408,14 @@ public final class DebugProtoBuf {
                 bitField0_ |= 0x00000008;
                 break;
               }
+              case 42: {
+                if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                  annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>();
+                  mutable_bitField0_ |= 0x00000010;
+                }
+                annotation_.add(input.readMessage(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.PARSER, extensionRegistry));
+                break;
+              }
             }
           }
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -11540,6 +15424,9 @@ public final class DebugProtoBuf {
           throw new com.google.protobuf.InvalidProtocolBufferException(
               e.getMessage()).setUnfinishedMessage(this);
         } finally {
+          if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+            annotation_ = java.util.Collections.unmodifiableList(annotation_);
+          }
           this.unknownFields = unknownFields.build();
           makeExtensionsImmutable();
         }
@@ -11668,11 +15555,48 @@ public final class DebugProtoBuf {
         return varargElementType_;
       }
 
+      // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;
+      public static final int ANNOTATION_FIELD_NUMBER = 5;
+      private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_;
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+        return annotation_;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+          getAnnotationOrBuilderList() {
+        return annotation_;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      public int getAnnotationCount() {
+        return annotation_.size();
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+        return annotation_.get(index);
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+          int index) {
+        return annotation_.get(index);
+      }
+
       private void initFields() {
         flags_ = 0;
         name_ = 0;
         type_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.getDefaultInstance();
         varargElementType_ = org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.getDefaultInstance();
+        annotation_ = java.util.Collections.emptyList();
       }
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
@@ -11693,6 +15617,12 @@ public final class DebugProtoBuf {
         }
         if (hasVarargElementType()) {
           if (!getVarargElementType().isInitialized()) {
+            memoizedIsInitialized = 0;
+            return false;
+          }
+        }
+        for (int i = 0; i < getAnnotationCount(); i++) {
+          if (!getAnnotation(i).isInitialized()) {
             memoizedIsInitialized = 0;
             return false;
           }
@@ -11723,6 +15653,9 @@ public final class DebugProtoBuf {
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
           output.writeMessage(4, varargElementType_);
         }
+        for (int i = 0; i < annotation_.size(); i++) {
+          output.writeMessage(5, annotation_.get(i));
+        }
         extensionWriter.writeUntil(200, output);
         getUnknownFields().writeTo(output);
       }
@@ -11748,6 +15681,10 @@ public final class DebugProtoBuf {
         if (((bitField0_ & 0x00000008) == 0x00000008)) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(4, varargElementType_);
+        }
+        for (int i = 0; i < annotation_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(5, annotation_.get(i));
         }
         size += extensionsSerializedSize();
         size += getUnknownFields().getSerializedSize();
@@ -11860,6 +15797,7 @@ public final class DebugProtoBuf {
           if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
             getTypeFieldBuilder();
             getVarargElementTypeFieldBuilder();
+            getAnnotationFieldBuilder();
           }
         }
         private static Builder create() {
@@ -11884,6 +15822,12 @@ public final class DebugProtoBuf {
             varargElementTypeBuilder_.clear();
           }
           bitField0_ = (bitField0_ & ~0x00000008);
+          if (annotationBuilder_ == null) {
+            annotation_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            annotationBuilder_.clear();
+          }
           return this;
         }
 
@@ -11936,6 +15880,15 @@ public final class DebugProtoBuf {
           } else {
             result.varargElementType_ = varargElementTypeBuilder_.build();
           }
+          if (annotationBuilder_ == null) {
+            if (((bitField0_ & 0x00000010) == 0x00000010)) {
+              annotation_ = java.util.Collections.unmodifiableList(annotation_);
+              bitField0_ = (bitField0_ & ~0x00000010);
+            }
+            result.annotation_ = annotation_;
+          } else {
+            result.annotation_ = annotationBuilder_.build();
+          }
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -11964,6 +15917,32 @@ public final class DebugProtoBuf {
           if (other.hasVarargElementType()) {
             mergeVarargElementType(other.getVarargElementType());
           }
+          if (annotationBuilder_ == null) {
+            if (!other.annotation_.isEmpty()) {
+              if (annotation_.isEmpty()) {
+                annotation_ = other.annotation_;
+                bitField0_ = (bitField0_ & ~0x00000010);
+              } else {
+                ensureAnnotationIsMutable();
+                annotation_.addAll(other.annotation_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.annotation_.isEmpty()) {
+              if (annotationBuilder_.isEmpty()) {
+                annotationBuilder_.dispose();
+                annotationBuilder_ = null;
+                annotation_ = other.annotation_;
+                bitField0_ = (bitField0_ & ~0x00000010);
+                annotationBuilder_ = 
+                  com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                     getAnnotationFieldBuilder() : null;
+              } else {
+                annotationBuilder_.addAllMessages(other.annotation_);
+              }
+            }
+          }
           this.mergeExtensionFields(other);
           this.mergeUnknownFields(other.getUnknownFields());
           return this;
@@ -11984,6 +15963,12 @@ public final class DebugProtoBuf {
           }
           if (hasVarargElementType()) {
             if (!getVarargElementType().isInitialized()) {
+              
+              return false;
+            }
+          }
+          for (int i = 0; i < getAnnotationCount(); i++) {
+            if (!getAnnotation(i).isInitialized()) {
               
               return false;
             }
@@ -12354,6 +16339,246 @@ public final class DebugProtoBuf {
           return varargElementTypeBuilder_;
         }
 
+        // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;
+        private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_ =
+          java.util.Collections.emptyList();
+        private void ensureAnnotationIsMutable() {
+          if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+            annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>(annotation_);
+            bitField0_ |= 0x00000010;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilder<
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> annotationBuilder_;
+
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+          if (annotationBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(annotation_);
+          } else {
+            return annotationBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public int getAnnotationCount() {
+          if (annotationBuilder_ == null) {
+            return annotation_.size();
+          } else {
+            return annotationBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+          if (annotationBuilder_ == null) {
+            return annotation_.get(index);
+          } else {
+            return annotationBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder setAnnotation(
+            int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+          if (annotationBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnnotationIsMutable();
+            annotation_.set(index, value);
+            onChanged();
+          } else {
+            annotationBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder setAnnotation(
+            int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+          if (annotationBuilder_ == null) {
+            ensureAnnotationIsMutable();
+            annotation_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            annotationBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder addAnnotation(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+          if (annotationBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnnotationIsMutable();
+            annotation_.add(value);
+            onChanged();
+          } else {
+            annotationBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder addAnnotation(
+            int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+          if (annotationBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureAnnotationIsMutable();
+            annotation_.add(index, value);
+            onChanged();
+          } else {
+            annotationBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder addAnnotation(
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+          if (annotationBuilder_ == null) {
+            ensureAnnotationIsMutable();
+            annotation_.add(builderForValue.build());
+            onChanged();
+          } else {
+            annotationBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder addAnnotation(
+            int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+          if (annotationBuilder_ == null) {
+            ensureAnnotationIsMutable();
+            annotation_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            annotationBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder addAllAnnotation(
+            java.lang.Iterable<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> values) {
+          if (annotationBuilder_ == null) {
+            ensureAnnotationIsMutable();
+            super.addAll(values, annotation_);
+            onChanged();
+          } else {
+            annotationBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder clearAnnotation() {
+          if (annotationBuilder_ == null) {
+            annotation_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000010);
+            onChanged();
+          } else {
+            annotationBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public Builder removeAnnotation(int index) {
+          if (annotationBuilder_ == null) {
+            ensureAnnotationIsMutable();
+            annotation_.remove(index);
+            onChanged();
+          } else {
+            annotationBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder getAnnotationBuilder(
+            int index) {
+          return getAnnotationFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+            int index) {
+          if (annotationBuilder_ == null) {
+            return annotation_.get(index);  } else {
+            return annotationBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+             getAnnotationOrBuilderList() {
+          if (annotationBuilder_ != null) {
+            return annotationBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(annotation_);
+          }
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder() {
+          return getAnnotationFieldBuilder().addBuilder(
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder(
+            int index) {
+          return getAnnotationFieldBuilder().addBuilder(
+              index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 5;</code>
+         */
+        public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder> 
+             getAnnotationBuilderList() {
+          return getAnnotationFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilder<
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+            getAnnotationFieldBuilder() {
+          if (annotationBuilder_ == null) {
+            annotationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+                org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder>(
+                    annotation_,
+                    ((bitField0_ & 0x00000010) == 0x00000010),
+                    getParentForChildren(),
+                    isClean());
+            annotation_ = null;
+          }
+          return annotationBuilder_;
+        }
+
         // @@protoc_insertion_point(builder_scope:org.jetbrains.jet.descriptors.serialization.Callable.ValueParameter)
       }
 
@@ -12459,6 +16684,42 @@ public final class DebugProtoBuf {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;
+    public static final int ANNOTATION_FIELD_NUMBER = 3;
+    private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_;
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+      return annotation_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+        getAnnotationOrBuilderList() {
+      return annotation_;
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    public int getAnnotationCount() {
+      return annotation_.size();
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+      return annotation_.get(index);
+    }
+    /**
+     * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+     */
+    public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+        int index) {
+      return annotation_.get(index);
     }
 
     // optional int32 getter_flags = 9;
@@ -12672,6 +16933,7 @@ public final class DebugProtoBuf {
     private void initFields() {
       flags_ = 0;
       extraVisibility_ = "";
+      annotation_ = java.util.Collections.emptyList();
       getterFlags_ = 0;
       setterFlags_ = 0;
       typeParameter_ = java.util.Collections.emptyList();
@@ -12692,6 +16954,12 @@ public final class DebugProtoBuf {
       if (!hasReturnType()) {
         memoizedIsInitialized = 0;
         return false;
+      }
+      for (int i = 0; i < getAnnotationCount(); i++) {
+        if (!getAnnotation(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       for (int i = 0; i < getTypeParameterCount(); i++) {
         if (!getTypeParameter(i).isInitialized()) {
@@ -12735,6 +17003,9 @@ public final class DebugProtoBuf {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getExtraVisibilityBytes());
       }
+      for (int i = 0; i < annotation_.size(); i++) {
+        output.writeMessage(3, annotation_.get(i));
+      }
       for (int i = 0; i < typeParameter_.size(); i++) {
         output.writeMessage(4, typeParameter_.get(i));
       }
@@ -12773,6 +17044,10 @@ public final class DebugProtoBuf {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getExtraVisibilityBytes());
+      }
+      for (int i = 0; i < annotation_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, annotation_.get(i));
       }
       for (int i = 0; i < typeParameter_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -12911,6 +17186,7 @@ public final class DebugProtoBuf {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getAnnotationFieldBuilder();
           getTypeParameterFieldBuilder();
           getReceiverTypeFieldBuilder();
           getValueParameterFieldBuilder();
@@ -12927,13 +17203,19 @@ public final class DebugProtoBuf {
         bitField0_ = (bitField0_ & ~0x00000001);
         extraVisibility_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        if (annotationBuilder_ == null) {
+          annotation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+        } else {
+          annotationBuilder_.clear();
+        }
         getterFlags_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000004);
-        setterFlags_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        setterFlags_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         if (typeParameterBuilder_ == null) {
           typeParameter_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
           typeParameterBuilder_.clear();
         }
@@ -12942,12 +17224,12 @@ public final class DebugProtoBuf {
         } else {
           receiverTypeBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        name_ = 0;
         bitField0_ = (bitField0_ & ~0x00000040);
+        name_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
         if (valueParameterBuilder_ == null) {
           valueParameter_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
         } else {
           valueParameterBuilder_.clear();
         }
@@ -12956,7 +17238,7 @@ public final class DebugProtoBuf {
         } else {
           returnTypeBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
 
@@ -12993,24 +17275,33 @@ public final class DebugProtoBuf {
           to_bitField0_ |= 0x00000002;
         }
         result.extraVisibility_ = extraVisibility_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+        if (annotationBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) == 0x00000004)) {
+            annotation_ = java.util.Collections.unmodifiableList(annotation_);
+            bitField0_ = (bitField0_ & ~0x00000004);
+          }
+          result.annotation_ = annotation_;
+        } else {
+          result.annotation_ = annotationBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000004;
         }
         result.getterFlags_ = getterFlags_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000008;
         }
         result.setterFlags_ = setterFlags_;
         if (typeParameterBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
             typeParameter_ = java.util.Collections.unmodifiableList(typeParameter_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           }
           result.typeParameter_ = typeParameter_;
         } else {
           result.typeParameter_ = typeParameterBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
           to_bitField0_ |= 0x00000010;
         }
         if (receiverTypeBuilder_ == null) {
@@ -13018,20 +17309,20 @@ public final class DebugProtoBuf {
         } else {
           result.receiverType_ = receiverTypeBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
           to_bitField0_ |= 0x00000020;
         }
         result.name_ = name_;
         if (valueParameterBuilder_ == null) {
-          if (((bitField0_ & 0x00000080) == 0x00000080)) {
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
             valueParameter_ = java.util.Collections.unmodifiableList(valueParameter_);
-            bitField0_ = (bitField0_ & ~0x00000080);
+            bitField0_ = (bitField0_ & ~0x00000100);
           }
           result.valueParameter_ = valueParameter_;
         } else {
           result.valueParameter_ = valueParameterBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
           to_bitField0_ |= 0x00000040;
         }
         if (returnTypeBuilder_ == null) {
@@ -13063,6 +17354,32 @@ public final class DebugProtoBuf {
           extraVisibility_ = other.extraVisibility_;
           onChanged();
         }
+        if (annotationBuilder_ == null) {
+          if (!other.annotation_.isEmpty()) {
+            if (annotation_.isEmpty()) {
+              annotation_ = other.annotation_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+            } else {
+              ensureAnnotationIsMutable();
+              annotation_.addAll(other.annotation_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.annotation_.isEmpty()) {
+            if (annotationBuilder_.isEmpty()) {
+              annotationBuilder_.dispose();
+              annotationBuilder_ = null;
+              annotation_ = other.annotation_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              annotationBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getAnnotationFieldBuilder() : null;
+            } else {
+              annotationBuilder_.addAllMessages(other.annotation_);
+            }
+          }
+        }
         if (other.hasGetterFlags()) {
           setGetterFlags(other.getGetterFlags());
         }
@@ -13073,7 +17390,7 @@ public final class DebugProtoBuf {
           if (!other.typeParameter_.isEmpty()) {
             if (typeParameter_.isEmpty()) {
               typeParameter_ = other.typeParameter_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
             } else {
               ensureTypeParameterIsMutable();
               typeParameter_.addAll(other.typeParameter_);
@@ -13086,7 +17403,7 @@ public final class DebugProtoBuf {
               typeParameterBuilder_.dispose();
               typeParameterBuilder_ = null;
               typeParameter_ = other.typeParameter_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000020);
               typeParameterBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getTypeParameterFieldBuilder() : null;
@@ -13105,7 +17422,7 @@ public final class DebugProtoBuf {
           if (!other.valueParameter_.isEmpty()) {
             if (valueParameter_.isEmpty()) {
               valueParameter_ = other.valueParameter_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
             } else {
               ensureValueParameterIsMutable();
               valueParameter_.addAll(other.valueParameter_);
@@ -13118,7 +17435,7 @@ public final class DebugProtoBuf {
               valueParameterBuilder_.dispose();
               valueParameterBuilder_ = null;
               valueParameter_ = other.valueParameter_;
-              bitField0_ = (bitField0_ & ~0x00000080);
+              bitField0_ = (bitField0_ & ~0x00000100);
               valueParameterBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getValueParameterFieldBuilder() : null;
@@ -13143,6 +17460,12 @@ public final class DebugProtoBuf {
         if (!hasReturnType()) {
           
           return false;
+        }
+        for (int i = 0; i < getAnnotationCount(); i++) {
+          if (!getAnnotation(i).isInitialized()) {
+            
+            return false;
+          }
         }
         for (int i = 0; i < getTypeParameterCount(); i++) {
           if (!getTypeParameter(i).isInitialized()) {
@@ -13371,6 +17694,246 @@ public final class DebugProtoBuf {
         return this;
       }
 
+      // repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;
+      private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> annotation_ =
+        java.util.Collections.emptyList();
+      private void ensureAnnotationIsMutable() {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
+          annotation_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation>(annotation_);
+          bitField0_ |= 0x00000004;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> annotationBuilder_;
+
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> getAnnotationList() {
+        if (annotationBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(annotation_);
+        } else {
+          return annotationBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public int getAnnotationCount() {
+        if (annotationBuilder_ == null) {
+          return annotation_.size();
+        } else {
+          return annotationBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation getAnnotation(int index) {
+        if (annotationBuilder_ == null) {
+          return annotation_.get(index);
+        } else {
+          return annotationBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder setAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.set(index, value);
+          onChanged();
+        } else {
+          annotationBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder setAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder addAnnotation(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.add(value);
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder addAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation value) {
+        if (annotationBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureAnnotationIsMutable();
+          annotation_.add(index, value);
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder addAnnotation(
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.add(builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder addAnnotation(
+          int index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder builderForValue) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          annotationBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder addAllAnnotation(
+          java.lang.Iterable<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation> values) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          super.addAll(values, annotation_);
+          onChanged();
+        } else {
+          annotationBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder clearAnnotation() {
+        if (annotationBuilder_ == null) {
+          annotation_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
+          onChanged();
+        } else {
+          annotationBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public Builder removeAnnotation(int index) {
+        if (annotationBuilder_ == null) {
+          ensureAnnotationIsMutable();
+          annotation_.remove(index);
+          onChanged();
+        } else {
+          annotationBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder getAnnotationBuilder(
+          int index) {
+        return getAnnotationFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder getAnnotationOrBuilder(
+          int index) {
+        if (annotationBuilder_ == null) {
+          return annotation_.get(index);  } else {
+          return annotationBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public java.util.List<? extends org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+           getAnnotationOrBuilderList() {
+        if (annotationBuilder_ != null) {
+          return annotationBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(annotation_);
+        }
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder() {
+        return getAnnotationFieldBuilder().addBuilder(
+            org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder addAnnotationBuilder(
+          int index) {
+        return getAnnotationFieldBuilder().addBuilder(
+            index, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .org.jetbrains.jet.descriptors.serialization.Annotation annotation = 3;</code>
+       */
+      public java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder> 
+           getAnnotationBuilderList() {
+        return getAnnotationFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder> 
+          getAnnotationFieldBuilder() {
+        if (annotationBuilder_ == null) {
+          annotationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Annotation.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.AnnotationOrBuilder>(
+                  annotation_,
+                  ((bitField0_ & 0x00000004) == 0x00000004),
+                  getParentForChildren(),
+                  isClean());
+          annotation_ = null;
+        }
+        return annotationBuilder_;
+      }
+
       // optional int32 getter_flags = 9;
       private int getterFlags_ ;
       /**
@@ -13385,7 +17948,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public boolean hasGetterFlags() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <code>optional int32 getter_flags = 9;</code>
@@ -13413,7 +17976,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public Builder setGetterFlags(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         getterFlags_ = value;
         onChanged();
         return this;
@@ -13430,7 +17993,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public Builder clearGetterFlags() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         getterFlags_ = 0;
         onChanged();
         return this;
@@ -13442,7 +18005,7 @@ public final class DebugProtoBuf {
        * <code>optional int32 setter_flags = 10;</code>
        */
       public boolean hasSetterFlags() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>optional int32 setter_flags = 10;</code>
@@ -13454,7 +18017,7 @@ public final class DebugProtoBuf {
        * <code>optional int32 setter_flags = 10;</code>
        */
       public Builder setSetterFlags(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         setterFlags_ = value;
         onChanged();
         return this;
@@ -13463,7 +18026,7 @@ public final class DebugProtoBuf {
        * <code>optional int32 setter_flags = 10;</code>
        */
       public Builder clearSetterFlags() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         setterFlags_ = 0;
         onChanged();
         return this;
@@ -13473,9 +18036,9 @@ public final class DebugProtoBuf {
       private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter> typeParameter_ =
         java.util.Collections.emptyList();
       private void ensureTypeParameterIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
           typeParameter_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter>(typeParameter_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000020;
          }
       }
 
@@ -13624,7 +18187,7 @@ public final class DebugProtoBuf {
       public Builder clearTypeParameter() {
         if (typeParameterBuilder_ == null) {
           typeParameter_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
           onChanged();
         } else {
           typeParameterBuilder_.clear();
@@ -13701,7 +18264,7 @@ public final class DebugProtoBuf {
           typeParameterBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameter.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.TypeParameterOrBuilder>(
                   typeParameter_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
                   isClean());
           typeParameter_ = null;
@@ -13717,7 +18280,7 @@ public final class DebugProtoBuf {
        * <code>optional .org.jetbrains.jet.descriptors.serialization.Type receiver_type = 5;</code>
        */
       public boolean hasReceiverType() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <code>optional .org.jetbrains.jet.descriptors.serialization.Type receiver_type = 5;</code>
@@ -13742,7 +18305,7 @@ public final class DebugProtoBuf {
         } else {
           receiverTypeBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
@@ -13756,7 +18319,7 @@ public final class DebugProtoBuf {
         } else {
           receiverTypeBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
@@ -13764,7 +18327,7 @@ public final class DebugProtoBuf {
        */
       public Builder mergeReceiverType(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type value) {
         if (receiverTypeBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
+          if (((bitField0_ & 0x00000040) == 0x00000040) &&
               receiverType_ != org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.getDefaultInstance()) {
             receiverType_ =
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.newBuilder(receiverType_).mergeFrom(value).buildPartial();
@@ -13775,7 +18338,7 @@ public final class DebugProtoBuf {
         } else {
           receiverTypeBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         return this;
       }
       /**
@@ -13788,14 +18351,14 @@ public final class DebugProtoBuf {
         } else {
           receiverTypeBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       /**
        * <code>optional .org.jetbrains.jet.descriptors.serialization.Type receiver_type = 5;</code>
        */
       public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.Builder getReceiverTypeBuilder() {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         onChanged();
         return getReceiverTypeFieldBuilder().getBuilder();
       }
@@ -13836,7 +18399,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public boolean hasName() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+        return ((bitField0_ & 0x00000080) == 0x00000080);
       }
       /**
        * <code>required int32 name = 6;</code>
@@ -13856,7 +18419,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public Builder setName(int value) {
-        bitField0_ |= 0x00000040;
+        bitField0_ |= 0x00000080;
         name_ = value;
         onChanged();
         return this;
@@ -13869,7 +18432,7 @@ public final class DebugProtoBuf {
        * </pre>
        */
       public Builder clearName() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         name_ = 0;
         onChanged();
         return this;
@@ -13879,9 +18442,9 @@ public final class DebugProtoBuf {
       private java.util.List<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter> valueParameter_ =
         java.util.Collections.emptyList();
       private void ensureValueParameterIsMutable() {
-        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
+        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
           valueParameter_ = new java.util.ArrayList<org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter>(valueParameter_);
-          bitField0_ |= 0x00000080;
+          bitField0_ |= 0x00000100;
          }
       }
 
@@ -14074,7 +18637,7 @@ public final class DebugProtoBuf {
       public Builder clearValueParameter() {
         if (valueParameterBuilder_ == null) {
           valueParameter_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000080);
+          bitField0_ = (bitField0_ & ~0x00000100);
           onChanged();
         } else {
           valueParameterBuilder_.clear();
@@ -14179,7 +18742,7 @@ public final class DebugProtoBuf {
           valueParameterBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameter.Builder, org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Callable.ValueParameterOrBuilder>(
                   valueParameter_,
-                  ((bitField0_ & 0x00000080) == 0x00000080),
+                  ((bitField0_ & 0x00000100) == 0x00000100),
                   getParentForChildren(),
                   isClean());
           valueParameter_ = null;
@@ -14195,7 +18758,7 @@ public final class DebugProtoBuf {
        * <code>required .org.jetbrains.jet.descriptors.serialization.Type return_type = 8;</code>
        */
       public boolean hasReturnType() {
-        return ((bitField0_ & 0x00000100) == 0x00000100);
+        return ((bitField0_ & 0x00000200) == 0x00000200);
       }
       /**
        * <code>required .org.jetbrains.jet.descriptors.serialization.Type return_type = 8;</code>
@@ -14220,7 +18783,7 @@ public final class DebugProtoBuf {
         } else {
           returnTypeBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -14234,7 +18797,7 @@ public final class DebugProtoBuf {
         } else {
           returnTypeBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -14242,7 +18805,7 @@ public final class DebugProtoBuf {
        */
       public Builder mergeReturnType(org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type value) {
         if (returnTypeBuilder_ == null) {
-          if (((bitField0_ & 0x00000100) == 0x00000100) &&
+          if (((bitField0_ & 0x00000200) == 0x00000200) &&
               returnType_ != org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.getDefaultInstance()) {
             returnType_ =
               org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.newBuilder(returnType_).mergeFrom(value).buildPartial();
@@ -14253,7 +18816,7 @@ public final class DebugProtoBuf {
         } else {
           returnTypeBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         return this;
       }
       /**
@@ -14266,14 +18829,14 @@ public final class DebugProtoBuf {
         } else {
           returnTypeBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000200);
         return this;
       }
       /**
        * <code>required .org.jetbrains.jet.descriptors.serialization.Type return_type = 8;</code>
        */
       public org.jetbrains.jet.descriptors.serialization.DebugProtoBuf.Type.Builder getReturnTypeBuilder() {
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000200;
         onChanged();
         return getReturnTypeFieldBuilder().getBuilder();
       }
@@ -14330,6 +18893,21 @@ public final class DebugProtoBuf {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_org_jetbrains_jet_descriptors_serialization_QualifiedNameTable_QualifiedName_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_org_jetbrains_jet_descriptors_serialization_Type_descriptor;
   private static
@@ -14400,77 +18978,103 @@ public final class DebugProtoBuf {
       "\002(\005\022i\n\004kind\030\003 \001(\0162R.org.jetbrains.jet.de" +
       "scriptors.serialization.QualifiedNameTab",
       "le.QualifiedName.Kind:\007PACKAGE\"\036\n\004Kind\022\t" +
-      "\n\005CLASS\020\000\022\013\n\007PACKAGE\020\001\"\253\005\n\004Type\022R\n\013const" +
-      "ructor\030\001 \002(\0132=.org.jetbrains.jet.descrip" +
-      "tors.serialization.Type.Constructor\022L\n\010a" +
-      "rgument\030\002 \003(\0132:.org.jetbrains.jet.descri" +
-      "ptors.serialization.Type.Argument\022\027\n\010nul" +
-      "lable\030\003 \001(\010:\005false\022%\n\035flexible_type_capa" +
-      "bilities_id\030\004 \001(\005\022O\n\024flexible_upper_boun" +
-      "d\030\005 \001(\01321.org.jetbrains.jet.descriptors." +
-      "serialization.Type\032\231\001\n\013Constructor\022W\n\004ki",
-      "nd\030\001 \001(\0162B.org.jetbrains.jet.descriptors" +
-      ".serialization.Type.Constructor.Kind:\005CL" +
-      "ASS\022\n\n\002id\030\002 \002(\005\"%\n\004Kind\022\t\n\005CLASS\020\000\022\022\n\016TY" +
-      "PE_PARAMETER\020\001\032\323\001\n\010Argument\022^\n\nprojectio" +
-      "n\030\001 \001(\0162E.org.jetbrains.jet.descriptors." +
-      "serialization.Type.Argument.Projection:\003" +
-      "INV\022?\n\004type\030\002 \002(\01321.org.jetbrains.jet.de" +
-      "scriptors.serialization.Type\"&\n\nProjecti" +
-      "on\022\006\n\002IN\020\000\022\007\n\003OUT\020\001\022\007\n\003INV\020\002\"\213\002\n\rTypePar" +
-      "ameter\022\n\n\002id\030\001 \002(\005\022\014\n\004name\030\002 \002(\005\022\026\n\007reif",
-      "ied\030\003 \001(\010:\005false\022Z\n\010variance\030\004 \001(\0162C.org" +
+      "\n\005CLASS\020\000\022\013\n\007PACKAGE\020\001\"\241\006\n\nAnnotation\022\n\n" +
+      "\002id\030\001 \002(\005\022R\n\010argument\030\002 \003(\0132@.org.jetbra" +
+      "ins.jet.descriptors.serialization.Annota" +
+      "tion.Argument\032\262\005\n\010Argument\022\017\n\007name_id\030\001 " +
+      "\002(\005\022U\n\005value\030\002 \002(\0132F.org.jetbrains.jet.d" +
+      "escriptors.serialization.Annotation.Argu" +
+      "ment.Value\032\275\004\n\005Value\022Y\n\004type\030\001 \001(\0162K.org" +
       ".jetbrains.jet.descriptors.serialization" +
-      ".TypeParameter.Variance:\003INV\022F\n\013upper_bo" +
-      "und\030\005 \003(\01321.org.jetbrains.jet.descriptor" +
-      "s.serialization.Type\"$\n\010Variance\022\006\n\002IN\020\000" +
-      "\022\007\n\003OUT\020\001\022\007\n\003INV\020\002\"\254\006\n\005Class\022\020\n\005flags\030\001 " +
-      "\001(\005:\0010\022\030\n\020extra_visibility\030\002 \001(\t\022\017\n\007fq_n" +
-      "ame\030\003 \002(\005\022T\n\014class_object\030\004 \001(\0132>.org.je" +
-      "tbrains.jet.descriptors.serialization.Cl" +
-      "ass.ClassObject\022R\n\016type_parameter\030\005 \003(\0132",
-      ":.org.jetbrains.jet.descriptors.serializ" +
-      "ation.TypeParameter\022D\n\tsupertype\030\006 \003(\01321" +
+      ".Annotation.Argument.Value.Type\022\021\n\tint_v",
+      "alue\030\002 \001(\022\022\023\n\013float_value\030\003 \001(\002\022\024\n\014doubl" +
+      "e_value\030\004 \001(\001\022\024\n\014string_value\030\005 \001(\005\022\020\n\010c" +
+      "lass_id\030\006 \001(\005\022\025\n\renum_class_id\030\007 \001(\005\022\025\n\r" +
+      "enum_value_id\030\010 \001(\005\022K\n\nannotation\030\t \001(\0132" +
+      "7.org.jetbrains.jet.descriptors.serializ" +
+      "ation.Annotation\022]\n\rarray_element\030\n \003(\0132" +
+      "F.org.jetbrains.jet.descriptors.serializ" +
+      "ation.Annotation.Argument.Value\"\230\001\n\004Type" +
+      "\022\010\n\004BYTE\020\000\022\010\n\004CHAR\020\001\022\t\n\005SHORT\020\002\022\007\n\003INT\020\003" +
+      "\022\010\n\004LONG\020\004\022\t\n\005FLOAT\020\005\022\n\n\006DOUBLE\020\006\022\013\n\007BOO",
+      "LEAN\020\007\022\n\n\006STRING\020\010\022\t\n\005CLASS\020\t\022\010\n\004ENUM\020\n\022" +
+      "\016\n\nANNOTATION\020\013\022\t\n\005ARRAY\020\014\"\253\005\n\004Type\022R\n\013c" +
+      "onstructor\030\001 \002(\0132=.org.jetbrains.jet.des" +
+      "criptors.serialization.Type.Constructor\022" +
+      "L\n\010argument\030\002 \003(\0132:.org.jetbrains.jet.de" +
+      "scriptors.serialization.Type.Argument\022\027\n" +
+      "\010nullable\030\003 \001(\010:\005false\022%\n\035flexible_type_" +
+      "capabilities_id\030\004 \001(\005\022O\n\024flexible_upper_" +
+      "bound\030\005 \001(\01321.org.jetbrains.jet.descript" +
+      "ors.serialization.Type\032\231\001\n\013Constructor\022W",
+      "\n\004kind\030\001 \001(\0162B.org.jetbrains.jet.descrip" +
+      "tors.serialization.Type.Constructor.Kind" +
+      ":\005CLASS\022\n\n\002id\030\002 \002(\005\"%\n\004Kind\022\t\n\005CLASS\020\000\022\022" +
+      "\n\016TYPE_PARAMETER\020\001\032\323\001\n\010Argument\022^\n\nproje" +
+      "ction\030\001 \001(\0162E.org.jetbrains.jet.descript" +
+      "ors.serialization.Type.Argument.Projecti" +
+      "on:\003INV\022?\n\004type\030\002 \002(\01321.org.jetbrains.je" +
+      "t.descriptors.serialization.Type\"&\n\nProj" +
+      "ection\022\006\n\002IN\020\000\022\007\n\003OUT\020\001\022\007\n\003INV\020\002\"\213\002\n\rTyp" +
+      "eParameter\022\n\n\002id\030\001 \002(\005\022\014\n\004name\030\002 \002(\005\022\026\n\007",
+      "reified\030\003 \001(\010:\005false\022Z\n\010variance\030\004 \001(\0162C" +
       ".org.jetbrains.jet.descriptors.serializa" +
-      "tion.Type\022\031\n\021nested_class_name\030\007 \003(\005\022E\n\006" +
-      "member\030\013 \003(\01325.org.jetbrains.jet.descrip" +
-      "tors.serialization.Callable\022\022\n\nenum_entr" +
-      "y\030\014 \003(\005\022b\n\023primary_constructor\030\r \001(\0132E.o" +
-      "rg.jetbrains.jet.descriptors.serializati" +
-      "on.Class.PrimaryConstructor\032O\n\013ClassObje" +
-      "ct\022@\n\004data\030\001 \001(\01322.org.jetbrains.jet.des",
-      "criptors.serialization.Class\032Y\n\022PrimaryC" +
-      "onstructor\022C\n\004data\030\001 \001(\01325.org.jetbrains" +
-      ".jet.descriptors.serialization.Callable\"" +
-      "p\n\004Kind\022\t\n\005CLASS\020\000\022\t\n\005TRAIT\020\001\022\016\n\nENUM_CL" +
-      "ASS\020\002\022\016\n\nENUM_ENTRY\020\003\022\024\n\020ANNOTATION_CLAS" +
-      "S\020\004\022\n\n\006OBJECT\020\005\022\020\n\014CLASS_OBJECT\020\006\"P\n\007Pac" +
-      "kage\022E\n\006member\030\001 \003(\01325.org.jetbrains.jet" +
-      ".descriptors.serialization.Callable\"\220\006\n\010" +
-      "Callable\022\r\n\005flags\030\001 \001(\005\022\030\n\020extra_visibil" +
-      "ity\030\002 \001(\t\022\024\n\014getter_flags\030\t \001(\005\022\024\n\014sette",
-      "r_flags\030\n \001(\005\022R\n\016type_parameter\030\004 \003(\0132:." +
-      "org.jetbrains.jet.descriptors.serializat" +
-      "ion.TypeParameter\022H\n\rreceiver_type\030\005 \001(\013" +
-      "21.org.jetbrains.jet.descriptors.seriali" +
-      "zation.Type\022\014\n\004name\030\006 \002(\005\022]\n\017value_param" +
-      "eter\030\007 \003(\0132D.org.jetbrains.jet.descripto" +
-      "rs.serialization.Callable.ValueParameter" +
-      "\022F\n\013return_type\030\010 \002(\01321.org.jetbrains.je" +
-      "t.descriptors.serialization.Type\032\305\001\n\016Val" +
-      "ueParameter\022\r\n\005flags\030\001 \001(\005\022\014\n\004name\030\002 \002(\005",
-      "\022?\n\004type\030\003 \002(\01321.org.jetbrains.jet.descr" +
-      "iptors.serialization.Type\022N\n\023vararg_elem" +
-      "ent_type\030\004 \001(\01321.org.jetbrains.jet.descr" +
-      "iptors.serialization.Type*\005\010d\020\310\001\"Q\n\nMemb" +
-      "erKind\022\017\n\013DECLARATION\020\000\022\021\n\rFAKE_OVERRIDE" +
-      "\020\001\022\016\n\nDELEGATION\020\002\022\017\n\013SYNTHESIZED\020\003\":\n\014C" +
-      "allableKind\022\007\n\003FUN\020\000\022\007\n\003VAL\020\001\022\007\n\003VAR\020\002\022\017" +
-      "\n\013CONSTRUCTOR\020\003*\005\010d\020\310\001*-\n\010Modality\022\t\n\005FI" +
-      "NAL\020\000\022\010\n\004OPEN\020\001\022\014\n\010ABSTRACT\020\002*M\n\nVisibil" +
-      "ity\022\014\n\010INTERNAL\020\000\022\013\n\007PRIVATE\020\001\022\r\n\tPROTEC",
-      "TED\020\002\022\n\n\006PUBLIC\020\003\022\t\n\005EXTRA\020\004B\022B\rDebugPro" +
-      "toBuf\210\001\000"
+      "tion.TypeParameter.Variance:\003INV\022F\n\013uppe" +
+      "r_bound\030\005 \003(\01321.org.jetbrains.jet.descri" +
+      "ptors.serialization.Type\"$\n\010Variance\022\006\n\002" +
+      "IN\020\000\022\007\n\003OUT\020\001\022\007\n\003INV\020\002\"\371\006\n\005Class\022\020\n\005flag" +
+      "s\030\001 \001(\005:\0010\022\030\n\020extra_visibility\030\002 \001(\t\022\017\n\007" +
+      "fq_name\030\003 \002(\005\022T\n\014class_object\030\004 \001(\0132>.or" +
+      "g.jetbrains.jet.descriptors.serializatio" +
+      "n.Class.ClassObject\022R\n\016type_parameter\030\005 ",
+      "\003(\0132:.org.jetbrains.jet.descriptors.seri" +
+      "alization.TypeParameter\022D\n\tsupertype\030\006 \003" +
+      "(\01321.org.jetbrains.jet.descriptors.seria" +
+      "lization.Type\022\031\n\021nested_class_name\030\007 \003(\005" +
+      "\022K\n\nannotation\030\010 \003(\01327.org.jetbrains.jet" +
+      ".descriptors.serialization.Annotation\022E\n" +
+      "\006member\030\013 \003(\01325.org.jetbrains.jet.descri" +
+      "ptors.serialization.Callable\022\022\n\nenum_ent" +
+      "ry\030\014 \003(\005\022b\n\023primary_constructor\030\r \001(\0132E." +
+      "org.jetbrains.jet.descriptors.serializat",
+      "ion.Class.PrimaryConstructor\032O\n\013ClassObj" +
+      "ect\022@\n\004data\030\001 \001(\01322.org.jetbrains.jet.de" +
+      "scriptors.serialization.Class\032Y\n\022Primary" +
+      "Constructor\022C\n\004data\030\001 \001(\01325.org.jetbrain" +
+      "s.jet.descriptors.serialization.Callable" +
+      "\"p\n\004Kind\022\t\n\005CLASS\020\000\022\t\n\005TRAIT\020\001\022\016\n\nENUM_C" +
+      "LASS\020\002\022\016\n\nENUM_ENTRY\020\003\022\024\n\020ANNOTATION_CLA" +
+      "SS\020\004\022\n\n\006OBJECT\020\005\022\020\n\014CLASS_OBJECT\020\006\"P\n\007Pa" +
+      "ckage\022E\n\006member\030\001 \003(\01325.org.jetbrains.je" +
+      "t.descriptors.serialization.Callable\"\252\007\n",
+      "\010Callable\022\r\n\005flags\030\001 \001(\005\022\030\n\020extra_visibi" +
+      "lity\030\002 \001(\t\022K\n\nannotation\030\003 \003(\01327.org.jet" +
+      "brains.jet.descriptors.serialization.Ann" +
+      "otation\022\024\n\014getter_flags\030\t \001(\005\022\024\n\014setter_" +
+      "flags\030\n \001(\005\022R\n\016type_parameter\030\004 \003(\0132:.or" +
+      "g.jetbrains.jet.descriptors.serializatio" +
+      "n.TypeParameter\022H\n\rreceiver_type\030\005 \001(\01321" +
+      ".org.jetbrains.jet.descriptors.serializa" +
+      "tion.Type\022\014\n\004name\030\006 \002(\005\022]\n\017value_paramet" +
+      "er\030\007 \003(\0132D.org.jetbrains.jet.descriptors",
+      ".serialization.Callable.ValueParameter\022F" +
+      "\n\013return_type\030\010 \002(\01321.org.jetbrains.jet." +
+      "descriptors.serialization.Type\032\222\002\n\016Value" +
+      "Parameter\022\r\n\005flags\030\001 \001(\005\022\014\n\004name\030\002 \002(\005\022?" +
+      "\n\004type\030\003 \002(\01321.org.jetbrains.jet.descrip" +
+      "tors.serialization.Type\022N\n\023vararg_elemen" +
+      "t_type\030\004 \001(\01321.org.jetbrains.jet.descrip" +
+      "tors.serialization.Type\022K\n\nannotation\030\005 " +
+      "\003(\01327.org.jetbrains.jet.descriptors.seri" +
+      "alization.Annotation*\005\010d\020\310\001\"Q\n\nMemberKin",
+      "d\022\017\n\013DECLARATION\020\000\022\021\n\rFAKE_OVERRIDE\020\001\022\016\n" +
+      "\nDELEGATION\020\002\022\017\n\013SYNTHESIZED\020\003\":\n\014Callab" +
+      "leKind\022\007\n\003FUN\020\000\022\007\n\003VAL\020\001\022\007\n\003VAR\020\002\022\017\n\013CON" +
+      "STRUCTOR\020\003*\005\010d\020\310\001*-\n\010Modality\022\t\n\005FINAL\020\000" +
+      "\022\010\n\004OPEN\020\001\022\014\n\010ABSTRACT\020\002*M\n\nVisibility\022\014" +
+      "\n\010INTERNAL\020\000\022\013\n\007PRIVATE\020\001\022\r\n\tPROTECTED\020\002" +
+      "\022\n\n\006PUBLIC\020\003\022\t\n\005EXTRA\020\004B\022B\rDebugProtoBuf" +
+      "\210\001\000"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -14495,8 +19099,26 @@ public final class DebugProtoBuf {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_QualifiedNameTable_QualifiedName_descriptor,
               new java.lang.String[] { "ParentQualifiedName", "ShortName", "Kind", });
-          internal_static_org_jetbrains_jet_descriptors_serialization_Type_descriptor =
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor =
             getDescriptor().getMessageTypes().get(2);
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor,
+              new java.lang.String[] { "Id", "Argument", });
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor =
+            internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_descriptor.getNestedTypes().get(0);
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor,
+              new java.lang.String[] { "NameId", "Value", });
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor =
+            internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_descriptor.getNestedTypes().get(0);
+          internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_org_jetbrains_jet_descriptors_serialization_Annotation_Argument_Value_descriptor,
+              new java.lang.String[] { "Type", "IntValue", "FloatValue", "DoubleValue", "StringValue", "ClassId", "EnumClassId", "EnumValueId", "Annotation", "ArrayElement", });
+          internal_static_org_jetbrains_jet_descriptors_serialization_Type_descriptor =
+            getDescriptor().getMessageTypes().get(3);
           internal_static_org_jetbrains_jet_descriptors_serialization_Type_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_Type_descriptor,
@@ -14514,17 +19136,17 @@ public final class DebugProtoBuf {
               internal_static_org_jetbrains_jet_descriptors_serialization_Type_Argument_descriptor,
               new java.lang.String[] { "Projection", "Type", });
           internal_static_org_jetbrains_jet_descriptors_serialization_TypeParameter_descriptor =
-            getDescriptor().getMessageTypes().get(3);
+            getDescriptor().getMessageTypes().get(4);
           internal_static_org_jetbrains_jet_descriptors_serialization_TypeParameter_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_TypeParameter_descriptor,
               new java.lang.String[] { "Id", "Name", "Reified", "Variance", "UpperBound", });
           internal_static_org_jetbrains_jet_descriptors_serialization_Class_descriptor =
-            getDescriptor().getMessageTypes().get(4);
+            getDescriptor().getMessageTypes().get(5);
           internal_static_org_jetbrains_jet_descriptors_serialization_Class_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_Class_descriptor,
-              new java.lang.String[] { "Flags", "ExtraVisibility", "FqName", "ClassObject", "TypeParameter", "Supertype", "NestedClassName", "Member", "EnumEntry", "PrimaryConstructor", });
+              new java.lang.String[] { "Flags", "ExtraVisibility", "FqName", "ClassObject", "TypeParameter", "Supertype", "NestedClassName", "Annotation", "Member", "EnumEntry", "PrimaryConstructor", });
           internal_static_org_jetbrains_jet_descriptors_serialization_Class_ClassObject_descriptor =
             internal_static_org_jetbrains_jet_descriptors_serialization_Class_descriptor.getNestedTypes().get(0);
           internal_static_org_jetbrains_jet_descriptors_serialization_Class_ClassObject_fieldAccessorTable = new
@@ -14538,23 +19160,23 @@ public final class DebugProtoBuf {
               internal_static_org_jetbrains_jet_descriptors_serialization_Class_PrimaryConstructor_descriptor,
               new java.lang.String[] { "Data", });
           internal_static_org_jetbrains_jet_descriptors_serialization_Package_descriptor =
-            getDescriptor().getMessageTypes().get(5);
+            getDescriptor().getMessageTypes().get(6);
           internal_static_org_jetbrains_jet_descriptors_serialization_Package_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_Package_descriptor,
               new java.lang.String[] { "Member", });
           internal_static_org_jetbrains_jet_descriptors_serialization_Callable_descriptor =
-            getDescriptor().getMessageTypes().get(6);
+            getDescriptor().getMessageTypes().get(7);
           internal_static_org_jetbrains_jet_descriptors_serialization_Callable_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_Callable_descriptor,
-              new java.lang.String[] { "Flags", "ExtraVisibility", "GetterFlags", "SetterFlags", "TypeParameter", "ReceiverType", "Name", "ValueParameter", "ReturnType", });
+              new java.lang.String[] { "Flags", "ExtraVisibility", "Annotation", "GetterFlags", "SetterFlags", "TypeParameter", "ReceiverType", "Name", "ValueParameter", "ReturnType", });
           internal_static_org_jetbrains_jet_descriptors_serialization_Callable_ValueParameter_descriptor =
             internal_static_org_jetbrains_jet_descriptors_serialization_Callable_descriptor.getNestedTypes().get(0);
           internal_static_org_jetbrains_jet_descriptors_serialization_Callable_ValueParameter_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_org_jetbrains_jet_descriptors_serialization_Callable_ValueParameter_descriptor,
-              new java.lang.String[] { "Flags", "Name", "Type", "VarargElementType", });
+              new java.lang.String[] { "Flags", "Name", "Type", "VarargElementType", "Annotation", });
           return null;
         }
       };
