@@ -36,6 +36,7 @@ import org.jetbrains.k2js.config.EcmaVersion;
 import org.jetbrains.k2js.config.LibrarySourcesConfigWithCaching;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJetDiagnosticsTest {
 
@@ -72,6 +73,11 @@ public abstract class AbstractJetDiagnosticsTestWithJsStdLib extends AbstractJet
         TopDownAnalyzerFacadeForJS.analyzeFilesWithGivenTrace(jetFiles, moduleTrace, module, Predicates.<PsiFile>alwaysTrue(), config);
 
         trace.addAllMyDataTo(moduleTrace);
+    }
+
+    @Override
+    public boolean shouldSkipJvmSignatureDiagnostics(Map<TestModule, List<TestFile>> groupedByModule) {
+        return true;
     }
 
     @Override

@@ -145,7 +145,7 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
 
         StringBuilder actualText = new StringBuilder();
         for (TestFile testFile : testFiles) {
-            ok &= testFile.getActualText(moduleBindings.get(testFile.getModule()), actualText, groupedByModule.size() > 1);
+            ok &= testFile.getActualText(moduleBindings.get(testFile.getModule()), actualText, shouldSkipJvmSignatureDiagnostics(groupedByModule));
         }
 
         JetTestUtils.assertEqualsToFile(testDataFile, actualText.toString());
@@ -159,6 +159,10 @@ public abstract class AbstractJetDiagnosticsTest extends BaseDiagnosticsTest {
         if (exceptionFromLazyResolveLogValidation != null) {
             throw UtilsPackage.rethrow(exceptionFromLazyResolveLogValidation);
         }
+    }
+
+    public boolean shouldSkipJvmSignatureDiagnostics(Map<TestModule, List<TestFile>> groupedByModule) {
+        return groupedByModule.size() > 1;
     }
 
     @Nullable
