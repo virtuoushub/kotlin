@@ -457,7 +457,7 @@
                     !org/mozilla/javascript/xml/impl/xmlbeans/**,
                     !META-INF/maven**,
                     **.class,**.properties,**.kt,**.kotlin_*,
-                    META-INF/services/**,META-INF/native/**,META-INF/extensionPoints/**,META-INF/MANIFEST.MF,
+                    META-INF/services/**,META-INF/native/**,META-INF/extensions/**,META-INF/MANIFEST.MF,
                     messages/**)
 
                     -outjars '${kotlin-home}/lib/kotlin-compiler.jar'
