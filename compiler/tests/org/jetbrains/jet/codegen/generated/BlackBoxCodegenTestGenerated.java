@@ -2643,6 +2643,18 @@ public class BlackBoxCodegenTestGenerated extends AbstractBlackBoxCodegenTest {
             JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/codegen/box/diagnostics"), Pattern.compile("^(.+)\\.kt$"), true);
         }
 
+        @TestMetadata("capturedType.kt")
+        public void testCapturedType() throws Exception {
+            String fileName = JetTestUtils.navigationMetadata("compiler/testData/codegen/box/diagnostics/capturedType.kt");
+            doTest(fileName);
+        }
+
+        @TestMetadata("capturedTypeFromEqualityConstraint.kt")
+        public void testCapturedTypeFromEqualityConstraint() throws Exception {
+            String fileName = JetTestUtils.navigationMetadata("compiler/testData/codegen/box/diagnostics/capturedTypeFromEqualityConstraint.kt");
+            doTest(fileName);
+        }
+
         @TestMetadata("compiler/testData/codegen/box/diagnostics/functions")
         @TestDataPath("$PROJECT_ROOT")
         @InnerTestClasses({Functions.Inference.class, Functions.Invoke.class, Functions.TailRecursion.class})

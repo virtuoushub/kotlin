@@ -51,5 +51,5 @@ public class CapturedTypeConstructor(public val typeProjection: TypeProjection):
 
 public fun createCapturedType(typeProjection: TypeProjection): JetType {
     // no member resolution should be done on captured type, it used only during constraint system resolution
-    return JetTypeImpl(Annotations.EMPTY, CapturedTypeConstructor(typeProjection), false, Collections.emptyList(), JetScope.EMPTY)
+    return JetTypeImpl(Annotations.EMPTY, CapturedTypeConstructor(typeProjection), false, Collections.emptyList(), JetScope.Empty)
 }

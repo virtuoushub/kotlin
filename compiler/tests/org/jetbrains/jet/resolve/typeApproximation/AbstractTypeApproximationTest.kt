@@ -42,7 +42,7 @@ abstract public class AbstractTypeApproximationTest() : JetLiteFixture() {
         val text = JetTestUtils.doLoadFile(file)!!
 
         val jetFile = JetPsiFactory(getProject()).createFile(text)
-        val bindingContext = JvmResolveUtil.analyzeOneFileWithJavaIntegration(jetFile).getBindingContext()
+        val bindingContext = JvmResolveUtil.analyzeOneFileWithJavaIntegration(jetFile).bindingContext
 
         val functions = bindingContext.getSliceContents(BindingContext.FUNCTION)
         val functionFoo = findFunctionByName(functions.values(), "foo")

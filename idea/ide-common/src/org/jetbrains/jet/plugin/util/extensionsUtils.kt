@@ -28,11 +28,12 @@ import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintSystemImpl
 import java.util.LinkedHashMap
 import org.jetbrains.jet.lang.descriptors.TypeParameterDescriptor
 import org.jetbrains.jet.lang.types.Variance
-import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintPosition
 import org.jetbrains.jet.lang.resolve.calls.inference.ConstraintsUtil
 import org.jetbrains.jet.lang.resolve.name.Name
 import org.jetbrains.jet.utils.addIfNotNull
 import java.util.HashSet
+import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPosition
+import org.jetbrains.jet.lang.resolve.calls.inference.constraintPosition.ConstraintPositionKind
 
 public fun CallableDescriptor.isExtensionCallable(receivers: Collection<ReceiverValue>,
                                                   context: BindingContext,
@@ -83,7 +84,7 @@ private fun checkReceiverResolution(receiverArgument: ReceiverValue, receiverTyp
     }
     constraintSystem.registerTypeVariables(typeVariables)
 
-    constraintSystem.addSubtypeConstraint(receiverType, receiverParameter.getType(), ConstraintPosition.RECEIVER_POSITION)
+    constraintSystem.addSubtypeConstraint(receiverType, receiverParameter.getType(), ConstraintPositionKind.RECEIVER_POSITION.position())
     return constraintSystem.getStatus().isSuccessful() && ConstraintsUtil.checkBoundsAreSatisfied(constraintSystem, true)
 }
 

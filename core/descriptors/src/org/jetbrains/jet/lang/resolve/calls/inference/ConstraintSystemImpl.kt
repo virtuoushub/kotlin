@@ -252,12 +252,12 @@ public class ConstraintSystemImpl : ConstraintSystem {
         doAddConstraint(constraintKind, subType, superType, constraintPosition, typeCheckingProcedure)
     }
 
-    private fun isErrorOrSpecialType(jetType: JetType?): Boolean {
-        if (jetType == DONT_CARE || ErrorUtils.isUninferredParameter(jetType)) {
+    private fun isErrorOrSpecialType(type: JetType?): Boolean {
+        if (TypeUtils.isDontCarePlaceholder(type) || ErrorUtils.isUninferredParameter(type)) {
             return true
         }
 
-        if (jetType == null || (jetType.isError() && jetType != TypeUtils.PLACEHOLDER_FUNCTION_TYPE)) {
+        if (type == null || (type.isError() && type != TypeUtils.PLACEHOLDER_FUNCTION_TYPE)) {
             hasErrorInConstrainingTypes = true
             return true
         }
@@ -342,6 +342,9 @@ public class ConstraintSystemImpl : ConstraintSystem {
             boundKind: TypeBounds.BoundKind,
             constraintPosition: ConstraintPosition
     ) {
+        [suppress("NAME_SHADOWING")]
+        var constrainingType = constrainingType
+
         // Here we are handling the case when T! gets a bound Foo (or Foo?)
         // In this case, type parameter T is supposed to get the bound Foo!
         // Example:
@@ -353,8 +356,7 @@ public class ConstraintSystemImpl : ConstraintSystem {
         if (parameterType.isFlexible()) {
             val typeVariable = parameterType.getCustomTypeVariable()
             if (typeVariable != null) {
-                generateTypeParameterConstraint(parameterType, typeVariable.substitutionResult(constrainingType), boundKind, constraintPosition)
-                return
+                constrainingType = typeVariable.substitutionResult(constrainingType)
             }
         }
 
@@ -430,10 +432,10 @@ public class ConstraintSystemImpl : ConstraintSystem {
 
     private fun isMyTypeVariable(typeVariable: TypeParameterDescriptor) = typeParameterBounds.contains(typeVariable)
 
-    private fun isMyTypeVariable(jetType: JetType): Boolean = getMyTypeVariable(jetType) != null
+    private fun isMyTypeVariable(type: JetType): Boolean = getMyTypeVariable(type) != null
 
-    private fun getMyTypeVariable(jetType: JetType): TypeParameterDescriptor? {
-        val typeParameterDescriptor = jetType.getConstructor().getDeclarationDescriptor() as? TypeParameterDescriptor
+    private fun getMyTypeVariable(type: JetType): TypeParameterDescriptor? {
+        val typeParameterDescriptor = type.getConstructor().getDeclarationDescriptor() as? TypeParameterDescriptor
         return if (typeParameterDescriptor != null && isMyTypeVariable(typeParameterDescriptor)) typeParameterDescriptor else null
     }
 

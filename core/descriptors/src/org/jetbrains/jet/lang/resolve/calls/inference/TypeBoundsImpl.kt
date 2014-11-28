@@ -132,7 +132,7 @@ public class TypeBoundsImpl(
         if (tryPossibleAnswer(superTypeOfNumberLowerBounds)) {
             return setOf(superTypeOfNumberLowerBounds!!)
         }
-        values.addIfNotNull(superTypeOfLowerBounds)
+        values.addIfNotNull(superTypeOfNumberLowerBounds)
 
         if (superTypeOfLowerBounds != null && superTypeOfNumberLowerBounds != null) {
             val superTypeOfAllLowerBounds = CommonSupertypes.commonSupertypeForNonDenotableTypes(listOf(superTypeOfLowerBounds, superTypeOfNumberLowerBounds))

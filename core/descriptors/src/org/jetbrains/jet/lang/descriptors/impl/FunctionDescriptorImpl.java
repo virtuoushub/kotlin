@@ -145,6 +145,9 @@ public abstract class FunctionDescriptorImpl extends DeclarationDescriptorNonRoo
     @Override
     @NotNull
     public List<TypeParameterDescriptor> getTypeParameters() {
+        if (typeParameters == null) {
+            "".getBytes();
+        }
         return typeParameters;
     }
 

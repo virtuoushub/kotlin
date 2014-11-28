@@ -227,6 +227,10 @@ public class TypeSubstitutor {
                     throw new IllegalStateException();
             }
         }
+        if (type.getConstructor().getDeclarationDescriptor() instanceof TypeParameterDescriptor) {
+            // substitution can't change type parameter
+            return originalProjection;
+        }
         // The type is not within the substitution range, i.e. Foo, Bar<T> etc.
         return substituteCompoundType(type, originalProjectionKind, recursionDepth);
     }
