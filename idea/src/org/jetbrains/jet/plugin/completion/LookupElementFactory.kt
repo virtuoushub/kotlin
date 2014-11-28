@@ -81,6 +81,11 @@ public open class LookupElementFactory protected() {
             }
 
             is ClassDescriptor -> {
+                val typeParams = descriptor.getTypeConstructor().getParameters()
+                if (typeParams.isNotEmpty()) {
+                    element = element.appendTailText(typeParams.map { it.getName().asString() }.joinToString(", ", "<", ">"), true)
+                }
+
                 element = element.appendTailText(" (" + DescriptorUtils.getFqName(descriptor.getContainingDeclaration()) + ")", true)
             }
 
@@ -92,9 +97,13 @@ public open class LookupElementFactory protected() {
         if (descriptor is CallableDescriptor) {
             val receiver = descriptor.getExtensionReceiverParameter()
             if (receiver != null) {
-                val tail = " for " + DescriptorRenderer.SHORT_NAMES_IN_TYPES.renderType(receiver.getType()) +
-                           " in " + DescriptorUtils.getFqName(descriptor.getContainingDeclaration())
-                element = element.appendTailText(tail, true)
+                val container = descriptor.getContainingDeclaration()
+                val containerPresentation = if (container is ClassDescriptor)
+                    DescriptorUtils.getFqNameFromTopLevelClass(container)
+                else
+                    DescriptorUtils.getFqName(container)
+                val receiverPresentation = DescriptorRenderer.SHORT_NAMES_IN_TYPES.renderType(receiver.getType())
+                element = element.appendTailText(" for $receiverPresentation in $containerPresentation", true)
             }
         }
 

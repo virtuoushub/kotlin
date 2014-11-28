@@ -34,17 +34,26 @@ import org.jetbrains.jet.lang.psi.psiUtil.getReceiverExpression
 import org.jetbrains.jet.plugin.util.IdeDescriptorRenderers
 import org.jetbrains.jet.plugin.caches.resolve.ResolutionFacade
 import org.jetbrains.jet.plugin.caches.resolve.resolveToDescriptor
+import com.intellij.psi.search.GlobalSearchScope
+
+trait InheritanceItemsSearcher {
+    fun search(nameFilter: (String) -> Boolean, consumer: (LookupElement) -> Unit)
+}
 
 class SmartCompletion(val expression: JetSimpleNameExpression,
                       val resolutionFacade: ResolutionFacade,
+                      val moduleDescriptor: ModuleDescriptor,
                       val bindingContext: BindingContext,
                       val visibilityFilter: (DeclarationDescriptor) -> Boolean,
-                      val originalFile: JetFile,
+                      val inheritorSearchScope: GlobalSearchScope,
+                      val toFromOriginalFileMapper: ToFromOriginalFileMapper,
                       val boldImmediateLookupElementFactory: LookupElementFactory) {
     private val project = expression.getProject()
 
-    public data class Result(val declarationFilter: ((DeclarationDescriptor) -> Collection<LookupElement>)?,
-                             val additionalItems: Collection<LookupElement>)
+    public class Result(
+            val declarationFilter: ((DeclarationDescriptor) -> Collection<LookupElement>)?,
+            val additionalItems: Collection<LookupElement>,
+            val inheritanceSearcher: InheritanceItemsSearcher?)
 
     public fun execute(): Result? {
         fun postProcess(item: LookupElement): LookupElement {
@@ -70,11 +79,18 @@ class SmartCompletion(val expression: JetSimpleNameExpression,
         val result = executeInternal() ?: return null
         // TODO: code could be more simple, see KT-5726
         val additionalItems = result.additionalItems.map(::postProcess)
+        val inheritanceSearcher = result.inheritanceSearcher?.let {
+            object : InheritanceItemsSearcher {
+                override fun search(nameFilter: (String) -> Boolean, consumer: (LookupElement) -> Unit) {
+                    it.search(nameFilter, { consumer(postProcess(it)) })
+                }
+            }
+        }
         val filter = result.declarationFilter
         return if (filter != null)
-            Result({ filter(it).map(::postProcess) }, additionalItems)
+            Result({ filter(it).map(::postProcess) }, additionalItems, inheritanceSearcher)
         else
-            Result(null, additionalItems)
+            Result(null, additionalItems, inheritanceSearcher)
     }
 
     private fun executeInternal(): Result? {
@@ -127,8 +143,10 @@ class SmartCompletion(val expression: JetSimpleNameExpression,
         }
 
         val additionalItems = ArrayList<LookupElement>()
+        val inheritanceSearchers = ArrayList<InheritanceItemsSearcher>()
         if (receiver == null) {
-            TypeInstantiationItems(resolutionFacade, bindingContext, visibilityFilter).addToCollection(additionalItems, expectedInfos)
+            TypeInstantiationItems(resolutionFacade, moduleDescriptor, bindingContext, visibilityFilter, toFromOriginalFileMapper, inheritorSearchScope)
+                    .addTo(additionalItems, inheritanceSearchers, expectedInfos)
 
             StaticMembers(bindingContext, resolutionFacade).addToCollection(additionalItems, expectedInfos, expression, itemsToSkip)
 
@@ -141,15 +159,22 @@ class SmartCompletion(val expression: JetSimpleNameExpression,
             MultipleArgumentsItemProvider(bindingContext, typesWithSmartCasts).addToCollection(additionalItems, expectedInfos, expression)
         }
 
-        return Result(::filterDeclaration, additionalItems)
+        val inheritanceSearcher = if (inheritanceSearchers.isNotEmpty())
+            object : InheritanceItemsSearcher {
+                override fun search(nameFilter: (String) -> Boolean, consumer: (LookupElement) -> Unit) {
+                    inheritanceSearchers.forEach { it.search(nameFilter, consumer) }
+                }
+            }
+        else
+            null
+        return Result(::filterDeclaration, additionalItems, inheritanceSearcher)
     }
 
     private fun calcExpectedInfos(expression: JetExpression): Collection<ExpectedInfo>? {
         // if our expression is initializer of implicitly typed variable - take type of variable from original file (+ the same for function)
         val declaration = implicitlyTypedDeclarationFromInitializer(expression)
         if (declaration != null) {
-            val offset = declaration.getTextRange()!!.getStartOffset()
-            val originalDeclaration = PsiTreeUtil.findElementOfClassAtOffset(originalFile, offset, javaClass<JetDeclaration>(), true)
+            val originalDeclaration = toFromOriginalFileMapper.toOriginalFile(declaration)
             if (originalDeclaration != null) {
                 val originalDescriptor = originalDeclaration.resolveToDescriptor() as? CallableDescriptor
                 val returnType = originalDescriptor?.getReturnType()
@@ -289,7 +314,7 @@ class SmartCompletion(val expression: JetSimpleNameExpression,
             val lookupElement = lookupElementForType(jetType) ?: continue
             items.add(lookupElement.addTailAndNameSimilarity(infos))
         }
-        return Result(null, items)
+        return Result(null, items, null)
     }
 
     private fun lookupElementForType(jetType: JetType): LookupElement? {

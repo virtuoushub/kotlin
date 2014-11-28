@@ -19,7 +19,6 @@ package org.jetbrains.jet.completion;
 import com.intellij.testFramework.TestDataPath;
 import org.jetbrains.jet.JUnit3RunnerWithInners;
 import org.jetbrains.jet.JetTestUtils;
-import org.jetbrains.jet.test.InnerTestClasses;
 import org.jetbrains.jet.test.TestMetadata;
 import org.junit.runner.RunWith;
 
@@ -165,6 +164,12 @@ public class JvmSmartCompletionTestGenerated extends AbstractJvmSmartCompletionT
     @TestMetadata("Constructor.kt")
     public void testConstructor() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/Constructor.kt");
+        doTest(fileName);
+    }
+
+    @TestMetadata("ConstructorForGenericJavaClass.kt")
+    public void testConstructorForGenericJavaClass() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/ConstructorForGenericJavaClass.kt");
         doTest(fileName);
     }
 
@@ -381,6 +386,24 @@ public class JvmSmartCompletionTestGenerated extends AbstractJvmSmartCompletionT
     @TestMetadata("InfixCall.kt")
     public void testInfixCall() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/InfixCall.kt");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Inheritors1.kt")
+    public void testInheritors1() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/Inheritors1.kt");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Inheritors2.kt")
+    public void testInheritors2() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/Inheritors2.kt");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Inheritors3.kt")
+    public void testInheritors3() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/Inheritors3.kt");
         doTest(fileName);
     }
 
@@ -603,6 +626,12 @@ public class JvmSmartCompletionTestGenerated extends AbstractJvmSmartCompletionT
     @TestMetadata("NullableThis.kt")
     public void testNullableThis() throws Exception {
         String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/NullableThis.kt");
+        doTest(fileName);
+    }
+
+    @TestMetadata("Object.kt")
+    public void testObject() throws Exception {
+        String fileName = JetTestUtils.navigationMetadata("idea/testData/completion/smart/Object.kt");
         doTest(fileName);
     }
 

@@ -87,8 +87,11 @@ abstract class CompletionSessionBase(protected val configuration: CompletionSess
 
     protected val project: Project = position.getProject()
 
+
+    protected val originalSearchScope: GlobalSearchScope = parameters.getOriginalFile().getResolveScope()
+
     // we need to exclude the original file from scope because our resolve session is built with this file replaced by synthetic one
-    protected val searchScope: GlobalSearchScope = object : DelegatingGlobalSearchScope(parameters.getOriginalFile().getResolveScope()) {
+    protected val searchScope: GlobalSearchScope = object : DelegatingGlobalSearchScope(originalSearchScope) {
         override fun contains(file: VirtualFile) = super.contains(file) && file != parameters.getOriginalFile().getVirtualFile()
     }
 
@@ -134,9 +137,6 @@ abstract class CompletionSessionBase(protected val configuration: CompletionSess
     protected fun getKotlinTopLevelCallables(): Collection<DeclarationDescriptor>
             = indicesHelper.getTopLevelCallables({ prefixMatcher.prefixMatches(it) }, jetReference!!.expression)
 
-    protected fun getKotlinTopLevelObjects(): Collection<DeclarationDescriptor>
-            = indicesHelper.getTopLevelObjects({ prefixMatcher.prefixMatches(it) })
-
     protected fun getKotlinExtensions(): Collection<CallableDescriptor>
             = indicesHelper.getCallableExtensions({ prefixMatcher.prefixMatches(it) }, jetReference!!.expression)
 
@@ -158,7 +158,7 @@ class BasicCompletionSession(configuration: CompletionSessionConfiguration,
 
         if (!NamedParametersCompletion.isOnlyNamedParameterExpected(position)) {
             val completeReference = jetReference != null && !isOnlyKeywordCompletion()
-            val onlyTypes = shouldRunOnlyTypeCompletion()
+            val onlyTypes = completeReference && shouldRunOnlyTypeCompletion()
 
             if (completeReference) {
                 val kindMask = if (onlyTypes)
@@ -229,7 +229,10 @@ class SmartCompletionSession(configuration: CompletionSessionConfiguration, para
 
     override fun doComplete() {
         if (jetReference != null) {
-            val completion = SmartCompletion(jetReference.expression, resolutionFacade, bindingContext!!, { isVisibleDescriptor(it) }, parameters.getOriginalFile() as JetFile, boldImmediateLookupElementFactory)
+            val mapper = ToFromOriginalFileMapper(parameters.getOriginalFile() as JetFile, position.getContainingFile() as JetFile, parameters.getOffset())
+            val completion = SmartCompletion(jetReference.expression, resolutionFacade, moduleDescriptor, 
+                                             bindingContext!!, { isVisibleDescriptor(it) }, originalSearchScope,
+                                             mapper, boldImmediateLookupElementFactory)
             val result = completion.execute()
             if (result != null) {
                 collector.addElements(result.additionalItems)
@@ -237,10 +240,15 @@ class SmartCompletionSession(configuration: CompletionSessionConfiguration, para
                 val filter = result.declarationFilter
                 if (filter != null) {
                     getReferenceVariants(DESCRIPTOR_KIND_MASK).forEach { collector.addElements(filter(it)) }
-
                     flushToResultSet()
 
                     processNonImported { collector.addElements(filter(it)) }
+                    flushToResultSet()
+                }
+
+                result.inheritanceSearcher?.search({ prefixMatcher.prefixMatches(it) }) {
+                    collector.addElement(it)
+                    flushToResultSet()
                 }
             }
         }
@@ -249,7 +257,6 @@ class SmartCompletionSession(configuration: CompletionSessionConfiguration, para
     private fun processNonImported(processor: (DeclarationDescriptor) -> Unit) {
         if (shouldRunTopLevelCompletion()) {
             getKotlinTopLevelCallables().forEach(processor)
-            getKotlinTopLevelObjects().forEach(processor) //TODO: shouldn't it work via inheritors search?
         }
 
         if (shouldRunExtensionsCompletion()) {
