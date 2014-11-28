@@ -192,9 +192,63 @@ public class JetDiagnosticsTestWithJsStdLibGenerated extends AbstractJetDiagnost
                 JetTestUtils.assertAllTestsPresentByMetadata(this.getClass(), new File("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter"), Pattern.compile("^(.+)\\.kt$"), true);
             }
 
-            @TestMetadata("nativeSetter.kt")
-            public void testNativeSetter() throws Exception {
-                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/nativeSetter.kt");
+            @TestMetadata("onLocalExtensionFun.kt")
+            public void testOnLocalExtensionFun() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onLocalExtensionFun.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onLocalNativeClassMembers.kt")
+            public void testOnLocalNativeClassMembers() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onLocalNativeClassMembers.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onLocalNonNativeClassMembers.kt")
+            public void testOnLocalNonNativeClassMembers() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onLocalNonNativeClassMembers.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onLocalOtherDeclarations.kt")
+            public void testOnLocalOtherDeclarations() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onLocalOtherDeclarations.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onNativeClassMembers.kt")
+            public void testOnNativeClassMembers() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onNativeClassMembers.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onNestedDeclarationsInsideNativeClass.kt")
+            public void testOnNestedDeclarationsInsideNativeClass() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onNestedDeclarationsInsideNativeClass.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onNestedDeclarationsInsideNonNativeClass.kt")
+            public void testOnNestedDeclarationsInsideNonNativeClass() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onNestedDeclarationsInsideNonNativeClass.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onNonNativeClassMembers.kt")
+            public void testOnNonNativeClassMembers() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onNonNativeClassMembers.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onToplevelExtensionFun.kt")
+            public void testOnToplevelExtensionFun() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onToplevelExtensionFun.kt");
+                doTest(fileName);
+            }
+
+            @TestMetadata("onToplevelOtherDeclarations.kt")
+            public void testOnToplevelOtherDeclarations() throws Exception {
+                String fileName = JetTestUtils.navigationMetadata("compiler/testData/diagnostics/testsWithJsStdLib/native/nativeSetter/onToplevelOtherDeclarations.kt");
                 doTest(fileName);
             }
         }
