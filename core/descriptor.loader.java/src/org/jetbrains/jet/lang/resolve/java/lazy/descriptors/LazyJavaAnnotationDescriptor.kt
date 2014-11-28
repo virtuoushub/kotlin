@@ -71,35 +71,29 @@ class LazyJavaAnnotationDescriptor(
     override fun getType(): JetType = type()
 
     private val nameToArgument = c.storageManager.createLazyValue {
-        var arguments: Collection<JavaAnnotationArgument> = javaAnnotation.getArguments()
+        var arguments = javaAnnotation.getArguments()
         if (arguments.isEmpty() && fqName()?.asString() == "java.lang.Deprecated") {
             arguments = listOf(DEPRECATED_IN_JAVA)
         }
         arguments.valuesToMap { it.name }
     }
 
-    private val valueArguments = c.storageManager.createMemoizedFunctionWithNullableValues<ValueParameterDescriptor, CompileTimeConstant<*>> {
-        valueParameter ->
-        val nameToArg = nameToArgument()
-
-        var javaAnnotationArgument = nameToArg[valueParameter.getName()]
-        if (javaAnnotationArgument == null && valueParameter.getName() == DEFAULT_ANNOTATION_MEMBER_NAME) {
-            javaAnnotationArgument = nameToArg[null]
-        }
-
-        resolveAnnotationArgument(javaAnnotationArgument)
-    }
-
-    override fun getValueArgument(valueParameterDescriptor: ValueParameterDescriptor) = valueArguments(valueParameterDescriptor)
-
     private val allValueArguments = c.storageManager.createLazyValue {
         val constructors = getAnnotationClass().getConstructors()
         if (constructors.isEmpty())
             mapOf<ValueParameterDescriptor, CompileTimeConstant<*>>()
-        else
-            constructors.first().getValueParameters().keysToMapExceptNulls {
-                vp -> getValueArgument(vp)
+        else run {
+            val nameToArg = nameToArgument()
+
+            constructors.first().getValueParameters().keysToMapExceptNulls { valueParameter ->
+                var javaAnnotationArgument = nameToArg[valueParameter.getName()]
+                if (javaAnnotationArgument == null && valueParameter.getName() == DEFAULT_ANNOTATION_MEMBER_NAME) {
+                    javaAnnotationArgument = nameToArg[null]
+                }
+
+                resolveAnnotationArgument(javaAnnotationArgument)
             }
+        }
     }
 
     override fun getAllValueArguments() = allValueArguments()
