@@ -25,8 +25,6 @@ import com.intellij.testFramework.MapDataContext
 import com.intellij.execution.actions.ConfigurationContext
 import com.intellij.execution.PsiLocation
 import com.intellij.execution.Location
-import org.jetbrains.jet.plugin.stubindex.JetTopLevelFunctionsFqnNameIndex
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.execution.configurations.RunConfiguration
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.Executor
@@ -36,9 +34,6 @@ import com.intellij.execution.configurations.JavaParameters
 import org.junit.Assert
 import com.intellij.execution.configurations.JavaCommandLine
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.util.Computable
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.module.Module
 import java.io.File
 import com.intellij.openapi.roots.ModuleRootModificationUtil
@@ -82,7 +77,7 @@ class RunConfigurationTest: CodeInsightTestCase() {
     }
 
     private fun createConfigurationFromMain(mainFqn: String): JetRunConfiguration {
-        val mainFunction = JetTopLevelFunctionsFqnNameIndex.getInstance().get(mainFqn, getTestProject(), getTestProject().allScope()).first()
+        val mainFunction = org.jetbrains.jet.plugin.stubindex.JetTopLevelFunctionFqnNameIndex.getInstance().get(mainFqn, getTestProject(), getTestProject().allScope()).first()
 
         val dataContext = MapDataContext()
         dataContext.put(Location.DATA_KEY, PsiLocation(getTestProject(), mainFunction))
