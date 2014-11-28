@@ -305,16 +305,17 @@ public abstract class AnnotationCodegen {
 
             @Override
             public Void visitEnumValue(EnumValue value, Void data) {
-                String propertyName = value.getValue().getName().asString();
-                annotationVisitor.visitEnum(name, typeMapper.mapType(value.getType(KotlinBuiltIns.getInstance())).getDescriptor(), propertyName);
+                String entryName = value.getValue().getName().asString();
+                annotationVisitor.visitEnum(name, typeMapper.mapType(expectedType).getDescriptor(), entryName);
                 return null;
             }
 
             @Override
             public Void visitArrayValue(ArrayValue value, Void data) {
+                JetType elementType = KotlinBuiltIns.getInstance().getArrayElementType(expectedType);
                 AnnotationVisitor visitor = annotationVisitor.visitArray(name);
                 for (CompileTimeConstant<?> argument : value.getValue()) {
-                    genCompileTimeValue(null, argument, value.getType(KotlinBuiltIns.getInstance()), visitor);
+                    genCompileTimeValue(null, argument, elementType, visitor);
                 }
                 visitor.visitEnd();
                 return null;
